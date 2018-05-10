@@ -5,6 +5,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 var User = require('../models/mongoose/user');
+var IcoInfo = require('../models/mongoose/icoInfo');
 
 // Get index
 router.get('/', ensureAuthenticated, function(req, res, next){
@@ -85,6 +86,39 @@ router.post('/register', function (req, res) {
 				}
 		});
 	}
+});
+
+// get icoTargetTime
+router.get('/icoTargetTime', function (req, res) {
+	res.redirect('/');
+});
+
+// post icoTargetTime
+router.post('/icoTargetTime', function(req, res,) {	
+	IcoInfo.getTargetDate("round-0", function (err, icoInfo) {
+		if (err || !icoInfo) {			
+			var newIcoInfo = new IcoInfo({
+				round : "round-0",
+				year: 	0, 
+				month:	0, 
+				day:	0, 
+				hour:	0, 
+				min:	0, 
+				sec:	0, 
+				utc:	"UTC"
+			});
+			IcoInfo.createIcoInfo(newIcoInfo, function (err, newIcoInfo) {
+				var Round = "round-0";
+				IcoInfo.initIcoInfo(Round, function (err, Round) {
+					res.redirect('/');					
+				});
+			});
+		}
+		else {			
+			res.json({success: 'true', year:icoInfo.year, month:icoInfo.month, 
+		day:icoInfo.day, hour:icoInfo.hour, min:icoInfo.min, sec:icoInfo.sec, utc:icoInfo.utc});		
+		}
+	});	
 });
 
 passport.use('local', new LocalStrategy({

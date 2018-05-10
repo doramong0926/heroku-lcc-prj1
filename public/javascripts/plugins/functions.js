@@ -2,8 +2,8 @@
 $(document).ready(function(){
     $("#copy-eth-address").click(function() {
 		copyToClipboard("#address-eth");
-		
-		//document.getElementById("copy-eth-address").title = "copyed";
+		alertify.set({ delay: 3000 });
+		alertify.success("copied to the clip board");
 	});
 });
 

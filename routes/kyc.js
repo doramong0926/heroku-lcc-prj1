@@ -37,7 +37,7 @@ var uploadKycPicture1 = multer( {
 	storage: fileStorage1,
 	limits:
 	{
-		fileSize: 2 * 1024 * 1024
+		fileSize: 2 * 1024 * 1024 // 2M
 	}
 });
 
@@ -45,7 +45,7 @@ var uploadKycPicture2 = multer( {
 	storage: fileStorage2,
 	limits:
 	{
-		fileSize: 2 * 1024 * 1024
+		fileSize: 2 * 1024 * 1024	// 2M
 	}
 });
 
@@ -80,7 +80,7 @@ router.post('/', function(req, res,){
 
 
 // post saveKycPicture1
-router.route('/kycPicture1').post(uploadKycPicture1.array('photo',1), function (req, res) {
+router.route('/kycPicture1').post(uploadKycPicture1.array('photo', 1), function (req, res) {
 	if (req.files.length > 0) {
 		tmpKycPicturePath1 = req.files[0].path;		
 		res.json({success: 'true'});		
@@ -90,7 +90,7 @@ router.route('/kycPicture1').post(uploadKycPicture1.array('photo',1), function (
 	
 });
 
-router.route('/kycPicture2').post(uploadKycPicture2.array('photo',1), function (req, res) {
+router.route('/kycPicture2').post(uploadKycPicture2.array('photo', 1), function (req, res) {
 	if (req.files.length > 0) {
 		tmpKycPicturePath2 = req.files[0].path;
 		res.json({success: 'true'});		
@@ -110,9 +110,8 @@ router.post('/saveKyc', function (req, res) {
 	req.checkBody('wallet', 'wallet is required').notEmpty();
 	var errors = req.validationErrors();
 
-	if (errors) {
-		console.log(errors);		
-		res.json({success: 'false'});
+	if (errors) {	
+		res.json({success: 'false', errors});
 	} else {
 		var user = new User({
 			email : req.user.email,

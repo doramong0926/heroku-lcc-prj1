@@ -23,12 +23,21 @@
  * THE SOFTWARE.
  */
 
+var Year = 0;
+var Month = 0;
+var Day = 0;
+var Hour = 0;
+var Min = 0;
+var Sec = 0;
+var Utc = 'UTC';
 
 (function($) {	
 
 	$.fn.countDown = function (options) {
 
-		config = {};
+		config = {
+			omitWeeks : 1
+		};
 
 		$.extend(config, options);
 
@@ -39,7 +48,7 @@
 			$.data($(this)[0], 'callback', config.onComplete);
 		}
 		if (config.omitWeeks)
-		{
+		{			
 			$.data($(this)[0], 'omitWeeks', config.omitWeeks);
 		}
 
@@ -76,6 +85,9 @@
 		}
 
 		var nowTime = new Date();
+		console.log("target : " + targetTime);
+		console.log("now : " + nowTime);
+		
 
 		diffSecs = Math.floor((targetTime.valueOf()-nowTime.valueOf())/1000);
 
@@ -163,15 +175,27 @@
 
 
 (function ($) {
-	$("#countdown_dashboard").countDown({
-	    targetOffset: {
-	        'day':      0,
-	        'month':    0,
-	        'year':     1,
-	        'hour':     0,
-	        'min':      0,
-	        'sec':      0
-	    },	        
-    });	
-	$('#subscribe_form').bind('submit', function() { return false; });	
+	$.post( "/icoTargetTime", function( data ) {				
+		if(data.success == 'true'){
+			Year = data.year;
+			Month = data.month;
+			Day = data.day;
+			Hour = data.hour;
+			Min = data.min;
+			Sec = data.sec;
+			Utc = data.utc; 
+		}
+		$("#countdown_dashboard").countDown({			
+			targetDate: {
+				'year':		Year,
+				'month':	Month,
+				'day':		Day,
+				'hour':     Hour,
+				'min':      Min,
+				'sec':      Sec,
+				'utc' : 	Utc
+			}  
+		});	
+		$('#subscribe_form').bind('submit', function() { return false; });	
+	});	
 })(jQuery);
