@@ -1,0 +1,80 @@
+
+/* Functional styling;
+ * These styles are required for noUiSlider to function.
+ * You don't need to change these rules to apply your design.
+ */
+
+#countdown_dashboard {
+	//margin-top:60px;
+}
+
+.countDown {
+    display: flex;
+
+    .days_dash .digit,
+    .hours_dash .digit,
+    .minutes_dash .digit,
+    .seconds_dash .digit {
+        color: #FF0000;
+    }
+}
+
+
+.dash {
+	height: 114px;
+    background-image:  url("../images/dash.png");
+    background-color: transparent;
+    background-repeat: no-repeat;
+	float: left;
+    position: relative;
+    display: flex;
+}
+
+.hours_dash, .seconds_dash{
+    margin-left: 20px; 
+}
+
+.dash .digit {
+	font-size: 55pt;
+	font-weight: bold;
+	float: left;
+	width: 55px;
+	text-align: center;
+	color: #fff;
+    position: relative;
+    line-height: 1.26
+}
+
+%dash_title {
+    position: absolute;
+	display: block;
+	bottom: 0px;	
+	font-size:12px;
+	font-weight:500;
+	color: #fff;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+    font-family:Roboto;
+    text-align: center;
+}
+
+.dash_title_day {
+    @extend %dash_title;
+    margin-left: 38px;
+}
+
+.dash_title_hour{
+    @extend %dash_title;
+    margin-left: 29px;
+}
+
+.dash_title_min{
+    @extend %dash_title;
+    margin-left: 25px;
+}
+
+.dash_title_sec{
+    @extend %dash_title;
+    margin-left: 20px;
+}
+

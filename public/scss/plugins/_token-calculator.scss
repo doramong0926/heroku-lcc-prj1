@@ -1,0 +1,28 @@
+
+.token-calculator{
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 25px 0 0;
+    
+    .icon{
+        color: $gray-color;
+        > i{
+            font-size: 3.85rem;
+        }
+    }
+    .title{
+        color: $black-color;
+        margin: 0.875rem 2 0 0.875rem;
+    }
+    .description{
+        //color: $gray-color;
+        color: $black-color;
+    }
+    .card {
+        margin: 15px 0 15px; 
+    }
+    .card .card-body {
+        padding: 10px;
+        margin-bottom: 10px; 
+    }
+}

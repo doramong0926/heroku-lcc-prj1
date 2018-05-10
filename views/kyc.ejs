@@ -1,0 +1,182 @@
+<%- layout('layout') -%>
+
+<div class="main main-raised">
+    <div class="container fist-container" id="container-token-sale">
+        <div class="section text-center">            
+            <div class="features">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="kyc-card text-center">
+                                <h3 class="title">Your KYC status is</h3>
+                                <h2 class="title text-danger" <% if(kycStatus != "ready") { %> style="display:none" <% } %> >READY</h2>
+                                <h5 class="description" <% if(kycStatus != "ready") { %> style="display:none" <% } %> >Please upload your KYC info.</h5>                  
+                                <h2 class="title text-danger" <% if(kycStatus != "approving") { %> style="display:none" <% } %> >APPROVING</h2>  
+                                <h5 class="description" <% if(kycStatus != "approving") { %> style="display:none" <% } %> >Please wait until completed your KYC info.</h5> 
+                                <h2 class="title text-danger" <% if(kycStatus != "completed") { %> style="display:none" <% } %> >COMPLETE</h2>  
+                                <h5 class="description" <% if(kycStatus != "completed") { %> style="display:none" <% } %> >All your KYC progress is completed.</h5> 
+                                <h2 class="title text-danger" <% if(kycStatus != "completed") { %> style="display:none" <% } %> >REJECT</h2>  
+                                <h5 class="description" <% if(kycStatus != "completed") { %> style="display:none" <% } %> >All your KYC progress is rejected. Please contact to admin.</h5> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        </div>
+    </div>
+</div>
+
+<div class="main main-raised" id="container-kyc1">
+    <div class="container">
+        <div class="section text-center">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto">
+                    <h2 class="title">KYC STEP 1</h2>
+                    <h5 class="description">Please upload your "licence or passport" and "utility bill".</h5>
+                </div>
+            </div>
+            <div class="features kyc-uploader">
+                <div class="row">                    
+                    <div class="col-12 col-md-6">                            
+                        <div class="card">
+                            <div class="kyc-card">                                    
+                                <div class="picture-container text-danger">
+                                    <img src="<% if(kycStatus != "ready") { %> <%= kycPicturePath1 %> <% } %>" class="kycPictureSrc" id="kycPicturePreview-1" title=""/>
+                                    <form method="post" action="/kyc/photo" enctype="multipart/form-data">
+                                        <input type="file" name="photo" id="kycPicture-1" <% if(kycStatus != "ready") { %> style="cursor: not-allowed" disabled <% } %> >
+                                    </form> 
+                                    <h6>Click here to select picture</h6>
+                                    <h6>under 1MB / jpeg, gif only</h6>
+                                </div>
+                                <h4 class="info-title text-center">[Step 1-1] Proof of Passport or ID card</h4>
+                                <p>Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="card">
+                            <div class="kyc-card">
+                                <div class="picture-container text-danger">
+                                    <img src="<% if(kycStatus != "ready") { %> <%= kycPicturePath2 %> <% } %>" class="kycPictureSrc" id="kycPicturePreview-2" title=""/>
+                                    <form method="post" action="/kyc/photo" enctype="multipart/form-data">
+                                        <input type="file" name="photo" id="kycPicture-2" <% if(kycStatus != "ready") { %> style="cursor: not-allowed" disabled <% } %> >
+                                    </form>
+                                    <h6>Click here to select picture</h6>
+                                    <h6>under 1MB / jpeg, gif only</h6>
+                                </div>
+                                <h4 class="info-title text-center">[Step 1-2] Proof of Address (utility bill)</h4>
+                                <p>Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>     
+            </div>
+        </div>
+    </div>
+</div>    
+
+<div class="main main-raised" id="container-kyc2">
+    <div class="container">
+        <div class="section text-center">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto">
+                    <h2 class="title">KYC STEP 2</h2>
+                    <h5 class="description">Please confirm "terms and condition" and fill your infomations.</h5>
+                </div>
+            </div>
+            
+            <div class="features kyc-uploader">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="kyc-card">
+                                <h3 class="card-text text-center">Terms and conditions</h3><br>
+                                <p class="card-text text-left">I have thoroughly read and accepted all Terms and Conditions. 
+                                    I am at least 18 years old and I have the full capacity to participate in Appics sale or conduct any operations with cryptocurrency. 
+                                    I have significant experience with the cryptographic tokens, 
+                                    cryptocurrency and I fully understand all the merits, risks and any restrictions associated with them.
+                                </p>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="checkBoxTerm1" type="checkbox" value="" <% if(kycStatus != "ready") { %> checked disabled <% } %> >
+                                        Confirm and Accept
+                                        <span class="form-check-sign">
+                                            <span class="check"></span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <br>                                
+                                <p class="card-text text-left">I meet the residency criteria, in particular I am not identified or associated with an entity identified, 
+                                    and not acting on behalf of the person or entity identified, in any lists of sanctioned persons, 
+                                    including but not limited to U.S. Treasury Department's list of Specially Designated Nationals and Blocked Persons, 
+                                    the U.S. Commerce Department's Denied Person List, the U.S. Department of State's Debarred Parties List, 
+                                    the EU Consolidated List of Persons. I am not a citizen or resident or located at any country or territory or geographic area 
+                                    that is the target of United States economic or trade sanctions (currently Cuba, Iran, Syria, North Korea, 
+                                    and the Crimea region of Ukraine) or any other sovereign country sanctions or embargoes and I am not a citizen of or located and/or residing in China or any other country, 
+                                    territory or geographical area, where the distribution of tokens would be unlawful or restricted by any regulation, 
+                                    including if such distribution would require licensing, and You have no other affiliation to the mentioned countries and territories.
+                                </p>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="checkBoxTerm2" type="checkbox" value="" <% if(kycStatus != "ready") { %> checked disabled <% } %> >
+                                        Confirm and Accept
+                                        <span class="form-check-sign">
+                                            <span class="check"></span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <h4 class="info-title text-center">[Step 2-1] Confirm terms and conditions</h4>
+                            <br>
+                        </div>                         
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="kyc-card card-full-name">
+                                <div class="form-group label-floating text-left">
+                                    <label class="bmd-label-floating">First Name</label>
+                                    <input name="lastName" type="text" class="form-control" id="first-name" value = "<%= firstName %>" <% if(kycStatus != "ready") { %> disabled <% } %> >
+                                </div>
+                                <div class="form-group label-floating text-left">
+                                    <label class="bmd-label-floating">Last Name</label>
+                                    <input name="lastName" type="text" class="form-control" id="last-name" value = "<%= lastName %>" <% if(kycStatus != "ready") { %> disabled <% } %> >
+                                </div>   
+                            </div>   
+                            <h4 class="info-title text-center">[Step 2-2] Fill your full name</h4>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="kyc-card card-full-name">
+                                <div class="form-group label-floating text-left">
+                                    <label class="bmd-label-floating">Your Etherium address</label>
+                                    <input type="text" class="form-control" id="eth-address" value = "<%= walletAddr %>" <% if(kycStatus != "ready") { %> disabled <% } %> >
+                                </div>
+                            </div>   
+                            <h4 class="info-title text-center text-danger">Do not add address from exchanges! All your Etehrium will be gone.</h4>
+                            <h4 class="info-title text-center">[Step 2-3] Fill your Address to receive LCC token</h4>   
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-12">
+                        <div class="save-kyc">
+                            <div class="col-12">
+                                <% if(kycStatus == "ready") { %> 
+                                    <button class="btn btn-primary btn-raised" onclick="uploadKyc()"> SAVE STEP1 / STEP2</button>
+                                <% } %>
+                            </div>
+                        </div>      
+                    </div>
+                </div>
+            </div>			
+        </div>
+    </div>
+</div>
+

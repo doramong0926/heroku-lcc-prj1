@@ -1,0 +1,163 @@
+
+<%- layout('layout') -%>
+
+<div class="main main-raised">
+    <div class="container fist-container" id="container-token-info">
+        <div class="section text-center">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto">
+                    <h2 class="title">YOUR TOKEN INFOMATION</h2>
+                    <h5 class="description">After check your balance of the token, if there is a problem contact to us</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-10 ml-auto mr-auto">
+                    <div class="features profile-viewer">                       
+                        <div class="card">
+                            <div class="profile-card">
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-left">
+                                        <thead>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row"><h4>ID</h4></th>
+                                                <td><h4><%= email %></h4></td>
+                                            </tr>                                                 
+                                            <tr>
+                                                <th scope="row"><h4>Your referral address</h4></th>
+                                                <td><h4><%= referral %></h4></td>
+                                            </tr>  
+                                            <tr>
+                                                <th scope="row"><h4>Your wallet address</h4></th>
+                                                <td><h4><%= walletAddr %></h4></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"><h4>Balance</h4></th>
+                                                <td><h4><%= balance %> LCC</h4></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"><h4>Rank of LCC token holder</h4></th>
+                                                <td><h4><%= rankOfHolder %></h4></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"><h4>Etherium you sent to buy token</h4></th>
+                                                <td><h4><%= sentEth %> ETH</h4></td>
+                                            </tr>      
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 ml-auto mr-auto">
+                    <div class="features profile-viewer-sm">                       
+                        <div class="card">
+                            <div class="profile-card">
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-left">
+                                        <thead>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row"># ID</th>
+                                            </tr>
+                                            <tr>
+                                                <td><%= email %></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"># Your referral address</th>
+                                            </tr>
+                                                <td><%= referral %></td>
+                                            </tr>   
+                                            <tr>
+                                                <th scope="row"># Your wallet address</th>
+                                            </tr>
+                                                <td class="wallet-addr-sm"><%= walletAddr %></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"># Balance</th>
+                                            </tr>
+                                                <td><%= balance %> LCC</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"># Rank of LCC token holder</th>
+                                            </tr>
+                                                <td><%= rankOfHolder %></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"># Etherium you sent to buy token</th>
+                                            </tr>
+                                                <td><%= sentEth %> ETH</td>
+                                            </tr>       
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main main-raised" id="container-transaction-history">
+    <div class="container">
+        <div class="section text-center">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto">
+                    <h2 class="title">History of Transaction</h2>
+                    <h5 class="description">You can check transaction history of your wallet.</h5>
+                </div>
+            </div>
+            <div class="features profile-viewer">
+                <div class="row">
+                    <div class="col-11 ml-auto mr-auto">
+                        <div class="table-responsive">
+                            <table class="table table-hover text-left">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">ID</th>
+                                    </tr>
+                                        <td><%= email %></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Your referral address</th>
+                                    </tr>
+                                        <td><%= referral %></td>
+                                    </tr> 
+                                    <tr>
+                                        <th scope="row">Your wallet address</th>
+                                    </tr>
+                                        <td><%= walletAddr %></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Balance</th>
+                                    </tr>
+                                        <td><%= balance %> LCC</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Rank of LCC token holder</th>
+                                    </tr>
+                                        <td><%= rankOfHolder %></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Etherium you sent to buy token</th>
+                                    </tr>
+                                        <td><%= sentEth %> ETH</td>
+                                    </tr>                                           
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  

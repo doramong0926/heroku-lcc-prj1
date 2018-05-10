@@ -1,0 +1,80 @@
+<%- layout('layout') -%>
+
+<div class="main main-raised">
+    <div class="container fist-container" id="container-token-sale">
+        <div class="section text-center">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto">
+                    <h2 class="title">GUIDE</h2>
+                    <h5 class="description">PreSale Round-A schdeule is "1.JULY ~ 31.JULY"<br>
+                        Every investor should be done our KYC process and we only use etherium to buy LCC coin.</h5>
+                </div>
+            </div>
+            <div class="features">
+                <div class="row align-items-center">
+                    <div class="col-12 col-sm-4">
+                        <div class="token-calculator">
+                            <div class="card card-nav-tabs">
+                                <div class="card-header card-header-danger">
+                                    <h4 class="title">Token Calculator</h4>  
+                                </div>
+                                <div class="card-body">                                                                      
+                                    <h4>1 ETH = 100000 LCC</h4>
+                                    <div class="col-12">
+                                        <div class="input-group">                                        
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                <i class="fa fa-group"></i>
+                                                </span>
+                                            </div>
+                                            <input type="text" class="form-control" id="calculator-eth" placeholder="ETH">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                <i class="fa fa-group"></i>
+                                                </span>
+                                            </div>
+                                            <input type="text" class="form-control" id="calculator-lcc" placeholder="LCC">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-8">
+                        <div class="info-nomal text-left">
+                            <h3 class="title">How to invest?</h3>
+                            <ol>
+                                <li>
+                                    <h4 class="description">KYC should be completed before send etherium to buy LCC token.</h4>        
+                                </li>
+                                <li>
+                                    <h4 class="description">Copy below adress.</h4>        
+                                </li>
+                                <li>
+                                    <h4 class="description">Transfer Etherium for purchasing LCC tokens to this address.</h4>        
+                                </li>
+                                <li>
+                                    <h4 class="description">Add your Ethereum address from which you own private key (do not add address from exchanges!) and get LCC tokens.</h4>        
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="kyc-card text-center">
+                                <h3 class="title">Address to send your Etherium</h3>
+                                <h4 class="description">Address is not appeared before your KYC is approved</h4>
+                                <h2 class="title text-danger" id="address-eth">0x5cdD23c850b3447C674dE4f37ce9006D480e4413</h2>
+                                <button class="btn btn-primary btn-sm" id="copy-eth-address" data-toggle="tooltip" data-placement="right" title="Copied to clipboard">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        </div>
+    </div>
+</div>
