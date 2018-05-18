@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "bower": "^1.8.4",
@@ -15,16 +16,24 @@
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
     "ejs-locals": "^1.0.2",
+    "email-verification": "^0.4.6",
     "express": "~4.16.0",
     "express-session": "^1.15.6",
     "express-validator": "^5.1.2",
     "fs": "0.0.1-security",
+    "fs-extra": "^3.0.1",
+    "fs-promise": "^2.0.3",
     "http-errors": "~1.6.2",
+    "mongodb": "^2.2.19",
     "mongoose": "^5.0.16",
     "morgan": "~1.9.0",
     "multer": "^1.3.0",
+    "mz": "^2.7.0",
+    "nodemailer": "^4.0.1",
+    "numeral": "^2.0.6",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "web3": "github:ethereum/web3.js"
   }
 }

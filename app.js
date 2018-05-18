@@ -14,7 +14,7 @@ var mongoose = require('mongoose');
 var multer = require('multer');
 var fs = require('fs');
 var cors = require('cors');
-
+  
 var indexRouter = require('./routes/index');
 var tokenSaleRouter = require('./routes/tokenSale');
 var kycRouter = require('./routes/kyc');
@@ -58,7 +58,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(session({
     secret: '29kjf9f93lljs%@54j&8',
     saveUninitialized: true,
-    resave: true
+    resave: true,
+    cookie: {maxAge : 3600000, httpOnly : true}
 }));
 
 // Passport init
