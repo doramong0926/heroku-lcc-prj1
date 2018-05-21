@@ -25,16 +25,23 @@ router.get('/', ensureAuthenticated, function(req, res, next){
 						console.log("fail to get Txlist.");		
 						txList = "";
 					}
-					res.render('profile', {
-						isLogin : "true", 
-						navbarType : "profile",
-						user : user,
-						balance : numeral(balance).format('0,0'), 
-						rankOfHolder : 24, 
-						sentEth : 100,
-						txList : txList,
-						contractAddr : contractAddr_lcc,
-						icoAddr : icoAddr
+					web3Control.getTokenTxlist(contractAddr_lcc, user.walletAddr, function(err, tokenTxList) {
+						if (err) {
+							console.log("fail to get toeknTxlist.");		
+							tokenTxList = "";
+						}
+						
+						res.render('profile', {
+							isLogin : "true", 
+							navbarType : "profile",
+							user : user,
+							receivedToken : numeral(balance).format('0,0'), 
+							sentEth : 100,
+							txList : txList,
+							tokenTxList : tokenTxList,
+							contractAddr : contractAddr_lcc,
+							icoAddr : icoAddr
+						});
 					});
 				});				
 			});			

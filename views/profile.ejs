@@ -33,12 +33,8 @@
                                                 <td><h4><%= user.walletAddr %></h4></td>
                                             </tr>
                                             <tr>
-                                                <th scope="row"><h4>Balance</h4></th>
-                                                <td><h4><%= balance %> LCC</h4></td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row"><h4>Rank of LCC token holder</h4></th>
-                                                <td><h4><%= rankOfHolder %></h4></td>
+                                                <th scope="row"><h4>LCC token you received</h4></th>
+                                                <td><h4><%= receivedToken %> LCC</h4></td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"><h4>Etherium you sent to buy token</h4></th>
@@ -79,14 +75,9 @@
                                                 <td class="wallet-addr-sm"><%= user.walletAddr %></td>
                                             </tr>
                                             <tr>
-                                                <th scope="row"># Balance</th>
+                                                <th scope="row"># LCC token you received</th>
                                             </tr>
-                                                <td><%= balance %> LCC</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row"># Rank of LCC token holder</th>
-                                            </tr>
-                                                <td><%= rankOfHolder %></td>
+                                                <td><%= receivedToken %> LCC</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"># Etherium you sent to buy token</th>
@@ -122,23 +113,26 @@
                                 <thead>
                                 </thead>
                                 <tbody>
-                                    <% if (txList.length == 0) { %>
-                                        There is no transaction.                                       
-                                    <% } else { 
-                                        for (var i=0, len = txList.length; i < len; i++) { 
-                                            if ((txList[i].from.toLowerCase() == contractAddr.toLowerCase()) && (txList[i].to.toLowerCase() == user.walletAddr.toLowerCase()) ) { %>
-                                    <tr>
-                                        <td> <%= txList[i].timeStamp %> : You receviced <%= txList[i].value / Math.pow(10, 18) %> LCC</td>
-                                    </tr>
-                                    <tr>
-                                        <td> <a href="https://ropsten.etherscan.io/tx/<%= txList[i].hash %>" target="_blank"> TXID : <%= txList[i].hash %></a></td>   
-                                    </tr>
-                                        <% } else if ((txList[i].from.toLowerCase() == user.walletAddr.toLowerCase()) && (txList[i].to.toLowerCase() == icoAddr.toLowerCase()) ) { %>
+                                    <% if (txList.length != 0) {  
+                                        for (var i=0, len = txList.length; i < len; i++) {
+                                            if ((txList[i].from.toLowerCase() == user.walletAddr.toLowerCase()) && (txList[i].to.toLowerCase() == icoAddr.toLowerCase()) ) { %>
                                     <tr>
                                         <td> <a href="https://ropsten.etherscan.io/tx/<%= txList[i].hash %>" target="_blank"> TXID : <%= txList[i].hash %></a></td>
                                     </tr>
                                     <tr>
                                         <td><%= txList[i].timeStamp %> : You sent <%= txList[i].value / Math.pow(10, 18) %> ETH</td>
+                                    </tr>
+                                        <% }
+                                        } 
+                                    } %>
+                                    <% if (tokenTxList.length != 0) {
+                                        for (var i=0, len = tokenTxList.length; i < len; i++) { 
+                                            if ((tokenTxList[i].from.toLowerCase() == icoAddr.toLowerCase()) && (tokenTxList[i].to.toLowerCase() == user.walletAddr.toLowerCase()) ) { %>
+                                    <tr>
+                                        <td> <%= tokenTxList[i].timeStamp %> : You receviced <%= tokenTxList[i].value / Math.pow(10, 18) %> LCC</td>
+                                    </tr>
+                                    <tr>
+                                        <td> <a href="https://ropsten.etherscan.io/tx/<%= tokenTxList[i].hash %>" target="_blank"> TXID : <%= tokenTxList[i].hash %></a></td>   
                                     </tr>
                                         <% }
                                         } 

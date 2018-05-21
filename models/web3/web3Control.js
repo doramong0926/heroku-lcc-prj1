@@ -36,6 +36,19 @@ module.exports.getTxlist = function(walletAddr, callback) {
 .catch(console.log);
 }
 
+module.exports.getTokenTxlist = function(contractAddr, walletAddr, callback) {
+	axios.get(etherScanRopstenApiAddr + "module=account&action=tokentx&contractaddress=" + contractAddr + "&address=" + walletAddr + "&startblock=0&endblock=999999999&sort=asc&apikey=" + etherScanApiKey)
+.then(res => {
+	var err = false;
+	if(res.data.message != 'OK') {
+		err = true;
+	}
+	callback(err, res.data.result);
+})
+.catch(console.log);
+}
+
+
 /*
 web3.setProvider(new web3.providers.HttpProvider(providerInfura + infuraApiKey));
 var wallet_1 = "0x88e343f4599292c2cffe683c1bb93cd3480bdbab";
