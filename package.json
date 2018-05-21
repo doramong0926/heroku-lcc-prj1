@@ -34,6 +34,7 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
+    "time-stamp": "^2.0.0",
     "web3": "github:ethereum/web3.js"
   }
 }

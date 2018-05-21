@@ -55,11 +55,9 @@ function checkLoginStatusProfile(){
     $.post("/profile", {checkLogin: true}, function(data) {        
         if (data.LoginState == 'false') {
             openLoginModal();
-            console.log('11 data.LoginState : ' + data.LoginState);
         } else {
             $.get("/profile");
             window.location.replace("/profile");  
-            console.log('22 data.LoginState : ' + data.LoginState);
         }   
     });
 }
@@ -70,11 +68,9 @@ function checkLoginStatusKyc(){
         console.log('00 data.LoginState : ' + data.LoginState);
         if (data.LoginState == 'false') {
             openLoginModal();
-            console.log('11 data.LoginState : ' + data.LoginState);
         } else {
             $.get("/kyc");
             window.location.replace("/kyc");  
-            console.log('22 data.LoginState : ' + data.LoginState);
         }
     });
 }
@@ -97,12 +93,10 @@ function registeAjax() {
     $.post("/register", {email: $('#email-register').val(), password: $('#password-register').val()
                                 , password_confirmation: $('#password-confirmation-register').val()}, function( data ) {
         if(data.success == 'true') {
-            console.log('data.success : ' + data.success);
             $.get("/");            
             showLoginForm();
         }
         else{
-            console.log('data.success : ' + data.success);
             shakeModal(); 
         }
     });

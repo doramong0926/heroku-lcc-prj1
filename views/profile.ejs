@@ -22,15 +22,15 @@
                                         <tbody>
                                             <tr>
                                                 <th scope="row"><h4>ID</h4></th>
-                                                <td><h4><%= email %></h4></td>
+                                                <td><h4><%= user.email %></h4></td>
                                             </tr>                                                 
                                             <tr>
                                                 <th scope="row"><h4>Your referral address</h4></th>
-                                                <td><h4><%= referral %></h4></td>
+                                                <td><h4><%= user.referral %></h4></td>
                                             </tr>  
                                             <tr>
                                                 <th scope="row"><h4>Your wallet address</h4></th>
-                                                <td><h4><%= walletAddr %></h4></td>
+                                                <td><h4><%= user.walletAddr %></h4></td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"><h4>Balance</h4></th>
@@ -66,17 +66,17 @@
                                                 <th scope="row"># ID</th>
                                             </tr>
                                             <tr>
-                                                <td><%= email %></td>
+                                                <td><%= user.email %></td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"># Your referral address</th>
                                             </tr>
-                                                <td><%= referral %></td>
+                                                <td><%= user.referral %></td>
                                             </tr>   
                                             <tr>
                                                 <th scope="row"># Your wallet address</th>
                                             </tr>
-                                                <td class="wallet-addr-sm"><%= walletAddr %></td>
+                                                <td class="wallet-addr-sm"><%= user.walletAddr %></td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"># Balance</th>
@@ -122,36 +122,27 @@
                                 <thead>
                                 </thead>
                                 <tbody>
+                                    <% if (txList.length == 0) { %>
+                                        There is no transaction.                                       
+                                    <% } else { 
+                                        for (var i=0, len = txList.length; i < len; i++) { 
+                                            if ((txList[i].from.toLowerCase() == contractAddr.toLowerCase()) && (txList[i].to.toLowerCase() == user.walletAddr.toLowerCase()) ) { %>
                                     <tr>
-                                        <th scope="row">ID</th>
-                                    </tr>
-                                        <td><%= email %></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Your referral address</th>
-                                    </tr>
-                                        <td><%= referral %></td>
-                                    </tr> 
-                                    <tr>
-                                        <th scope="row">Your wallet address</th>
-                                    </tr>
-                                        <td><%= walletAddr %></td>
+                                        <td> <%= txList[i].timeStamp %> : You receviced <%= txList[i].value / Math.pow(10, 18) %> LCC</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Balance</th>
+                                        <td> <a href="https://ropsten.etherscan.io/tx/<%= txList[i].hash %>" target="_blank"> TXID : <%= txList[i].hash %></a></td>   
                                     </tr>
-                                        <td><%= balance %> LCC</td>
+                                        <% } else if ((txList[i].from.toLowerCase() == user.walletAddr.toLowerCase()) && (txList[i].to.toLowerCase() == icoAddr.toLowerCase()) ) { %>
+                                    <tr>
+                                        <td> <a href="https://ropsten.etherscan.io/tx/<%= txList[i].hash %>" target="_blank"> TXID : <%= txList[i].hash %></a></td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Rank of LCC token holder</th>
+                                        <td><%= txList[i].timeStamp %> : You sent <%= txList[i].value / Math.pow(10, 18) %> ETH</td>
                                     </tr>
-                                        <td><%= rankOfHolder %></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Etherium you sent to buy token</th>
-                                    </tr>
-                                        <td><%= sentEth %> ETH</td>
-                                    </tr>                                           
+                                        <% }
+                                        } 
+                                    } %>
                                 </tbody>
                             </table>
                         </div>

@@ -1,9 +1,6 @@
 var Web3 = require('web3');  
 var axios = require('axios');
 
-module.exports.initKycInfo = function(email, callback) {
-	User.update({email:email}, {$set:{firstName: "", lastName: "", rafferalAddr: "", invitation: "", walletAddr:"", kycPicturePath1: "", kycPicturePath2: "", kycStatus: "ready"}}, callback);
-}
 const providerInfura = 'https://mainnet.infura.io/';
 const providerInfuraRopsten = 'https://mainnet.infura.io/';
 const infuraApiKey = 'boKaU6ROXir6GBk9fqEk';
@@ -23,6 +20,18 @@ module.exports.getTokenbalance = function(contractAddr, walletAddr, callback) {
 		err = true;
 	}
 	callback(err, balance);
+})
+.catch(console.log);
+}
+
+module.exports.getTxlist = function(walletAddr, callback) {
+	axios.get(etherScanRopstenApiAddr + "module=account&action=txlist&address=" + walletAddr + "&startblock=3072600&endblock=99999999&page=1&offset=1000&sort=asc&apikey=" + etherScanApiKey)
+.then(res => {
+	var err = false;
+	if(res.data.message != 'OK') {
+		err = true;
+	}
+	callback(err, res.data.result);
 })
 .catch(console.log);
 }

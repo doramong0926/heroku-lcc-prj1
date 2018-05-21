@@ -10,7 +10,7 @@ var userSchema = mongoose.Schema({
 	password: {
 		type: String
 	},
-	rafferalAddr: {
+	refferalAddr: {
 		type: String
 	},
 	invitation: {
@@ -76,5 +76,5 @@ module.exports.saveKycInfo = function(user, callback) {
 }
 
 module.exports.initKycInfo = function(email, callback) {
-	User.update({email:email}, {$set:{firstName: "", lastName: "", rafferalAddr: "", invitation: "", walletAddr:"", kycPicturePath1: "", kycPicturePath2: "", kycStatus: "ready"}}, callback);
+	User.update({email:email}, {$set:{firstName: "", lastName: "", refferalAddr: "", invitation: "", walletAddr:"none", kycPicturePath1: "", kycPicturePath2: "", kycStatus: "ready"}}, callback);
 }
