@@ -118,8 +118,8 @@
                                     <tr>
                                         <td> <a href="https://ropsten.etherscan.io/tx/<%= investInfo.result[i].txId %>" target="_blank"> TXID : <%= investInfo.result[i].txId %></a></td>
                                     </tr>
-                                    <tr>
-                                        <td><%= investInfo.result[i].timeStamp %> : <% if (investInfo.result[i].inOut == 'in') { %> You sent <% } else { %> You received <% } %> <%= investInfo.result[i].value %> <% if (investInfo.result[i].inOut == 'in') { %> <%= investInfo.result[i].tokenSymbol %> <% } else { %> ETH <% } %></td>
+                                    <tr>                                        
+                                        <td><%= investInfo.result[i].timeStamp %> : <% if (investInfo.result[i].inOut == 'in') { %> You sent <% } else { %> You received <% } %> <%= investInfo.result[i].value %> <%= investInfo.result[i].tokenSymbol %></td>
                                     </tr>
                                         <% }
                                     } %>

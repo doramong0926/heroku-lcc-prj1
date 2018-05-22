@@ -71,7 +71,9 @@ module.exports.getUserInvestInfo = function(icoAddr, contractAddr, walletAddr, c
 										from : walletAddr.toLowerCase(), 
 										to : icoAddr.toLowerCase(), 
 										value : res.data.result[i].value / Math.pow(10, 18), 
-										txId : res.data.result[i].hash};
+										txId : res.data.result[i].hash,
+										tokenName : 'Ethereum',
+										tokenSymbol : 'ETH'};
 				investEth = parseInt(investEth) + parseInt(res.data.result[i].value);
 				numOfdata = parseInt(numOfdata) + 1;
 
