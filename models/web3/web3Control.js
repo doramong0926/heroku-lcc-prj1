@@ -48,6 +48,65 @@ module.exports.getTokenTxlist = function(contractAddr, walletAddr, callback) {
 .catch(console.log);
 }
 
+module.exports.getUserInvestInfo = function(icoAddr, contractAddr, walletAddr, callback) {
+	var tempArray = new Array();
+	var investInfo = new Array();
+	var numOfdata = 0;
+	var investEth = 0;
+	var receviedToken = 0;
+	var err = false;
+	
+	axios.get(etherScanRopstenApiAddr + "module=account&action=txlist&address=" + walletAddr + "&startblock=3072600&endblock=99999999&page=1&offset=1000&sort=asc&apikey=" + etherScanApiKey)
+.then(res => {
+	err = false;
+	if(res.data.message != 'OK') {
+		err = true;
+	}
+	else {		
+		for (var i=0, len = res.data.result.length; i < len; i++) {
+			if((res.data.result[i].from.toLowerCase() == walletAddr.toLowerCase()) && (res.data.result[i].to.toLowerCase() == icoAddr.toLowerCase()))
+			{				
+				tempArray[numOfdata] + {timeStamp : res.data.result[i].timeStamp,
+										inOut : 'out', 
+										from : walletAddr.toLowerCase(), 
+										to : icoAddr.toLowerCase(), 
+										value : res.data.result[i].value / Math.pow(10, 18), 
+										txId : res.data.result[i].hash};
+				investEth = parseInt(investEth) + parseInt(res.data.result[i].value);
+				numOfdata = parseInt(numOfdata) + 1;
+
+			}		
+		}	
+		axios.get(etherScanRopstenApiAddr + "module=account&action=tokentx&contractaddress=" + contractAddr + "&address=" + walletAddr + "&startblock=0&endblock=999999999&sort=asc&apikey=" + etherScanApiKey)
+			.then(res => {
+				var err = false;
+				if(res.data.message != 'OK') {					
+					err = true;
+				}	
+				else {
+					for (var i=0, len = res.data.result.length; i < len; i++) {
+						if((res.data.result[i].from.toLowerCase() == icoAddr.toLowerCase()) && (res.data.result[i].to.toLowerCase() == walletAddr.toLowerCase()))
+						{														
+							tempArray[numOfdata] = {timeStamp : res.data.result[i].timeStamp,
+													inOut : 'in', 
+													from : icoAddr.toLowerCase(), 
+													to : walletAddr.toLowerCase(), 
+													value : res.data.result[i].value / Math.pow(10, 18), 
+													txId : res.data.result[i].hash};							
+							receviedToken = receviedToken + parseInt(res.data.result[i].value);
+							numOfdata = parseInt(numOfdata) + 1;
+						}
+					}		
+				}
+				investInfo = {numOfdata : numOfdata, investEth : investEth / Math.pow(10, 18), receviedToken : receviedToken / Math.pow(10, 18), result : tempArray};
+				callback(err, investInfo);
+			})
+			.catch(console.log);		
+	}	
+})
+.catch(console.log);
+}
+
 
 /*
 web3.setProvider(new web3.providers.HttpProvider(providerInfura + infuraApiKey));

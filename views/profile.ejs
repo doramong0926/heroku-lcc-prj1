@@ -34,11 +34,11 @@
                                             </tr>
                                             <tr>
                                                 <th scope="row"><h4>LCC token you received</h4></th>
-                                                <td><h4><%= receivedToken %> LCC</h4></td>
+                                                <td><h4><%= investInfo.receviedToken %> LCC</h4></td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"><h4>Etherium you sent to buy token</h4></th>
-                                                <td><h4><%= sentEth %> ETH</h4></td>
+                                                <td><h4><%= investInfo.investEth %> ETH</h4></td>
                                             </tr>      
                                         </tbody>
                                     </table>
@@ -77,12 +77,12 @@
                                             <tr>
                                                 <th scope="row"># LCC token you received</th>
                                             </tr>
-                                                <td><%= receivedToken %> LCC</td>
+                                                <td><%= investInfo.receviedToken %> LCC</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"># Etherium you sent to buy token</th>
                                             </tr>
-                                                <td><%= sentEth %> ETH</td>
+                                                <td><%= investInfo.investEth %> ETH</td>
                                             </tr>       
                                         </tbody>
                                     </table>
@@ -105,7 +105,7 @@
                     <h5 class="description">You can check transaction history of your wallet.</h5>
                 </div>
             </div>
-            <div class="features profile-viewer">
+            <div class="features">
                 <div class="row">
                     <div class="col-11 ml-auto mr-auto">
                         <div class="table-responsive">
@@ -113,29 +113,15 @@
                                 <thead>
                                 </thead>
                                 <tbody>
-                                    <% if (txList.length != 0) {  
-                                        for (var i=0, len = txList.length; i < len; i++) {
-                                            if ((txList[i].from.toLowerCase() == user.walletAddr.toLowerCase()) && (txList[i].to.toLowerCase() == icoAddr.toLowerCase()) ) { %>
+                                    <% if (investInfo.numOfdata != 0) {  
+                                        for (var i=0, len = investInfo.numOfdata; i < len; i++) { %>
                                     <tr>
-                                        <td> <a href="https://ropsten.etherscan.io/tx/<%= txList[i].hash %>" target="_blank"> TXID : <%= txList[i].hash %></a></td>
+                                        <td> <a href="https://ropsten.etherscan.io/tx/<%= investInfo.result[i].txId %>" target="_blank"> TXID : <%= investInfo.result[i].txId %></a></td>
                                     </tr>
                                     <tr>
-                                        <td><%= txList[i].timeStamp %> : You sent <%= txList[i].value / Math.pow(10, 18) %> ETH</td>
-                                    </tr>
-                                        <% }
-                                        } 
-                                    } %>
-                                    <% if (tokenTxList.length != 0) {
-                                        for (var i=0, len = tokenTxList.length; i < len; i++) { 
-                                            if ((tokenTxList[i].from.toLowerCase() == icoAddr.toLowerCase()) && (tokenTxList[i].to.toLowerCase() == user.walletAddr.toLowerCase()) ) { %>
-                                    <tr>
-                                        <td> <%= tokenTxList[i].timeStamp %> : You receviced <%= tokenTxList[i].value / Math.pow(10, 18) %> LCC</td>
-                                    </tr>
-                                    <tr>
-                                        <td> <a href="https://ropsten.etherscan.io/tx/<%= tokenTxList[i].hash %>" target="_blank"> TXID : <%= tokenTxList[i].hash %></a></td>   
+                                        <td><%= investInfo.result[i].timeStamp %> : <% if (investInfo.result[i].inOut == 'in') { %> You sent <% } else { %> You received <% } %> <%= investInfo.result[i].value %> <% if (investInfo.result[i].inOut == 'in') { %> LCC <% } else { %> ETH <% } %></td>
                                     </tr>
                                         <% }
-                                        } 
                                     } %>
                                 </tbody>
                             </table>

@@ -15,36 +15,20 @@ router.get('/', ensureAuthenticated, function(req, res, next){
 		if (err || !user) {
 			res.redirect('/');
 		} else {			
-			web3Control.getTokenbalance(contractAddr_lcc, user.walletAddr, function(err, balance) {
+			web3Control.getUserInvestInfo(icoAddr, contractAddr_lcc, user.walletAddr, function(err, investInfo) {
 				if (err) {
-					console.log("fail to get tokenBalnace");		
-					balance  = 0;
+					console.log("fail to get UserInvestInfo.");		
 				}
-				web3Control.getTxlist(user.walletAddr, function(err, txList) {
-					if (err) {
-						console.log("fail to get Txlist.");		
-						txList = "";
-					}
-					web3Control.getTokenTxlist(contractAddr_lcc, user.walletAddr, function(err, tokenTxList) {
-						if (err) {
-							console.log("fail to get toeknTxlist.");		
-							tokenTxList = "";
-						}
-						
-						res.render('profile', {
-							isLogin : "true", 
-							navbarType : "profile",
-							user : user,
-							receivedToken : numeral(balance).format('0,0'), 
-							sentEth : 100,
-							txList : txList,
-							tokenTxList : tokenTxList,
-							contractAddr : contractAddr_lcc,
-							icoAddr : icoAddr
-						});
-					});
-				});				
-			});			
+				console.log(investInfo);
+				res.render('profile', {
+					isLogin : "true", 
+					navbarType : "profile",
+					user : user,
+					investInfo : investInfo,
+					contractAddr : contractAddr_lcc,
+					icoAddr : icoAddr
+				});
+			});	
 		}
 	});
 });
