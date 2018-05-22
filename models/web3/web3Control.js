@@ -92,7 +92,9 @@ module.exports.getUserInvestInfo = function(icoAddr, contractAddr, walletAddr, c
 													from : icoAddr.toLowerCase(), 
 													to : walletAddr.toLowerCase(), 
 													value : res.data.result[i].value / Math.pow(10, 18), 
-													txId : res.data.result[i].hash};							
+													txId : res.data.result[i].hash,
+													tokenName : res.data.result[i].tokenName,
+													tokenSymbol : res.data.result[i].tokenSymbol};						
 							receviedToken = receviedToken + parseInt(res.data.result[i].value);
 							numOfdata = parseInt(numOfdata) + 1;
 						}
