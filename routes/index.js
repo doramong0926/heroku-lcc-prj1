@@ -3,6 +3,7 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var md5 = require('md5');
 
 var User = require('../models/mongoose/user');
 var IcoInfo = require('../models/mongoose/icoInfo');
@@ -59,30 +60,40 @@ router.post('/register', function (req, res) {
 		res.json({success: 'false'});
 	}
 	else {
+		//req.query.ref
+
 		//checking for email and is already taken
 		User.findOne({ email: {"$regex": "^" + email + "\\b", "$options": "i"}}, function (err, mail) {
 				if (mail) {
 					res.json({success: 'false'});
 				}
 				else {
-					var newUser = new User({
-						email : email,
-						password : password
-					});
-					User.createUser(newUser, function (err, user) {
-						if (err) {
-							res.json({success: 'false'});
-						} else {
-							User.initKycInfo(email, function (err) {
-								if (err) {
-									res.json({success: 'false'});
-								}
-								else {
-									res.json({success: 'true'});
-								}
-							});
+					User.findInvitation(req.session.ref, function (err, invitation) {
+						var invitationEmail = '';						
+						if ((req.session.ref != undefined) && invitation) {
+							invitationEmail = invitation.email;
 						}
-					});
+						var newUser = new User({
+							email : email,
+							password : password,
+							referralAddr : md5(email),
+							invitation : invitationEmail
+						});
+						User.createUser(newUser, function (err, user) {
+							if (err) {
+								res.json({success: 'false'});
+							} else {
+								User.initKycInfo(email, function (err) {
+									if (err) {
+										res.json({success: 'false'});
+									}
+									else {
+										res.json({success: 'true'});
+									}
+								});
+							}
+						});
+					});					
 				}
 		});
 	}
@@ -161,7 +172,10 @@ passport.deserializeUser(function (id, done) {
 	});
 });
 
-function ensureAuthenticated(req, res, next){
+function ensureAuthenticated(req, res, next){	
+	if (req.query.ref != undefined) {
+		req.session.ref = req.query.ref;		
+	}
 	if(req.isAuthenticated()){
 		return next();
 	} else {

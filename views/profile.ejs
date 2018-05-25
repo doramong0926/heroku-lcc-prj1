@@ -26,7 +26,7 @@
                                             </tr>                                                 
                                             <tr>
                                                 <th scope="row"><h4>Your referral address</h4></th>
-                                                <td><h4><%= user.referral %></h4></td>
+                                                <td><h4>https://lccprj.herokuapp.com/?ref=<%=user.referralAddr%></h4></td>
                                             </tr>  
                                             <tr>
                                                 <th scope="row"><h4>Your wallet address</h4></th>
@@ -67,7 +67,7 @@
                                             <tr>
                                                 <th scope="row"># Your referral address</th>
                                             </tr>
-                                                <td><%= user.referral %></td>
+                                                <td>https://lccprj.herokuapp.com/?ref=<%=user.referralAddr%></td>
                                             </tr>   
                                             <tr>
                                                 <th scope="row"># Your wallet address</th>
@@ -109,17 +109,15 @@
                 <div class="row">
                     <div class="col-11 ml-auto mr-auto">
                         <div class="table-responsive">
-                            <table class="table table-hover text-left">
+                            <table class="table table-hover text-center">
                                 <thead>
                                 </thead>
                                 <tbody>
                                     <% if (investInfo.numOfdata != 0) {  
                                         for (var i=0, len = investInfo.numOfdata; i < len; i++) { %>
-                                    <tr>
-                                        <td> <a href="https://ropsten.etherscan.io/tx/<%= investInfo.result[i].txId %>" target="_blank"> TXID : <%= investInfo.result[i].txId %></a></td>
-                                    </tr>
                                     <tr>                                        
-                                        <td><%= investInfo.result[i].timeStamp %> : <% if (investInfo.result[i].inOut == 'in') { %> You received <% } else { %> You sent <% } %> <%= investInfo.result[i].value %> <%= investInfo.result[i].tokenSymbol %></td>
+                                        <td><% if (investInfo.result[i].inOut == 'in') { %> You received <% } else { %> You sent <% } %> <%= investInfo.result[i].value %> <%= investInfo.result[i].tokenSymbol %> (<%= investInfo.result[i].timeStamp %>)
+                                            -- <a href="https://ropsten.etherscan.io/tx/<%= investInfo.result[i].txId %>" target="_blank">check TXID</a></td>
                                     </tr>
                                         <% }
                                     } %>

@@ -10,7 +10,7 @@ var userSchema = mongoose.Schema({
 	password: {
 		type: String
 	},
-	refferalAddr: {
+	referralAddr: {
 		type: String
 	},
 	invitation: {
@@ -45,6 +45,8 @@ var userSchema = mongoose.Schema({
 var User = module.exports = mongoose.model('User', userSchema);
 
 module.exports.createUser = function(newUser, callback){
+	console.log(newUser.referralAddr);
+	
 	bcrypt.genSalt(10, function(err, salt) {
 	    bcrypt.hash(newUser.password, salt, function(err, hash) {
 	        newUser.password = hash;
@@ -76,5 +78,10 @@ module.exports.saveKycInfo = function(user, callback) {
 }
 
 module.exports.initKycInfo = function(email, callback) {
-	User.update({email:email}, {$set:{firstName: "", lastName: "", refferalAddr: "", invitation: "", walletAddr:"none", kycPicturePath1: "", kycPicturePath2: "", kycStatus: "ready"}}, callback);
+	User.update({email:email}, {$set:{firstName: "", lastName: "", walletAddr:"none", kycPicturePath1: "", kycPicturePath2: "", kycStatus: "ready"}}, callback);
+}
+
+module.exports.findInvitation = function(referralAddr, callback) {
+	var query = {referralAddr: referralAddr};
+	User.findOne(query, callback);
 }

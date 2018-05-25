@@ -25,6 +25,7 @@
     "fs-extra": "^3.0.1",
     "fs-promise": "^2.0.3",
     "http-errors": "~1.6.2",
+    "md5": "^2.2.1",
     "mongodb": "^2.2.19",
     "mongoose": "^5.0.16",
     "morgan": "~1.9.0",
@@ -35,7 +36,6 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
-    "time-stamp": "^2.0.0",
     "web3": "github:ethereum/web3.js"
   }
 }
