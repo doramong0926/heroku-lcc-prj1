@@ -6,7 +6,21 @@
         <div class="section text-left">
             <div class="row">
                 <div class="col-12 col-md-8 main-header-left">
-                    <h1 class="title text-danger text-center">ROUND-A STAGE</h1><br>
+                    <h1 class="title text-danger text-center">
+                            <% if (round == "commingSoon") {%>
+                                COMMING SOON                              
+                            <% } else if (round == "preSale") {%>
+                                PRESALE STAGE                                
+                            <% } else if (round == "roundA") {%>
+                                ROUND-A STAGE
+                            <% }else if (round == "roundB") {%>
+                                ROUND-B STAGE
+                            <% } else if (round == "roundC") {%>
+                                ROUND-C STAGE
+                            <% } else {%>
+                                ALL THE ICO SALE IS DONE
+                            <% } %>
+                    </h1><br>
                     <h3 class="title">LCC TOKEN DISTRIBUTION</h3>
                     <h4>Total distributed</h4>
                     <br>					
@@ -32,8 +46,20 @@
                     <div class="timer">
                         <div class="text-center">
                             <div id="countdown_dashboard">
-                                <h2 class="dash_title">ROUND-A WILL BE ENDS IN : </h2>
-                                <h3 class="dash_title">15-AUG-2018</h3>
+                                <% if (round == "commingSoon") {%>
+                                    <h2 class="dash_title">PRESALE WILL BE START IN : </h2>                                
+                                <% } else if (round == "preSale") {%>
+                                    <h2 class="dash_title">PRESALE WILL BE END IN : </h2>                                
+                                <% } else if (round == "roundA") {%>
+                                    <h2 class="dash_title">ROUND-A WILL BE END IN : </h2>                                
+                                <% }else if (round == "roundB") {%>
+                                    <h2 class="dash_title">ROUND-A WILL BE END IN : </h2>                                
+                                <% } else if (round == "roundC") {%>
+                                    <h2 class="dash_title">ROUND-C WILL BE END IN : </h2>                                
+                                <% } else {%>
+                                    <h2 class="dash_title">ICO SALE IS END IN : </h2>                                
+                                <% } %>
+                                <h4 class="dash_title"><%= (new Date(startPreSale)).toUTCString() %> </h4>
                                 <div class="row">
                                     <div class="col-6 ml-auto mr-auto countDown justify-content-center">                                        
                                         <div class="dash days_dash">

@@ -175,17 +175,18 @@ var Utc = 'UTC';
 
 
 (function ($) {
-	$.post( "/icoTargetTime", function( data ) {				
+	$.post( "/icoTargetTime", function( data ) {
+		
 		if(data.success == 'true'){
-			Year = data.year;
-			Month = data.month;
-			Day = data.day;
-			Hour = data.hour;
-			Min = data.min;
-			Sec = data.sec;
-			Utc = data.utc; 
+			var time = new Date(data.startPreSale);					
+			Year = time.getUTCFullYear();
+			Month = time.getUTCMonth() + 1;
+			Day = time.getUTCDate();
+			Hour = time.getUTCHours();
+			Min = time.getUTCMinutes();
+			Sec = time.getUTCSeconds();
 		}
-		$("#countdown_dashboard").countDown({			
+		$("#countdown_dashboard").countDown({
 			targetDate: {
 				'year':		Year,
 				'month':	Month,

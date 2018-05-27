@@ -7,26 +7,20 @@ var icoInfoSchema = mongoose.Schema({
         type: String,
 		index: true,
 	},
-	year: {
-        type: Number
-	},
-	month: {
+	startPreSale: {
 		type: Number
 	},
-	day: {
+	endPreSale: {
 		type: Number
 	},
-	hour: {
+	endRoundA: {
 		type: Number
 	},
-	min: {
+	endRoundB: {
 		type: Number
 	},
-	sec: {
+	endRoundC: {
 		type: Number
-	},
-	utc: {
-		type: String
 	}
 });
 
@@ -43,8 +37,13 @@ module.exports.saveIcoInfo = function(icoInfo, callback) {
 }
 
 module.exports.initIcoInfo = function(Round, callback) {
-	IcoInfo.update({round:Round}, {$set:{round: "round-0", year: 2018, month:8, 
-		day:16, hour:0, min:0, sec:0, utc:"UTC"}}, callback);
+	IcoInfo.update({round:Round}, {$set:{	round: "commingSoon",
+											startPreSale:1534345200000, 
+											endPreSale:1111111,
+											endRoundA:1111111,
+											endRoundB:1111111,
+											endRoundC:1111111,
+											}}, callback);
 }
 
 module.exports.createIcoInfo = function(icoInfo, callback) {

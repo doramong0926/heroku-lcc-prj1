@@ -10,7 +10,34 @@ var IcoInfo = require('../models/mongoose/icoInfo');
 
 // Get index
 router.get('/', ensureAuthenticated, function(req, res, next){
-	res.render('index', {isLogin : "true", navbarType : "index"});
+	IcoInfo.getTargetDate("commingSoon", function (err, icoInfo) {
+		if (err || !icoInfo) {			
+			var newIcoInfo = new IcoInfo({
+				round : "commingSoon",
+				startPreSale : 1534345200000,
+				endPreSale : 1111,
+				endRoundA : 111,
+				endRoundB : 1111,
+				endRoundC : 1111
+			});
+			IcoInfo.createIcoInfo(newIcoInfo, function (err, newIcoInfo) {
+				IcoInfo.initIcoInfo("commingSoon", function (err, Round) {
+					res.redirect('/');					
+				});
+			});
+		}
+		else {	
+			res.render('index', {	isLogin : "true", 
+									navbarType : "index", 
+									success: 'true', 
+									round: "commingSoon",
+									startPreSale: icoInfo.startPreSale,
+									endPreSale: icoInfo.endPreSale,
+									endRoundA: icoInfo.endRoundA,
+									endRoundB: icoInfo.endRoundB,
+									endRoundC: icoInfo.endRoundC,});	
+		}
+	});	
 });
 
 // Post index
@@ -106,28 +133,31 @@ router.get('/icoTargetTime', function (req, res) {
 
 // post icoTargetTime
 router.post('/icoTargetTime', function(req, res,) {	
-	IcoInfo.getTargetDate("round-0", function (err, icoInfo) {
+	IcoInfo.getTargetDate("commingSoon", function (err, icoInfo) {
 		if (err || !icoInfo) {			
 			var newIcoInfo = new IcoInfo({
-				round : "round-0",
-				year: 	0, 
-				month:	0, 
-				day:	0, 
-				hour:	0, 
-				min:	0, 
-				sec:	0, 
-				utc:	"UTC"
+				round : "commingSoon",
+				startPreSale : 1534345200000,
+				endPreSale : 1111,
+				endRoundA : 111,
+				endRoundB : 1111,
+				endRoundC : 1111
 			});
 			IcoInfo.createIcoInfo(newIcoInfo, function (err, newIcoInfo) {
-				var Round = "round-0";
-				IcoInfo.initIcoInfo(Round, function (err, Round) {
+				IcoInfo.initIcoInfo("commingSoon", function (err, Round) {
 					res.redirect('/');					
 				});
 			});
 		}
-		else {			
-			res.json({success: 'true', year:icoInfo.year, month:icoInfo.month, 
-		day:icoInfo.day, hour:icoInfo.hour, min:icoInfo.min, sec:icoInfo.sec, utc:icoInfo.utc});		
+		else {		
+			res.json({success: 'true', 
+						round:icoInfo.round,
+						startPreSale: icoInfo.startPreSale,
+						endPreSale: icoInfo.endPreSale,
+						endRoundA: icoInfo.endRoundA,
+						endRoundB: icoInfo.endRoundB,
+						endRoundC: icoInfo.endRoundC,
+			});		
 		}
 	});	
 });
@@ -173,13 +203,49 @@ passport.deserializeUser(function (id, done) {
 });
 
 function ensureAuthenticated(req, res, next){	
+	/*
+	var tmpDate = new Date("2018-8-16");
+	var tmpDate2 = new Date(1534345200000);
+	console.log(tmpDate.valueOf() );
+	console.log(tmpDate2);
+	*/
+
+	
 	if (req.query.ref != undefined) {
 		req.session.ref = req.query.ref;		
 	}
 	if(req.isAuthenticated()){
 		return next();
 	} else {
-		res.render('index', {isLogin : "false", navbarType : "index"});
+		//res.render('index', {isLogin : "false", navbarType : "index"});
+		IcoInfo.getTargetDate("commingSoon", function (err, icoInfo) {
+			if (err || !icoInfo) {			
+				var newIcoInfo = new IcoInfo({
+					round : "commingSoon",
+					startPreSale : 1534345200000,
+					endPreSale : 1111,
+					endRoundA : 111,
+					endRoundB : 1111,
+					endRoundC : 1111
+				});
+				IcoInfo.createIcoInfo(newIcoInfo, function (err, newIcoInfo) {
+					IcoInfo.initIcoInfo("commingSoon", function (err, Round) {
+						res.redirect('/');					
+					});
+				});
+			}
+			else {	
+				res.render('index', {	isLogin : "true", 
+										navbarType : "index", 
+										success: 'true', 
+										round: "commingSoon",
+										startPreSale: icoInfo.startPreSale,
+										endPreSale: icoInfo.endPreSale,
+										endRoundA: icoInfo.endRoundA,
+										endRoundB: icoInfo.endRoundB,
+										endRoundC: icoInfo.endRoundC,});	
+			}
+		});	
 	}
 }
 
