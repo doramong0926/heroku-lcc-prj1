@@ -14,10 +14,7 @@ router.get('/', ensureAuthenticated, function(req, res, next){
 	User.getUserByEmail(req.user.email, function (err, user) {
 		if (err || !user) {
 			res.redirect('/');
-		} else {			
-			
-			
-			var tmpInfo = new Array();
+		} else {						
 			web3Control.getUserInvestInfo(icoAddr, contractAddr_lcc, user.walletAddr, function(err, investInfo) {					
 				if (err) {
 					console.log("fail to get UserInvestInfo.");		

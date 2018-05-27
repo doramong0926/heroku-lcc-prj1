@@ -19,6 +19,7 @@ var indexRouter = require('./routes/index');
 var tokenSaleRouter = require('./routes/tokenSale');
 var kycRouter = require('./routes/kyc');
 var profileRouter = require('./routes/profile')
+var icoInfoRouter = require('./routes/icoInfo')
 
 // app init
 var app = express();
@@ -101,6 +102,7 @@ app.use('/', indexRouter);
 app.use('/tokenSale', tokenSaleRouter);
 app.use('/kyc', kycRouter);
 app.use('/profile', profileRouter);
+app.use('/icoInfo', icoInfoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

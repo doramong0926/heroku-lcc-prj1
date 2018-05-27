@@ -9,7 +9,6 @@ router.get('/', ensureAuthenticated, function(req, res, next){
 	res.render('tokenSale', {isLogin : "true", navbarType : "tokenSale"});
 });
 
-
 function ensureAuthenticated(req, res, next){
 	if(req.isAuthenticated()){
 		return next();

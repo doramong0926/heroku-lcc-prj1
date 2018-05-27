@@ -175,10 +175,9 @@ var Utc = 'UTC';
 
 
 (function ($) {
-	$.post( "/icoTargetTime", function( data ) {
-		
+	$.post( "/icoTargetTime", function( data ) {		
 		if(data.success == 'true'){
-			var time = new Date(data.startPreSale);					
+			var time = new Date(data.icoInfo.startPreSale);					
 			Year = time.getUTCFullYear();
 			Month = time.getUTCMonth() + 1;
 			Day = time.getUTCDate();

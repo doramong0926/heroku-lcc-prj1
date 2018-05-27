@@ -7,37 +7,41 @@ var md5 = require('md5');
 
 var User = require('../models/mongoose/user');
 var IcoInfo = require('../models/mongoose/icoInfo');
+var web3Control = require('../models/web3/web3Control');
+
+var tokenString = 'bluecots';
+const contractAddr_lcc = '0x7d25311209e3b43e23f87569089bd052e696D7C5';
+const icoAddr = '0x5cdD23c850b3447C674dE4f37ce9006D480e4413';
 
 // Get index
 router.get('/', ensureAuthenticated, function(req, res, next){
-	IcoInfo.getTargetDate("commingSoon", function (err, icoInfo) {
-		if (err || !icoInfo) {			
-			var newIcoInfo = new IcoInfo({
-				round : "commingSoon",
-				startPreSale : 1534345200000,
-				endPreSale : 1111,
-				endRoundA : 111,
-				endRoundB : 1111,
-				endRoundC : 1111
-			});
-			IcoInfo.createIcoInfo(newIcoInfo, function (err, newIcoInfo) {
-				IcoInfo.initIcoInfo("commingSoon", function (err, Round) {
-					res.redirect('/');					
+	web3Control.getTotalInvestedEth(icoAddr, function(err, totalInvestedEth) {
+		if (err) {
+			console.log("Fail to getTotalInvestedEth");	
+		}
+
+		IcoInfo.getIcoInfo(tokenString, function (err, icoInfo) {
+			if (err) {
+				console.log("Fail to get Ico info.");			
+			}
+			if (!icoInfo) {
+				IcoInfo.createIcoInfo(tokenString, function (err, icoInfo) {				
+					if (err) {
+						console.log("Fail to create Ico info.");	
+					}
+					res.redirect('/');
 				});
-			});
-		}
-		else {	
-			res.render('index', {	isLogin : "true", 
-									navbarType : "index", 
-									success: 'true', 
-									round: "commingSoon",
-									startPreSale: icoInfo.startPreSale,
-									endPreSale: icoInfo.endPreSale,
-									endRoundA: icoInfo.endRoundA,
-									endRoundB: icoInfo.endRoundB,
-									endRoundC: icoInfo.endRoundC,});	
-		}
-	});	
+			}
+			else {
+				res.render('index', {	isLogin : "true", 
+										navbarType : "index", 
+										success: 'true', 
+										icoInfo: icoInfo,
+										totalInvestedEth: totalInvestedEth,
+										totalDistributedToken: totalDistributedToken});
+			}
+		});	
+	});
 });
 
 // Post index
@@ -87,8 +91,6 @@ router.post('/register', function (req, res) {
 		res.json({success: 'false'});
 	}
 	else {
-		//req.query.ref
-
 		//checking for email and is already taken
 		User.findOne({ email: {"$regex": "^" + email + "\\b", "$options": "i"}}, function (err, mail) {
 				if (mail) {
@@ -133,32 +135,21 @@ router.get('/icoTargetTime', function (req, res) {
 
 // post icoTargetTime
 router.post('/icoTargetTime', function(req, res,) {	
-	IcoInfo.getTargetDate("commingSoon", function (err, icoInfo) {
-		if (err || !icoInfo) {			
-			var newIcoInfo = new IcoInfo({
-				round : "commingSoon",
-				startPreSale : 1534345200000,
-				endPreSale : 1111,
-				endRoundA : 111,
-				endRoundB : 1111,
-				endRoundC : 1111
-			});
-			IcoInfo.createIcoInfo(newIcoInfo, function (err, newIcoInfo) {
-				IcoInfo.initIcoInfo("commingSoon", function (err, Round) {
-					res.redirect('/');					
-				});
+	IcoInfo.getIcoInfo(tokenString, function (err, icoInfo) {
+		if (err) {
+			console.log("Fail to get Ico info.");			
+		}
+		if (!icoInfo) {
+			IcoInfo.createIcoInfo(tokenString, function (err, icoInfo) {				
+				if (err) {
+					console.log("Fail to create Ico info.");	
+				}
+				res.redirect('/');
 			});
 		}
-		else {		
-			res.json({success: 'true', 
-						round:icoInfo.round,
-						startPreSale: icoInfo.startPreSale,
-						endPreSale: icoInfo.endPreSale,
-						endRoundA: icoInfo.endRoundA,
-						endRoundB: icoInfo.endRoundB,
-						endRoundC: icoInfo.endRoundC,
-			});		
-		}
+		else {
+			res.json({ success: 'true', icoInfo: icoInfo });
+		}		
 	});	
 });
 
@@ -208,44 +199,46 @@ function ensureAuthenticated(req, res, next){
 	var tmpDate2 = new Date(1534345200000);
 	console.log(tmpDate.valueOf() );
 	console.log(tmpDate2);
-	*/
-
-	
+	*/	
 	if (req.query.ref != undefined) {
 		req.session.ref = req.query.ref;		
 	}
-	if(req.isAuthenticated()){
+
+	if (req.isAuthenticated()) {
 		return next();
 	} else {
 		//res.render('index', {isLogin : "false", navbarType : "index"});
-		IcoInfo.getTargetDate("commingSoon", function (err, icoInfo) {
-			if (err || !icoInfo) {			
-				var newIcoInfo = new IcoInfo({
-					round : "commingSoon",
-					startPreSale : 1534345200000,
-					endPreSale : 1111,
-					endRoundA : 111,
-					endRoundB : 1111,
-					endRoundC : 1111
-				});
-				IcoInfo.createIcoInfo(newIcoInfo, function (err, newIcoInfo) {
-					IcoInfo.initIcoInfo("commingSoon", function (err, Round) {
-						res.redirect('/');					
-					});
-				});
+		web3Control.getTotalInvestedEth(icoAddr, function(err, totalInvestedEth) {
+			if (err) {
+				console.log("Fail to getTotalDistributedToken");	
 			}
-			else {	
-				res.render('index', {	isLogin : "true", 
-										navbarType : "index", 
-										success: 'true', 
-										round: "commingSoon",
-										startPreSale: icoInfo.startPreSale,
-										endPreSale: icoInfo.endPreSale,
-										endRoundA: icoInfo.endRoundA,
-										endRoundB: icoInfo.endRoundB,
-										endRoundC: icoInfo.endRoundC,});	
-			}
-		});	
+			web3Control.getTotalDistributedToken(contractAddr_lcc, icoAddr, function(err, totalDistributedToken) {
+				if (err) {
+					console.log("Fail to getTotalDistributedToken");	
+				}
+				IcoInfo.getIcoInfo(tokenString, function (err, icoInfo) {
+					if (err) {
+						console.log("Fail to get Ico info.");			
+					}
+					if (!icoInfo) {
+						IcoInfo.createIcoInfo(tokenString, function (err, icoInfo) {				
+							if (err) {
+								console.log("Fail to create Ico info.");	
+							}
+							res.redirect('/');
+						});
+					}
+					else {
+						res.render('index', {	isLogin : "false", 
+												navbarType : "index", 
+												success: 'true', 
+												icoInfo: icoInfo,
+												totalInvestedEth: totalInvestedEth,
+												totalDistributedToken: totalDistributedToken});	
+					}
+				});	
+			});
+		});
 	}
 }
 

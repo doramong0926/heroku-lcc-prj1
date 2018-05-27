@@ -25,7 +25,19 @@ module.exports.getTokenbalance = function(contractAddr, walletAddr, callback) {
 }
 
 getNomalTxlist = function(walletAddr, callback) {
-	axios.get(etherScanRopstenApiAddr + "module=account&action=txlist&address=" + walletAddr + "&startblock=3072600&endblock=99999999&page=1&offset=1000&sort=asc&apikey=" + etherScanApiKey)
+	axios.get(etherScanRopstenApiAddr + "module=account&action=txlist&address=" + walletAddr + "&startblock=0&endblock=99999999&sort=asc&apikey=" + etherScanApiKey)
+	.then(res => {
+		var err = false;
+		if(res.data.message != 'OK') {
+			err = true;
+		}		
+		callback(err, res.data.result);
+	})
+	.catch(console.log);
+}
+
+getErc20TokenTxlistWithAddress = function(contractAddr, walletAddr, callback) {
+	axios.get(etherScanRopstenApiAddr + "module=account&action=tokentx&contractaddress=" + contractAddr + "&address=" + walletAddr + "&startblock=0&endblock=999999999&sort=asc&apikey=" + etherScanApiKey)
 	.then(res => {
 		var err = false;
 		if(res.data.message != 'OK') {
@@ -36,8 +48,8 @@ getNomalTxlist = function(walletAddr, callback) {
 	.catch(console.log);
 }
 
-getErc20TokenTxlist = function(contractAddr, walletAddr, callback) {
-	axios.get(etherScanRopstenApiAddr + "module=account&action=tokentx&contractaddress=" + contractAddr + "&address=" + walletAddr + "&startblock=0&endblock=999999999&sort=asc&apikey=" + etherScanApiKey)
+getErc20TokenTxlist = function(contractAddr, callback) {
+	axios.get(etherScanRopstenApiAddr + "module=account&action=tokentx&contractaddress=" + contractAddr + "&startblock=0&endblock=999999999&sort=asc&apikey=" + etherScanApiKey)
 	.then(res => {
 		var err = false;
 		if(res.data.message != 'OK') {
@@ -59,7 +71,6 @@ getTokenTxReceiptStatus = function(txid, callback) {
 	})
 	.catch(console.log);
 }
-
 
 module.exports.getUserInvestInfo = function(icoAddr, contractAddr, walletAddr, callback) {
 	var tempArray = new Array();
@@ -90,7 +101,7 @@ module.exports.getUserInvestInfo = function(icoAddr, contractAddr, walletAddr, c
 					numOfdata = parseInt(numOfdata) + 1;					
 				}		
 			}	
-			getErc20TokenTxlist(contractAddr, walletAddr, function (err, result) {								
+			getErc20TokenTxlistWithAddress(contractAddr, walletAddr, function (err, result) {								
 				if (err == true) {
 					investInfo = {numOfdata : numOfdata, investEth : investEth / Math.pow(10, 18), receviedToken : receviedToken / Math.pow(10, 18), result : tempArray.sort(tempArray.timeStamp)};
 					callback(err, investInfo);
@@ -119,6 +130,45 @@ module.exports.getUserInvestInfo = function(icoAddr, contractAddr, walletAddr, c
 		}
 	});
 }
+
+module.exports.getTotalInvestedEth = function(icoAddr, callback) {
+	var investEth = 0;	
+	var err = false;
+	getNomalTxlist(icoAddr, function (err, result) {
+		if (err) {
+			callback(err, 0);
+		}
+		else {
+			for (var i=0, len = result.length; i < len; i++) {			
+				if ((result[i].txreceipt_status == '1') && (result[i].to.toLowerCase() == icoAddr.toLowerCase()))
+				{						
+					investEth = investEth + parseInt(result[i].value);				
+				}		
+			}
+			callback(err, investEth / Math.pow(10, 18));
+		}
+	});
+}
+
+module.exports.getTotalDistributedToken = function(contractAddr, icoAddr, callback) {
+	var distributedToken = 0;	
+	var err = false;
+	getErc20TokenTxlist(contractAddr, function (err, result) {								
+		if (err == true) {
+			callback(err, 0);
+		}
+		else {					
+			for (var i=0, len = result.length; i < len; i++) {					
+				if ((result[i].from.toLowerCase() == icoAddr.toLowerCase()))
+				{		
+					distributedToken = distributedToken + parseInt(result[i].value);
+				}						
+			}					
+		}
+		callback(err, distributedToken / Math.pow(10, 18));	
+	});
+}
+
 
 
 //var date = new Date(res.data.result[i].timeStamp * 1000); 
