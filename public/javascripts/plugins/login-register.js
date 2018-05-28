@@ -6,6 +6,7 @@
  * Web script: http://creative-tim.com
  * 
  */
+
 function showRegisterForm(){
     $('.loginBox').fadeOut('fast',function(){
         $('.registerBox').fadeIn('fast');
@@ -50,6 +51,18 @@ function hideModal() {
     }, 230);
 }
 
+function checkLoginStatusTokenSale(){
+    var checkLogin = false;
+    $.post("/tokenSale", {checkLogin: true}, function(data) {        
+        if (data.LoginState == 'false') {
+            openLoginModal();
+        } else {
+            $.get("/tokenSale");
+            window.location.replace("/tokenSale");  
+        }   
+    });
+}
+
 function checkLoginStatusProfile(){
     var checkLogin = false;
     $.post("/profile", {checkLogin: true}, function(data) {        
@@ -65,7 +78,6 @@ function checkLoginStatusProfile(){
 function checkLoginStatusKyc(){
     var checkLogin = false;
     $.post("/kyc", {checkLogin: true}, function(data) {
-        console.log('00 data.LoginState : ' + data.LoginState);
         if (data.LoginState == 'false') {
             openLoginModal();
         } else {

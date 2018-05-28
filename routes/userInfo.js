@@ -1,0 +1,51 @@
+var express = require('express');
+var router = express.Router();
+var bodyParser = require('body-parser');
+
+var User = require('../models/mongoose/user');
+var web3Control = require('../models/web3/web3Control');
+
+const contractAddr_blc = '0x7d25311209e3b43e23f87569089bd052e696D7C5';
+const icoAddr = '0x5cdD23c850b3447C674dE4f37ce9006D480e4413';
+
+router.get('/', function(req, res) {
+	res.redirect('/');
+});
+
+router.post('/', ensureAuthenticated, function(req, res, next) {	
+	User.getUserByEmail(req.user.email, function (err, user) {
+		if (err || !user) {
+			res.json({ success : 'false', userInfo : user });
+		} else {
+			res.json({ success : 'true', userInfo : user });
+		}
+	});
+});
+
+router.post('/investInfo', ensureAuthenticated, function(req, res, next) {	
+	User.getUserByEmail(req.user.email, function (err, user) {
+		if (err || !user) {
+			res.json({ success : 'false', investInfo : investInfo });
+		} else {
+			web3Control.getUserInvestInfo(icoAddr, contractAddr_blc, user.walletAddr, function(err, investInfo) {		
+				if (err) {
+					console.log("fail to get UserInvestInfo.");		
+					res.json({ success : 'false', investInfo : investInfo });
+				}
+				else {
+					res.json({ success : 'true', investInfo : investInfo });
+				}
+			});
+		}
+	});
+});
+
+function ensureAuthenticated(req, res, next) {
+	if(req.isAuthenticated()){
+		return next();
+	} else {
+		res.json({ success : 'false'});
+	}
+}
+
+module.exports = router;

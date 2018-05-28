@@ -6,8 +6,7 @@
             <div class="row">
                 <div class="col-md-8 ml-auto mr-auto">
                     <h2 class="title">GUIDE</h2>
-                    <h5 class="description">PreSale Round-A schdeule is "1.JULY ~ 31.JULY"<br>
-                        Every investor should be done our KYC process and we only use etherium to buy BLC coin.</h5>
+                    <h5 class="description">Every investor should be done our KYC process and we only use etherium to buy BLC coin.</h5>
                 </div>
             </div>
             <div class="features">
@@ -20,7 +19,9 @@
                                 </div>
                                 <div class="card-body">                                                                      
                                     <h4 id="tokenExchangeRate">1 ETH = 0 BLC</h4>
-                                    <h5 id="bonusToken">round bonus : 0% / volume bonus : 0%</h5>
+                                    <h5 id="bonusToken-round">round bonus : 0%</h5>
+                                    <h5 id="bonusToken-volume">volume bonus : 0%</h5>
+                                    <h5 id="bonusToken-referral">referral bonus : 0%</h5>
                                     <div class="col-12">
                                         <div class="input-group">                                        
                                             <div class="input-group-prepend">
@@ -66,9 +67,10 @@
                         <div class="card">
                             <div class="kyc-card text-center">
                                 <h3 class="title">Address to send your Etherium</h3>
-                                <h4 class="description">Address is not appeared before your KYC is approved</h4>
-                                <h2 class="title text-danger" id="address-eth">0x5cdD23c850b3447C674dE4f37ce9006D480e4413</h2>
-                                <button class="btn btn-primary btn-sm" id="copy-eth-address">
+                                <h4 class="description" id="address-eth-description" style="display:none;">Address is not appeared before your KYC is approved</h4>
+                                <button class="btn btn-primary btn-sm" id="goToKyc" style="display:none;">Click to go KYC</button>
+                                <h2 class="title text-danger" id="address-eth" style="display:none;">0x5cdD23c850b3447C674dE4f37ce9006D480e4413</h2>
+                                <button class="btn btn-primary btn-sm" id="copy-eth-address" style="display:none;">
                                     Copy
                                 </button>
                             </div>

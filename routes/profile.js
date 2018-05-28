@@ -15,19 +15,10 @@ router.get('/', ensureAuthenticated, function(req, res, next){
 		if (err || !user) {
 			res.redirect('/');
 		} else {						
-			web3Control.getUserInvestInfo(icoAddr, contractAddr_blc, user.walletAddr, function(err, investInfo) {					
-				if (err) {
-					console.log("fail to get UserInvestInfo.");		
-				}
-				res.render('profile', {
-					isLogin : "true", 
-					navbarType : "profile",
-					user : user,
-					investInfo : investInfo,
-					contractAddr : contractAddr_blc,
-					icoAddr : icoAddr
-				});
-			});	
+			res.render('profile', {
+				isLogin : "true", 
+				navbarType : "profile"
+			});
 		}
 	});
 });

@@ -22,23 +22,23 @@
                                         <tbody>
                                             <tr>
                                                 <th scope="row"><h4>ID</h4></th>
-                                                <td><h4><%= user.email %></h4></td>
+                                                <td><h4 id="userEmail"></h4></td>
                                             </tr>                                                 
                                             <tr>
                                                 <th scope="row"><h4>Your referral address</h4></th>
-                                                <td><h4>https://lccprj.herokuapp.com/?ref=<%=user.referralAddr%></h4></td>
+                                                <td><h4 id="userReferralAddr"></h4></td>
                                             </tr>  
                                             <tr>
                                                 <th scope="row"><h4>Your wallet address</h4></th>
-                                                <td><h4><%= user.walletAddr %></h4></td>
+                                                <td><h4 id="userWalletAddr"></h4></td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"><h4>BLC token you received</h4></th>
-                                                <td><h4><%= investInfo.receviedToken %> BLC</h4></td>
+                                                <td><h4 id="investeReceviedToken"></h4></td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"><h4>Etherium you sent to buy token</h4></th>
-                                                <td><h4><%= investInfo.investEth %> ETH</h4></td>
+                                                <td><h4 id="investeInvestEth"></h4></td>
                                             </tr>      
                                         </tbody>
                                     </table>
@@ -62,27 +62,27 @@
                                                 <th scope="row"># ID</th>
                                             </tr>
                                             <tr>
-                                                <td><%= user.email %></td>
+                                                <td id="userEmail"></td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"># Your referral address</th>
                                             </tr>
-                                                <td>https://lccprj.herokuapp.com/?ref=<%=user.referralAddr%></td>
+                                                <td id="userReferralAddr"></td>
                                             </tr>   
                                             <tr>
                                                 <th scope="row"># Your wallet address</th>
                                             </tr>
-                                                <td class="wallet-addr-sm"><%= user.walletAddr %></td>
+                                                <td class="wallet-addr-sm" id="userWalletAddr"></td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"># BLC token you received</th>
                                             </tr>
-                                                <td><%= investInfo.receviedToken %> BLC</td>
+                                                <td id="investeReceviedToken"></td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"># Etherium you sent to buy token</th>
                                             </tr>
-                                                <td><%= investInfo.investEth %> ETH</td>
+                                                <td id="investeInvestEth"></td>
                                             </tr>       
                                         </tbody>
                                     </table>
@@ -112,15 +112,7 @@
                             <table class="table table-hover text-center">
                                 <thead>
                                 </thead>
-                                <tbody>
-                                    <% if (investInfo.numOfdata != 0) {  
-                                        for (var i=0, len = investInfo.numOfdata; i < len; i++) { %>
-                                    <tr>                                        
-                                        <td><% if (investInfo.result[i].inOut == 'in') { %> You received <% } else { %> You sent <% } %> <%= investInfo.result[i].value %> <%= investInfo.result[i].tokenSymbol %> (<%= investInfo.result[i].timeStamp %>)
-                                            -- <a href="https://ropsten.etherscan.io/tx/<%= investInfo.result[i].txId %>" target="_blank">check TXID</a></td>
-                                    </tr>
-                                        <% }
-                                    } %>
+                                <tbody id="transactionHistory">                                    
                                 </tbody>
                             </table>
                         </div>

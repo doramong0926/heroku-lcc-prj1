@@ -9,14 +9,8 @@
                         <div class="card">
                             <div class="kyc-card text-center">
                                 <h3 class="title">Your KYC status is</h3>
-                                <h2 class="title text-danger" <% if(kycStatus != "ready") { %> style="display:none" <% } %> >READY</h2>
-                                <h5 class="description" <% if(kycStatus != "ready") { %> style="display:none" <% } %> >Please upload your KYC info.</h5>                  
-                                <h2 class="title text-danger" <% if(kycStatus != "approving") { %> style="display:none" <% } %> >APPROVING</h2>  
-                                <h5 class="description" <% if(kycStatus != "approving") { %> style="display:none" <% } %> >Please wait until completed your KYC info.</h5> 
-                                <h2 class="title text-danger" <% if(kycStatus != "completed") { %> style="display:none" <% } %> >COMPLETE</h2>  
-                                <h5 class="description" <% if(kycStatus != "completed") { %> style="display:none" <% } %> >All your KYC progress is completed.</h5> 
-                                <h2 class="title text-danger" <% if(kycStatus != "completed") { %> style="display:none" <% } %> >REJECT</h2>  
-                                <h5 class="description" <% if(kycStatus != "completed") { %> style="display:none" <% } %> >All your KYC progress is rejected. Please contact to admin.</h5> 
+                                <h2 class="title text-danger" id="kycStatus"></h2>
+                                <h5 class="description" id="kycStatusDescription"></h5>
                             </div>
                         </div>
                     </div>
@@ -98,7 +92,7 @@
                                 </p>
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" id="checkBoxTerm1" type="checkbox" value="" <% if(kycStatus != "ready") { %> checked disabled <% } %> >
+                                        <input class="form-check-input" id="checkBoxTerm1" type="checkbox" value="">
                                         Confirm and Accept
                                         <span class="form-check-sign">
                                             <span class="check"></span>
@@ -118,7 +112,7 @@
                                 </p>
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" id="checkBoxTerm2" type="checkbox" value="" <% if(kycStatus != "ready") { %> checked disabled <% } %> >
+                                        <input class="form-check-input" id="checkBoxTerm2" type="checkbox" value="">
                                         Confirm and Accept
                                         <span class="form-check-sign">
                                             <span class="check"></span>
@@ -136,12 +130,12 @@
                         <div class="card">
                             <div class="kyc-card card-full-name">
                                 <div class="form-group label-floating text-left">
-                                    <label class="bmd-label-floating">First Name</label>
-                                    <input name="lastName" type="text" class="form-control" id="first-name" value = "<%= firstName %>" <% if(kycStatus != "ready") { %> disabled <% } %> >
+                                    <label class="bmd-label-floating"></label>
+                                    <input name="firstName" type="text" class="form-control" id="first-name" placeholder="First Name">
                                 </div>
                                 <div class="form-group label-floating text-left">
-                                    <label class="bmd-label-floating">Last Name</label>
-                                    <input name="lastName" type="text" class="form-control" id="last-name" value = "<%= lastName %>" <% if(kycStatus != "ready") { %> disabled <% } %> >
+                                    <label class="bmd-label-floating"></label>
+                                    <input name="lastName" type="text" class="form-control" id="last-name" placeholder="Last Name">
                                 </div>   
                             </div>   
                             <h4 class="info-title text-center">[Step 2-2] Fill your full name</h4>
@@ -154,8 +148,8 @@
                         <div class="card">
                             <div class="kyc-card card-full-name">
                                 <div class="form-group label-floating text-left">
-                                    <label class="bmd-label-floating">Your Etherium address</label>
-                                    <input type="text" class="form-control" id="eth-address" value = "<%= walletAddr %>" <% if(kycStatus != "ready") { %> disabled <% } %> >
+                                    <label class="bmd-label-floating"></label>
+                                    <input type="text" class="form-control" id="eth-address" placeholder="Your Etherium address">
                                 </div>
                             </div>   
                             <h4 class="info-title text-center text-danger">Do not add address from exchanges! All your Etehrium will be gone.</h4>
@@ -168,9 +162,7 @@
                     <div class="col-12 col-md-12">
                         <div class="save-kyc">
                             <div class="col-12">
-                                <% if(kycStatus == "ready") { %> 
-                                    <button class="btn btn-primary btn-raised" onclick="uploadKyc()"> SAVE STEP1 / STEP2</button>
-                                <% } %>
+                                <button class="btn btn-primary btn-raised" id="uploadKycBtn" onclick="uploadKyc()" style="display:none;"> SAVE STEP1 / STEP2</button>
                             </div>
                         </div>      
                     </div>

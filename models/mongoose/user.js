@@ -35,8 +35,8 @@ var userSchema = mongoose.Schema({
 		/* 
 			ready
 			approving
-			complete			
-			reject
+			completed			
+			rejected
 		*/
 		type: String
 	}

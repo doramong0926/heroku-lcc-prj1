@@ -61,6 +61,9 @@ var icoInfoSchema = mongoose.Schema({
 	bonusVolume50Eth : {
 		type: Number
 	},
+	bonusReferral : {
+		type: Number
+	}
 });
 
 var IcoInfo = module.exports = mongoose.model('IcoInfo', icoInfoSchema);
@@ -87,7 +90,8 @@ module.exports.createIcoInfo = function(tokenString, callback) {
 		bonusRoundB : 0.03,
 		bonusVolume10Eth : 0.03,
 		bonusVolume30Eth : 0.05,
-		bonusVolume50Eth : 0.07
+		bonusVolume50Eth : 0.07,
+		bonusReferral : 0.05
 	});
 	newIcoInfo.save(callback);
 }
@@ -98,26 +102,28 @@ module.exports.getIcoInfo = function(Name, callback){
 }
 
 module.exports.saveIcoInfoAll = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{	totalSalesVolume: icoInfo.totalSalesVolume,
-												preSalesVolume: icoInfo.preSalesVolume,
-												roundAVolume: icoInfo.preSalesVolume,
-												roundBVolume: icoInfo.roundBVolume,
-												roundCVolume: icoInfo.roundCVolume,
+	IcoInfo.update({name:icoInfo.name}, { $set:{	totalSalesVolume: icoInfo.totalSalesVolume,
+													preSalesVolume: icoInfo.preSalesVolume,
+													roundAVolume: icoInfo.preSalesVolume,
+													roundBVolume: icoInfo.roundBVolume,
+													roundCVolume: icoInfo.roundCVolume,
 
-												round: icoInfo.round, 
-												startPreSale: icoInfo.startPreSale, 
-												endPreSale: icoInfo.endPreSale, 
-												endRoundA: icoInfo.endRoundA, 
-												endRoundB: icoInfo.endRoundB, 
-												endRoundC: icoInfo.endRoundC,
+													round: icoInfo.round, 
+													startPreSale: icoInfo.startPreSale, 
+													endPreSale: icoInfo.endPreSale, 
+													endRoundA: icoInfo.endRoundA, 
+													endRoundB: icoInfo.endRoundB, 
+													endRoundC: icoInfo.endRoundC,
 
-												exchangeRate : icoInfo.exchangeRate,
-												bonusPreSale: icoInfo.bonusPreSale,
-												bonusRoundA: icoInfo.bonusRoundA,
-												bonusRoundB: icoInfo.bonusRoundB,
-												bonusVolume10Eth: icoInfo.bonusVolume10Eth,
-												bonusVolume30Eth: icoInfo.bonusVolume30Eth,
-												bonusVolume50Eth: icoInfo.bonusVolume50Eth}}, callback);
+													exchangeRate : icoInfo.exchangeRate,
+													bonusPreSale: icoInfo.bonusPreSale,
+													bonusRoundA: icoInfo.bonusRoundA,
+													bonusRoundB: icoInfo.bonusRoundB,
+													bonusVolume10Eth: icoInfo.bonusVolume10Eth,
+													bonusVolume30Eth: icoInfo.bonusVolume30Eth,
+													bonusVolume50Eth: icoInfo.bonusVolume50Eth,
+													bonusReferral: icoInfo.bonusReferral }
+										}, callback);
 }
 
 module.exports.saveIcoInfoTotalSalesVolume = function(icoInfo, callback) {	
@@ -192,3 +198,6 @@ module.exports.saveIcoInfoBonusVolume50Eth = function(icoInfo, callback) {
 	IcoInfo.update({name:icoInfo.name}, {$set:{bonusVolume50Eth: icoInfo.bonusVolume50Eth}}, callback);
 }
 
+module.exports.saveIcoInfoBonusReferral = function(icoInfo, callback) {	
+	IcoInfo.update({name:icoInfo.name}, {$set:{bonusReferral: icoInfo.bonusReferral}}, callback);
+}

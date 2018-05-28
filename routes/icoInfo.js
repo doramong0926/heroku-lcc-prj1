@@ -14,9 +14,12 @@ router.get('/', function(req, res) {
 router.post('/', function(req, res) {	
 	IcoInfo.getIcoInfo(tokenString, function (err, icoInfo) {
 		if (err) {
-			console.log("fail to getIcoInfo");			
+			res.json({success : 'false' , icoInfo : icoInfo});			
+		}
+		else {
+			res.json({success : 'true' , icoInfo : icoInfo});	
 		}	
-		res.json({ success : 'true', icoInfo : icoInfo });
+		
 	});
 });
 

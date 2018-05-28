@@ -58,7 +58,7 @@
                 </li>
 
                 <li class="nav-item">                        
-                    <a class="nav-link nav-cursor" href="/tokenSale">
+                    <a class="nav-link nav-cursor" onclick="checkLoginStatusTokenSale();">
                         <i class="material-icons">add_shopping_cart</i> TOKEN SALE
                     </a>
                 </li>
@@ -95,14 +95,14 @@
                     </div>
                 </li>
 
-                <li class="nav-item">                 
-                    <a class="nav-link log-in" data-toggle="modal" href="/" onclick="openLoginModal();" <% if(isLogin == "true") { %> style="display:none" <% } %> >
+                <li class="nav-item" id="nav-login">                 
+                    <a class="nav-link log-in" data-toggle="modal" href="/" onclick="openLoginModal();">
                         <i class="material-icons">sentiment_very_satisfied</i> LOG-IN
                     </a>
                 </li>
 
-                <li class="nav-item">                        
-                        <a class="nav-link log-out" data-toggle="modal" href="/" onclick="logoutAjax();" <% if(isLogin == "false") { %> style="display:none" <% } %> >
+                <li class="nav-item" id="nav-logout">                        
+                        <a class="nav-link log-out" data-toggle="modal" href="/" onclick="logoutAjax();">
                         <i class="material-icons">sentiment_very_dissatisfied</i> LOG-OUT
                     </a>
                 </li>      
