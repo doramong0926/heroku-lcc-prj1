@@ -8,7 +8,7 @@ $(document).ready(function() {
         calculateToken(this);
         document.getElementById("bonusToken").innerHTML = "round bonus : " + roundBonusRate + "% / volume bonus : " + volumeBonusRate +"%";            
     });
-    $("#calculator-lcc").change(function(){
+    $("#calculator-blc").change(function(){
         calculateToken(this);
     });
 });
@@ -42,7 +42,7 @@ $(document).ready(function() {
             else if (eth.value < 10) {
                 volumeBonusRate = 0;
             }
-            document.getElementById("tokenExchangeRate").innerHTML = "1 ETH = " + icoInfo.exchangeRate  + " LCC";
+            document.getElementById("tokenExchangeRate").innerHTML = "1 ETH = " + icoInfo.exchangeRate  + " BLC";
             document.getElementById("bonusToken").innerHTML = "round bonus : " + roundBonusRate + "% / volume bonus : " + volumeBonusRate + "%";            
 		}
 	});	
@@ -86,5 +86,5 @@ function calculateToken() {
         volumeBonusRate = 0;
     }
     
-    document.getElementById("calculator-lcc").value = token + roundBonusToken + volumeBonusToken;
+    document.getElementById("calculator-blc").value = token + roundBonusToken + volumeBonusToken;
 }

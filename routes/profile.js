@@ -6,7 +6,7 @@ var numeral = require('numeral');
 var User = require('../models/mongoose/user');
 var web3Control = require('../models/web3/web3Control');
 
-const contractAddr_lcc = '0x7d25311209e3b43e23f87569089bd052e696D7C5';
+const contractAddr_blc = '0x7d25311209e3b43e23f87569089bd052e696D7C5';
 const icoAddr = '0x5cdD23c850b3447C674dE4f37ce9006D480e4413';
 
 // Get profile
@@ -15,7 +15,7 @@ router.get('/', ensureAuthenticated, function(req, res, next){
 		if (err || !user) {
 			res.redirect('/');
 		} else {						
-			web3Control.getUserInvestInfo(icoAddr, contractAddr_lcc, user.walletAddr, function(err, investInfo) {					
+			web3Control.getUserInvestInfo(icoAddr, contractAddr_blc, user.walletAddr, function(err, investInfo) {					
 				if (err) {
 					console.log("fail to get UserInvestInfo.");		
 				}
@@ -24,7 +24,7 @@ router.get('/', ensureAuthenticated, function(req, res, next){
 					navbarType : "profile",
 					user : user,
 					investInfo : investInfo,
-					contractAddr : contractAddr_lcc,
+					contractAddr : contractAddr_blc,
 					icoAddr : icoAddr
 				});
 			});	

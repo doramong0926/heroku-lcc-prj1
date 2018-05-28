@@ -10,7 +10,7 @@ var IcoInfo = require('../models/mongoose/icoInfo');
 var web3Control = require('../models/web3/web3Control');
 
 var tokenString = 'bluecots';
-const contractAddr_lcc = '0x7d25311209e3b43e23f87569089bd052e696D7C5';
+const contractAddr_blc = '0x7d25311209e3b43e23f87569089bd052e696D7C5';
 const icoAddr = '0x5cdD23c850b3447C674dE4f37ce9006D480e4413';
 
 // Get index
@@ -20,27 +20,32 @@ router.get('/', ensureAuthenticated, function(req, res, next){
 			console.log("Fail to getTotalInvestedEth");	
 		}
 
-		IcoInfo.getIcoInfo(tokenString, function (err, icoInfo) {
+		web3Control.getTotalDistributedToken(contractAddr_blc, icoAddr, function(err, totalDistributedToken) {
 			if (err) {
-				console.log("Fail to get Ico info.");			
+				console.log("Fail to getTotalDistributedToken");	
 			}
-			if (!icoInfo) {
-				IcoInfo.createIcoInfo(tokenString, function (err, icoInfo) {				
-					if (err) {
-						console.log("Fail to create Ico info.");	
-					}
-					res.redirect('/');
-				});
-			}
-			else {
-				res.render('index', {	isLogin : "true", 
-										navbarType : "index", 
-										success: 'true', 
-										icoInfo: icoInfo,
-										totalInvestedEth: totalInvestedEth,
-										totalDistributedToken: totalDistributedToken});
-			}
-		});	
+			IcoInfo.getIcoInfo(tokenString, function (err, icoInfo) {
+				if (err) {
+					console.log("Fail to get Ico info.");			
+				}
+				if (!icoInfo) {
+					IcoInfo.createIcoInfo(tokenString, function (err, icoInfo) {				
+						if (err) {
+							console.log("Fail to create Ico info.");	
+						}
+						res.redirect('/');
+					});
+				}
+				else {
+					res.render('index', {	isLogin : "true", 
+											navbarType : "index", 
+											success: 'true', 
+											icoInfo: icoInfo,
+											totalInvestedEth: totalInvestedEth,
+											totalDistributedToken: totalDistributedToken});	
+				}
+			});	
+		});
 	});
 });
 
@@ -212,7 +217,7 @@ function ensureAuthenticated(req, res, next){
 			if (err) {
 				console.log("Fail to getTotalDistributedToken");	
 			}
-			web3Control.getTotalDistributedToken(contractAddr_lcc, icoAddr, function(err, totalDistributedToken) {
+			web3Control.getTotalDistributedToken(contractAddr_blc, icoAddr, function(err, totalDistributedToken) {
 				if (err) {
 					console.log("Fail to getTotalDistributedToken");	
 				}
@@ -243,3 +248,4 @@ function ensureAuthenticated(req, res, next){
 }
 
 module.exports = router;
+
