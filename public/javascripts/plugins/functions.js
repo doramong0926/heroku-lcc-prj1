@@ -45,10 +45,10 @@ $(document).ready(function(){
 			showIcoMainEthWalletAddr(false);		
 		}
 		else {	
+			showNavLogin(false);
 			showKycInfo(userInfo);
 			showTokenSaleInfo(userInfo);		
 			showProfileInfo(userInfo);
-			showNavLogin(false);
 			getIcoInfo( function(err, icoInfo) {
 				if (err) {		
 				}
@@ -152,16 +152,21 @@ function showTokenSaleInfo(userInfo) {
 
 function showProfileInfo(userInfo) {
 	$("#userEmail").text(userInfo.email);
+	$("#userEmail-sm").text(userInfo.email);
 	$("#userReferralAddr").text("https://lccprj.herokuapp.com/?ref=" + userInfo.referralAddr);
+	$("#userReferralAddr-sm").text("https://lccprj.herokuapp.com/?ref=" + userInfo.referralAddr);
 	$("#userWalletAddr").text(userInfo.walletAddr);	
+	$("#userWalletAddr-sm").text(userInfo.walletAddr);	
     $.post("/userInfo/investInfo", function(data) {
 		var err = false;
 		if (data.success == 'false') {
 			err = true;
 		}
 		else {
-			$("#investeReceviedToken").text(numberWithCommas(data.investInfo.receviedToken) + " BLC");	
+			$("#investeReceviedToken").text(numberWithCommas(data.investInfo.receviedToken) + " BLC");
+			$("#investeReceviedToken-sm").text(numberWithCommas(data.investInfo.receviedToken) + " BLC");	
 			$("#investeInvestEth").text(numberWithCommas(data.investInfo.investEth) + " ETH");
+			$("#investeInvestEth-sm").text(numberWithCommas(data.investInfo.investEth) + " ETH");
 			genTransactionHistory(data, function(history) {				
 				$("#transactionHistory").html(history);
 			});
