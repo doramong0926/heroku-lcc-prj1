@@ -264,7 +264,7 @@ function calculateWillReceiveToken(userInfo, icoInfo) {
 	{
 		document.getElementById("calculator-blc").value = numberWithCommas(totalValue);
 	}					
-	document.getElementById("tokenExchangeRate").innerHTML = "1 ETH = " + numberWithCommas(icoInfo.exchangeRate * 100) + " BLC";
+	document.getElementById("tokenExchangeRate").innerHTML = "1 ETH = " + numberWithCommas(icoInfo.exchangeRate) + " BLC";
 	document.getElementById("bonusToken-round").innerHTML = "round bonus : " + roundBonusRate + "%";            
 	document.getElementById("bonusToken-volume").innerHTML = "volume bonus : " + volumeBonusRate + "%";
 	document.getElementById("bonusToken-referral").innerHTML = "referral bonus : " + referralBonusRate + "%";
