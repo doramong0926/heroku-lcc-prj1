@@ -133,30 +133,6 @@ router.post('/register', function (req, res) {
 	}
 });
 
-// get icoTargetTime
-router.get('/icoTargetTime', function (req, res) {
-	res.redirect('/');
-});
-
-// post icoTargetTime
-router.post('/icoTargetTime', function(req, res,) {	
-	IcoInfo.getIcoInfo(tokenString, function (err, icoInfo) {
-		if (err) {
-			console.log("Fail to get Ico info.");			
-		}
-		if (!icoInfo) {
-			IcoInfo.createIcoInfo(tokenString, function (err, icoInfo) {				
-				if (err) {
-					console.log("Fail to create Ico info.");	
-				}
-				res.redirect('/');
-			});
-		}
-		else {
-			res.json({ success: 'true', icoInfo: icoInfo });
-		}		
-	});	
-});
 
 passport.use('local', new LocalStrategy({
 		usernameField : 'email', 

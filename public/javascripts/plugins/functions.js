@@ -36,13 +36,51 @@ $(document).ready(function() {
 	});	
 });
 
+$(document).ready(function() {		
+	getIcoInfo( function(err, icoInfo) {
+		if (err) {	
+		}
+		else {
+			showIcoSchedule(icoInfo);
+			getInvestedInfo( function(err, investedInfo) {
+				if (err) {		
+				}
+				else {
+					showInvestedInfo(icoInfo, investedInfo);
+				}
+			});
+		}
+	});
+});
+
+function showInvestedInfo(icoInfo, investedInfo) {
+	var ariaValuenow = investedInfo.totalDistributedToken / icoInfo.totalSalesVolume * 100;
+	var styleWidth = "width: " + ariaValuenow + "%";
+	$("#progress-info").attr('style', styleWidth);
+	$("#progress-info").attr('aria-valuenow', ariaValuenow);
+	$("#progress-info").text(ariaValuenow + "%");	
+	$("#totalSalesVolume").text(numberWithCommas(icoInfo.totalSalesVolume) + " BLC");	
+	$("#currentDistribution").text(numberWithCommas(investedInfo.totalDistributedToken) + " BLC / " + numberWithCommas(investedInfo.totalInvestedEth) + " ETH");	
+
+}
+
+
+//<div class="progress-bar progress-line-primary progress-bar-animated" role="progressbar" aria-valuenow="<%=(totalDistributedToken / icoInfo.totalSalesVolume)*100%>" aria-valuemin="0" aria-valuemax="100" style="width: <%=(totalDistributedToken / icoInfo.totalSalesVolume)*100%>%"><%=(totalDistributedToken / icoInfo.totalSalesVolume)*100%> %</div>
+
 $(document).ready(function(){
 	$('[data-toggle="tooltip"]').tooltip();
 	
     getUserInfo( function(err, userInfo) {
 		if (err) {
 			showNavLogin(true);
-			showIcoMainEthWalletAddr(false);		
+			showIcoMainEthWalletAddr(false);
+			getIcoInfo( function(err, icoInfo) {
+				if (err) {	
+				}
+				else {
+					showIcoStageString(icoInfo);
+				}
+			});		
 		}
 		else {	
 			showNavLogin(false);
@@ -54,6 +92,7 @@ $(document).ready(function(){
 				}
 				else {
 					calculateWillReceiveToken(userInfo, icoInfo);
+					showIcoStageString(icoInfo);
 				}
 			});
 		}
@@ -77,6 +116,16 @@ function getIcoInfo(callback) {
 			err = true;
 		}
 		callback(err, data.icoInfo)		
+    });
+}
+
+function getInvestedInfo(callback) {
+	var err = false;
+    $.post("/icoInfo/investedInfo", function(data) {
+		if (data.success == 'false') {
+			err = true;
+		}
+		callback(err, data)		
     });
 }
 
@@ -104,6 +153,50 @@ function showIcoMainEthWalletAddr(showHide) {
 		$("#address-eth-description").show();	
 		$("#goToKyc").show();	
 	}
+}
+
+function showIcoStageString(icoInfo) {	
+	if (icoInfo.round == "commingSoon") {
+		$("#ico-stage").text("COMMING SOON");
+	} else if (icoInfo.round == "preSale") {
+		$("#ico-stage").text("PRESALE STAGE");
+	} else if (icoInfo.round == "roundA") {
+		$("#ico-stage").text("ROUND-A STAGE");
+	} else if (icoInfo.round == "roundB") {
+		$("#ico-stage").text("ROUND-B STAGE");
+	} else if (icoInfo.round == "roundC") {
+		$("#ico-stage").text("ROUND-C STAGE");
+	} else {
+		$("#ico-stage").text("dddd");
+	}
+}
+
+function showIcoSchedule(icoInfo) {	
+	if (icoInfo.round == "commingSoon")
+	{
+		$("#dash-icoInfo").text("PRESALE WILL BE START IN : ");
+	}
+	else if (icoInfo.round == "preSale")
+	{
+		$("#dash-icoInfo").text("PRESALE WILL BE END IN : ");
+	}
+	else if (icoInfo.round == "roundA")
+	{
+		$("#dash-icoInfo").text("ROUND-A WILL BE END IN : ");
+	}
+	else if (icoInfo.round == "roundB")
+	{
+		$("#dash-icoInfo").text("ROUND-B WILL BE END IN : ");
+	}
+	else if (icoInfo.round == "roundC")
+	{
+		$("#dash-icoInfo").text("ROUND-C WILL BE END IN : ");
+	}
+	else
+	{
+		$("#dash-icoInfo").text("ICO SALE IS END IN :");
+	}
+	$("#dash-icoDate").text((new Date(icoInfo.startPreSale)).toUTCString());		
 }
 
 function showKycInfo(userInfo) {	 
@@ -262,6 +355,7 @@ function calculateWillReceiveToken(userInfo, icoInfo) {
 	totalValue = token + roundBonusToken + volumeBonusToken + referralBonusToken;
 	if (totalValue != 0)
 	{
+		document.getElementById("calculator-blc").insertAdjacentElement
 		document.getElementById("calculator-blc").value = numberWithCommas(totalValue);
 	}					
 	document.getElementById("tokenExchangeRate").innerHTML = "1 ETH = " + numberWithCommas(icoInfo.exchangeRate) + " BLC";

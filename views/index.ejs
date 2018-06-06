@@ -6,27 +6,12 @@
         <div class="section text-left">
             <div class="row">
                 <div class="col-12 col-md-8 main-header-left">
-                    <h1 class="title text-danger text-center">
-                            <% if (icoInfo.round == "commingSoon") {%>
-                                COMMING SOON                              
-                            <% } else if (icoInfo.round == "preSale") {%>
-                                PRESALE STAGE                                
-                            <% } else if (icoInfo.round == "roundA") {%>
-                                ROUND-A STAGE
-                            <% }else if (icoInfo.round == "roundB") {%>
-                                ROUND-B STAGE
-                            <% } else if (icoInfo.round == "roundC") {%>
-                                ROUND-C STAGE
-                            <% } else {%>
-                                ALL THE ICO SALE IS DONE
-                            <% } %>
-                    </h1><br>
+                    <h1 class="title text-danger text-center" id="ico-stage"></h1><br>
                     <h3 class="title">BLC TOKEN DISTRIBUTION</h3>
                     <h4>Total distributed</h4>
                     <br>					
-                    <div class="progress">
-                        <div class="progress-bar progress-line-primary progress-bar-animated" role="progressbar" aria-valuenow="<%=(totalDistributedToken / icoInfo.totalSalesVolume)*100%>" aria-valuemin="0" aria-valuemax="100" style="width: <%=(totalDistributedToken / icoInfo.totalSalesVolume)*100%>%"><%=(totalDistributedToken / icoInfo.totalSalesVolume)*100%> %</div>
-
+                    <div class="progress">                        
+                        <div class="progress-bar progress-line-primary progress-bar-animated" id="progress-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">0%</div>
                         <!--
                         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
                         <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
@@ -35,31 +20,19 @@
                     </div>
                     <div class="row">
                         <div class="col-6 text-left">0 BLC </div>						
-                        <div class="col-6 text-right"><%=icoInfo.totalSalesVolume%> BLC </div>
+                        <div class="col-6 text-right" id="totalSalesVolume">0 BLC </div>
                     </div>
                     <div>
                         <h3 class="title">CURRENT DISTRIBUTION</h3>
-                        <h4><%=totalDistributedToken%> BLC / <%=totalInvestedEth%> ETH</h4><br>                             
+                        <h4 id="currentDistribution">0 BLC / 0 ETH</h4><br>                             
                     </div>
                 </div>
                 <div class="col-12 col-md-4 main-header-right">	
                     <div class="timer">
                         <div class="text-center">
                             <div id="countdown_dashboard">
-                                <% if (icoInfo.round == "commingSoon") {%>
-                                    <h2 class="dash_title">PRESALE WILL BE START IN : </h2>                                
-                                <% } else if (icoInfo.round == "preSale") {%>
-                                    <h2 class="dash_title">PRESALE WILL BE END IN : </h2>                                
-                                <% } else if (icoInfo.round == "roundA") {%>
-                                    <h2 class="dash_title">ROUND-A WILL BE END IN : </h2>                                
-                                <% }else if (icoInfo.round == "roundB") {%>
-                                    <h2 class="dash_title">ROUND-A WILL BE END IN : </h2>                                
-                                <% } else if (icoInfo.round == "roundC") {%>
-                                    <h2 class="dash_title">ROUND-C WILL BE END IN : </h2>                                
-                                <% } else {%>
-                                    <h2 class="dash_title">ICO SALE IS END IN : </h2>                                
-                                <% } %>
-                                <h4 class="dash_title"><%= (new Date(icoInfo.startPreSale)).toUTCString() %> </h4>
+                                <h2 class="dash_title" id="dash-icoInfo"></h2> 
+                                <h4 class="dash_title" id="dash-icoDate"></h4>
                                 <div class="row">
                                     <div class="col-6 ml-auto mr-auto countDown justify-content-center">                                        
                                         <div class="dash days_dash">

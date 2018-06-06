@@ -175,7 +175,7 @@ var Utc = 'UTC';
 
 
 (function ($) {
-	$.post( "/icoTargetTime", function( data ) {		
+	$.post( "/icoInfo/icoSchedule", function( data ) {		
 		if(data.success == 'true'){
 			var time = new Date(data.icoInfo.startPreSale);					
 			Year = time.getUTCFullYear();
