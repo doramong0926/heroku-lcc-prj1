@@ -27,15 +27,20 @@ router.post('/investInfo', ensureAuthenticated, function(req, res, next) {
 		if (err || !user) {
 			res.json({ success : 'false', investInfo : investInfo });
 		} else {
-			web3Control.getUserInvestInfo(icoAddr, contractAddr_blc, user.walletAddr, function(err, investInfo) {		
-				if (err) {
-					console.log("fail to get UserInvestInfo.");		
-					res.json({ success : 'false', investInfo : investInfo });
-				}
-				else {
-					res.json({ success : 'true', investInfo : investInfo });
-				}
-			});
+			if (user.walletAddr == "") {
+				console.log("user.walletAddr is empty");	
+			}
+			else {
+				web3Control.getUserInvestInfo(icoAddr, contractAddr_blc, user.walletAddr, function(err, investInfo) {		
+					if (err) {
+						console.log("fail to get UserInvestInfo.");	
+						res.json({ success : 'false', investInfo : investInfo });
+					}
+					else {
+						res.json({ success : 'true', investInfo : investInfo });
+					}
+				});
+			}
 		}
 	});
 });

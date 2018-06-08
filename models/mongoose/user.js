@@ -78,7 +78,7 @@ module.exports.saveKycInfo = function(user, callback) {
 }
 
 module.exports.initKycInfo = function(email, callback) {
-	User.update({email:email}, {$set:{firstName: "", lastName: "", walletAddr:"none", kycPicturePath1: "", kycPicturePath2: "", kycStatus: "ready"}}, callback);
+	User.update({email:email}, {$set:{firstName: "", lastName: "", walletAddr:"", kycPicturePath1: "", kycPicturePath2: "", kycStatus: "ready"}}, callback);
 }
 
 module.exports.findInvitation = function(referralAddr, callback) {
