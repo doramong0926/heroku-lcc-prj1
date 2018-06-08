@@ -21,6 +21,7 @@ var kycRouter = require('./routes/kyc');
 var profileRouter = require('./routes/profile')
 var icoInfoRouter = require('./routes/icoInfo')
 var userInfoRouter = require('./routes/userInfo')
+let config = require('./config/config.json');
 
 // app init
 var app = express();
@@ -28,7 +29,7 @@ var app = express();
 // mongodb setting
 var db = mongoose.connection;
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://doramong0926:*realkdk8105@ds263639.mlab.com:63639/lcc-userdb');
+mongoose.connect(config.data.mongodb.addr);
 db.on('error', console.log.bind(console,'MongoDB connention error :'));
 db.once('open', function(){
   console.log('connected to mongod server');
@@ -58,7 +59,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Express Session
 app.use(session({
-    secret: '29kjf9f93lljs%@54j&8',
+    secret: config.data.session.secret,
     saveUninitialized: true,
     resave: true,
     cookie: {maxAge : 3600000, httpOnly : true}
@@ -126,7 +127,7 @@ app.use(function(err, req, res, next) {
 //app.set('port', (process.env.PORT || 8888));
 
 app.listen(app.get('port'), function(){
-	console.log('Server started on port '+app.get('port'));
+  console.log('Server started on port ' + app.get('port'));
 });
 
 module.exports = app;

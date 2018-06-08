@@ -4,32 +4,30 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var md5 = require('md5');
+const fs = require('fs');
 
 var User = require('../models/mongoose/user');
 var IcoInfo = require('../models/mongoose/icoInfo');
 var web3Control = require('../models/web3/web3Control');
-
-var tokenString = 'bluecots';
-const contractAddr_blc = '0x7d25311209e3b43e23f87569089bd052e696D7C5';
-const icoAddr = '0x5cdD23c850b3447C674dE4f37ce9006D480e4413';
+let config = require('../config/config.json');
 
 // Get index
 router.get('/', ensureAuthenticated, function(req, res, next){
-	web3Control.getTotalInvestedEth(icoAddr, function(err, totalInvestedEth) {
+	web3Control.getTotalInvestedEth(config.data.icoInfo.icoAddr, function(err, totalInvestedEth) {
 		if (err) {
 			console.log("Fail to getTotalInvestedEth");	
 		}
 
-		web3Control.getTotalDistributedToken(contractAddr_blc, icoAddr, function(err, totalDistributedToken) {
+		web3Control.getTotalDistributedToken(config.data.icoInfo.contractAddr, config.data.icoInfo.icoAddr, function(err, totalDistributedToken) {
 			if (err) {
 				console.log("Fail to getTotalDistributedToken");	
 			}
-			IcoInfo.getIcoInfo(tokenString, function (err, icoInfo) {
+			IcoInfo.getIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {
 				if (err) {
 					console.log("Fail to get Ico info.");			
 				}
 				if (!icoInfo) {
-					IcoInfo.createIcoInfo(tokenString, function (err, icoInfo) {				
+					IcoInfo.createIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {				
 						if (err) {
 							console.log("Fail to create Ico info.");	
 						}
@@ -189,20 +187,20 @@ function ensureAuthenticated(req, res, next){
 		return next();
 	} else {
 		//res.render('index', {isLogin : "false", navbarType : "index"});
-		web3Control.getTotalInvestedEth(icoAddr, function(err, totalInvestedEth) {
+		web3Control.getTotalInvestedEth(config.data.icoInfo.icoAddr, function(err, totalInvestedEth) {
 			if (err) {
 				console.log("Fail to getTotalDistributedToken");	
 			}
-			web3Control.getTotalDistributedToken(contractAddr_blc, icoAddr, function(err, totalDistributedToken) {
+			web3Control.getTotalDistributedToken(config.data.icoInfo.contractAddr, config.data.icoInfo.icoAddr, function(err, totalDistributedToken) {
 				if (err) {
 					console.log("Fail to getTotalDistributedToken");	
 				}
-				IcoInfo.getIcoInfo(tokenString, function (err, icoInfo) {
+				IcoInfo.getIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {
 					if (err) {
 						console.log("Fail to get Ico info.");			
 					}
 					if (!icoInfo) {
-						IcoInfo.createIcoInfo(tokenString, function (err, icoInfo) {				
+						IcoInfo.createIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {				
 							if (err) {
 								console.log("Fail to create Ico info.");	
 							}
