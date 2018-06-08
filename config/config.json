@@ -1,0 +1,20 @@
+{
+  "name": "bluecots",
+  "version": "0.0.1",
+  "data": {
+    "icoInfo": {
+      "tokenString": "bluecots",
+      "contractAddr": "0x7d25311209e3b43e23f87569089bd052e696D7C5",
+      "icoAddr": "0x5cdD23c850b3447C674dE4f37ce9006D480e4413"
+    },
+    "mongodb": {
+      "addr": "mongodb://doramong0926:*realkdk8105@ds263639.mlab.com:63639/lcc-userdb"
+    },
+    "session": {
+      "secret": "29kjf9f93lljs%@54j&8"
+    }
+  }
+}
+
+
+
