@@ -51,6 +51,18 @@ function hideModal() {
     }, 230);
 }
 
+function checkLoginStatusAdmin(){
+    var checkLogin = false;
+    $.post("/userInfo/isAdmin", function(data) {        
+        if (data.isAdmin == 'false') {
+            $.get("/");
+        } else {
+            $.get("/admin");
+            window.location.replace("/admin");  
+        }   
+    });
+}
+
 function checkLoginStatusTokenSale(){
     var checkLogin = false;
     $.post("/tokenSale", {checkLogin: true}, function(data) {        

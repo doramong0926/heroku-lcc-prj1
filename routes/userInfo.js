@@ -49,12 +49,37 @@ router.post('/investInfo', ensureAuthenticated, function(req, res, next) {
 	});
 });
 
+router.post('/isAdmin', function(req, res,){
+	if (req.isAuthenticated()) {
+		isAdmin(req, function callback(ret, userType) {			
+			if(ret == false) {
+				res.json({"isAdmin" : "false", "adminType" : userType});
+			}
+			else {
+				res.json({"isAdmin" : "true", "adminType" : userType});	
+			}
+		});
+	} else {
+		res.json({"isAdmin" : "false", "adminType" : "nomal"});	
+	}
+});
+
 function ensureAuthenticated(req, res, next) {
 	if(req.isAuthenticated()){
 		return next();
 	} else {
 		res.json({ success : 'false'});
 	}
+}
+
+function isAdmin(req, callback) {
+	User.getUserByEmail(req.user.email, function (err, user) {
+		if (err || !user || (user.userType != "superAdmin" && user.userType != "nomalAdmin")) {
+			callback(false, user.userType);
+		} else {						
+			callback(true, user.userType);
+		}
+	});
 }
 
 module.exports = router;

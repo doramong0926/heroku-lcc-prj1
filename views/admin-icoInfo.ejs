@@ -1,0 +1,172 @@
+<%- layout('layout.admin') -%>
+
+<div class="main main-raised">
+    <div class="container fist-container" id="container-admin-icoSchedule">
+        <div class="section text-center">
+            <div class="features">
+                <div class="row">
+                    <div class="col-md-8 ml-auto mr-auto">
+                        <h2 class="title">ICO INFO</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10 ml-auto mr-auto">
+                        <div class="table-responsive">
+                            <table class="table table-hover text-left">
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"><h4>Token Name</h4></th>
+                                        <td><h4 id="admin-tokenName"></h4></td>
+                                    </tr>                                                 
+                                    <tr>
+                                        <th scope="row"><h4>Contract Address</h4></th>
+                                        <td><h4 id="admin-contractAddress"></h4></td>
+                                    </tr>  
+                                    <tr>
+                                        <th scope="row"><h4>Ico Address</h4></th>
+                                        <td><h4 id="admin-icoAddress"></h4></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8 ml-auto mr-auto">
+                        <h2 class="title">ICO SALES VOLUME</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10 ml-auto mr-auto">
+                        <div class="table-responsive">
+                            <table class="table table-hover text-left">
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"><h4>Total sales volume</h4></th>
+                                        <td><h4 id="admin-totalSalesVolume"></h4></td>
+                                    </tr>                                                 
+                                    <tr>
+                                        <th scope="row"><h4>PreSale volume</h4></th>
+                                        <td><h4 id="admin-preSalesVolume"></h4></td>
+                                    </tr> 
+                                    <tr>
+                                        <th scope="row"><h4>Round-A volume</h4></th>
+                                        <td><h4 id="admin-roundAVolume"></h4></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><h4>Round-B volume</h4></th>
+                                        <td><h4 id="admin-roundBVolume"></h4></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><h4>Round-C volume</h4></th>
+                                        <td><h4 id="admin-roundCVolume"></h4></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8 ml-auto mr-auto">
+                        <h2 class="title">ICO SCHEDULE</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10 ml-auto mr-auto">
+                        <div class="table-responsive">
+                            <table class="table table-hover text-left">
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"><h4>Ico current round</h4></th>
+                                        <td><h4 id="admin-round"></h4></td>
+                                    </tr>                                                
+                                    <tr>
+                                        <th scope="row"><h4>Start of PreSale Date</h4></th>
+                                        <td><h4 id="admin-startPreSale"></h4></td>
+                                    </tr>  
+                                    <tr>
+                                        <th scope="row"><h4>End of PreSale Date</h4></th>
+                                        <td><h4 id="admin-endPreSale"></h4></td>
+                                    </tr>  
+                                    <tr>
+                                        <th scope="row"><h4>End of RoundA Date</h4></th>
+                                        <td><h4 id="admin-endRoundA"></h4></td>
+                                    </tr>  
+                                    <tr>
+                                        <th scope="row"><h4>End of RoundB Date</h4></th>
+                                        <td><h4 id="admin-endRoundB"></h4></td>
+                                    </tr> 
+                                    <tr>
+                                        <th scope="row"><h4>End of RoundC Date</h4></th>
+                                        <td><h4 id="admin-endRoundC"></h4></td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-8 ml-auto mr-auto">
+                        <h2 class="title">ICO BONUS RATE</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10 ml-auto mr-auto">
+                        <div class="table-responsive">
+                            <table class="table table-hover text-left">
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"><h4>Ico exchage rate</h4></th>
+                                        <td><h4 id="admin-exchangeRate"></h4></td>
+                                    </tr>                                                
+                                    <tr>
+                                        <th scope="row"><h4>Bonus of PreSale</h4></th>
+                                        <td><h4 id="admin-bonusPreSale"></h4></td>
+                                    </tr>  
+                                    <tr>
+                                        <th scope="row"><h4>Bonus of RoundA</h4></th>
+                                        <td><h4 id="admin-bonusRoundA"></h4></td>
+                                    </tr> 
+                                    <tr>
+                                        <th scope="row"><h4>Bonus of RoundB</h4></th>
+                                        <td><h4 id="admin-bonusRoundB"></h4></td>
+                                    </tr>   
+                                    <tr>
+                                        <th scope="row"><h4>Bonus of RoundC</h4></th>
+                                        <td><h4 id="admin-bonusRoundC"></h4></td>
+                                    </tr>   
+                                    <tr>
+                                        <th scope="row"><h4>Bonus of Volume - 10Eth</h4></th>
+                                        <td><h4 id="admin-bonusVolume10Eth"></h4></td>
+                                    </tr> 
+                                    <tr>
+                                        <th scope="row"><h4>Bonus of Volume - 30Eth</h4></th>
+                                        <td><h4 id="admin-bonusVolume30Eth"></h4></td>
+                                    </tr> 
+                                    <tr>
+                                        <th scope="row"><h4>Bonus of Volume - 50Eth</h4></th>
+                                        <td><h4 id="admin-bonusVolume50Eth"></h4></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><h4>Bonus of Referral</h4></th>
+                                        <td><h4 id="admin-bonusReferral"></h4></td>
+                                    </tr>  
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>                
+        </div>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+<nav class="navbar fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
+    <div class="container">
+        <div class="navbar-translate">
+            <span>
+            <a class="navbar-brand" href="/"><img src="/images/icon-bluecots-coin.png" alt="Bluecots" aligin="middle"> </a>
+            <a class="navbar-brand" href="/">BLUECOTS COIN</a>
+            </span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item">                        
+                    <a class="nav-link nav-cursor" href="/">
+                        <i class="material-icons">layers</i> HOME
+                    </a>
+                </li>
+
+                <li class="nav-item" id="nav-admin-icoSchedule">                        
+                    <a class="nav-link nav-cursor" onclick="checkLoginStatusAdmin();">
+                        <i class="material-icons">accessibility</i> ICO INFO
+                    </a>
+                </li>
+
+                <li class="nav-item" id="nav-admin-icoSchedule">                        
+                    <a class="nav-link nav-cursor" onclick="checkLoginStatusAdmin();">
+                        <i class="material-icons">accessibility</i> UserList
+                    </a>
+                </li>
+
+                <li class="nav-item" id="nav-admin-icoSchedule">                        
+                    <a class="nav-link nav-cursor" onclick="checkLoginStatusAdmin();">
+                        <i class="material-icons">accessibility</i> KYC
+                    </a>
+                </li>
+
+                <li class="nav-item" id="nav-login">                 
+                    <a class="nav-link log-in" data-toggle="modal" href="/" onclick="openLoginModal();">
+                        <i class="material-icons">sentiment_very_satisfied</i> LOG-IN
+                    </a>
+                </li>
+
+                <li class="nav-item" id="nav-logout">                        
+                        <a class="nav-link log-out" data-toggle="modal" href="/" onclick="logoutAjax();">
+                        <i class="material-icons">sentiment_very_dissatisfied</i> LOG-OUT
+                    </a>
+                </li>      
+            </ul>
+        </div>
+    </div>
+</nav>

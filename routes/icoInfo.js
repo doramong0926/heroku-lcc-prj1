@@ -64,9 +64,19 @@ router.post('/icoSchedule', function(req, res,) {
 			});
 		}
 		else {
-			res.json({ success: 'true', icoInfo: icoInfo });
+			res.json({ success: 'true', icoInfo: icoInfo});
 		}		
 	});	
+});
+
+// get icoAddr
+router.get('/icoAddr', function (req, res) {
+	res.redirect('/');
+});
+
+// post icoAddr
+router.post('/icoAddr', function(req, res,) {	
+	res.json({ success: 'true', contractAddr: config.data.icoInfo.contractAddr, icoAddr: config.data.icoInfo.icoAddr});
 });
 
 

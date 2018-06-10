@@ -21,6 +21,7 @@ var kycRouter = require('./routes/kyc');
 var profileRouter = require('./routes/profile')
 var icoInfoRouter = require('./routes/icoInfo')
 var userInfoRouter = require('./routes/userInfo')
+var adminRouter = require('./routes/admin')
 let config = require('./config/config.json');
 
 // app init
@@ -106,6 +107,7 @@ app.use('/kyc', kycRouter);
 app.use('/profile', profileRouter);
 app.use('/icoInfo', icoInfoRouter);
 app.use('/userInfo', userInfoRouter);
+app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

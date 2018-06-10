@@ -108,6 +108,7 @@ router.post('/register', function (req, res) {
 						var newUser = new User({
 							email : email,
 							password : password,
+							userType : "nomal",
 							referralAddr : md5(email),
 							invitation : invitationEmail
 						});

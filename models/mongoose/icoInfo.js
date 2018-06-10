@@ -52,6 +52,9 @@ var icoInfoSchema = mongoose.Schema({
 	bonusRoundB: {
 		type: Number
 	},
+	bonusRoundC: {
+		type: Number
+	},
 	bonusVolume10Eth : {
 		type: Number
 	},
@@ -71,6 +74,7 @@ var IcoInfo = module.exports = mongoose.model('IcoInfo', icoInfoSchema);
 module.exports.createIcoInfo = function(tokenString, callback) {
 	var newIcoInfo = new IcoInfo({
 		name : tokenString,
+
 		totalSalesVolume : 100000000,
 		preSalesVolume : 2500000,
 		roundAVolume : 2500000,
@@ -88,6 +92,8 @@ module.exports.createIcoInfo = function(tokenString, callback) {
 		bonusPreSale : 0.3,
 		bonusRoundA : 0.05,
 		bonusRoundB : 0.03,
+		bonusRoundB : 0.00,
+		bonusRoundC : 0.00,
 		bonusVolume10Eth : 0.03,
 		bonusVolume30Eth : 0.05,
 		bonusVolume50Eth : 0.07,
@@ -102,7 +108,8 @@ module.exports.getIcoInfo = function(Name, callback){
 }
 
 module.exports.saveIcoInfoAll = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, { $set:{	totalSalesVolume: icoInfo.totalSalesVolume,
+	IcoInfo.update({name:icoInfo.name}, { $set:{
+													totalSalesVolume: icoInfo.totalSalesVolume,
 													preSalesVolume: icoInfo.preSalesVolume,
 													roundAVolume: icoInfo.preSalesVolume,
 													roundBVolume: icoInfo.roundBVolume,
@@ -119,6 +126,7 @@ module.exports.saveIcoInfoAll = function(icoInfo, callback) {
 													bonusPreSale: icoInfo.bonusPreSale,
 													bonusRoundA: icoInfo.bonusRoundA,
 													bonusRoundB: icoInfo.bonusRoundB,
+													bonusRoundC: icoInfo.bonusRoundC,
 													bonusVolume10Eth: icoInfo.bonusVolume10Eth,
 													bonusVolume30Eth: icoInfo.bonusVolume30Eth,
 													bonusVolume50Eth: icoInfo.bonusVolume50Eth,
@@ -184,6 +192,10 @@ module.exports.saveIcoInfoBonusRoundA = function(icoInfo, callback) {
 
 module.exports.saveIcoInfoBonusRoundB = function(icoInfo, callback) {	
 	IcoInfo.update({name:icoInfo.name}, {$set:{bonusRoundB: icoInfo.bonusRoundB}}, callback);
+}
+
+module.exports.saveIcoInfoBonusRoundC = function(icoInfo, callback) {	
+	IcoInfo.update({name:icoInfo.name}, {$set:{bonusRoundC: icoInfo.bonusRoundC}}, callback);
 }
 
 module.exports.saveIcoInfoBonusVolume10Eth = function(icoInfo, callback) {	

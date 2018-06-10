@@ -10,6 +10,14 @@ var userSchema = mongoose.Schema({
 	password: {
 		type: String
 	},
+	userType: {
+		type: String
+		/* 
+			superAdmin
+			nomalAdmin
+			nomalUser
+		*/
+	},
 	referralAddr: {
 		type: String
 	},

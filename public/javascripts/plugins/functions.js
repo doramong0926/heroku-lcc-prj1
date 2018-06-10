@@ -29,14 +29,49 @@ function getInvestedInfo(callback) {
     });
 }
 
-function showNavLogin(showHide) {	
+function getIcoAddr(callback) {
+	var err = false;
+    $.post("/icoInfo/icoAddr", function(data) {
+		if (data.success == 'false') {
+			err = true;
+		}
+		callback(err, data)		
+    });
+}
+
+function isAdmin(callback) {
+	var err = false;
+    $.post("/userInfo/isAdmin", function(data) {
+		if (data.isAdmin == 'false') {
+			err = true;
+		}
+		callback(err, data.userType)		
+    });
+}
+
+function showNavLogin(showHide, userInfo) {	
 	if (showHide == true) {
 		$("#nav-login").show();
-		$("#nav-logout").hide();		
+		$("#nav-logout").hide();
+		showNavAdmin(false);		
 	}
 	else {
 		$("#nav-login").hide();
-		$("#nav-logout").show();		
+		$("#nav-logout").show();
+		if (userInfo.userType == "superAdmin" || userInfo.userType == "nomalAdmin")	{
+			showNavAdmin(true);
+		} else {
+			showNavAdmin(false);
+		}
+	}
+}
+
+function showNavAdmin(showHide) {	
+	if (showHide == true) {
+		$("#nav-admin").show();
+	}
+	else {
+		$("#nav-admin").hide();		
 	}
 }
 
@@ -175,6 +210,44 @@ function showProfileInfo(userInfo) {
     });
 }
 
+function showAdminIcoInfo(icoInfo) {
+	$("#admin-tokenName").text(icoInfo.name);
+
+	$("#admin-totalSalesVolume").text(numberWithCommas(icoInfo.totalSalesVolume) + " BLC");
+	$("#admin-preSalesVolume").text(numberWithCommas(icoInfo.preSalesVolume) + " BLC");
+	$("#admin-roundAVolume").text(numberWithCommas(icoInfo.roundAVolume) + " BLC");
+	$("#admin-roundBVolume").text(numberWithCommas(icoInfo.roundBVolume) + " BLC");
+	$("#admin-roundCVolume").text(numberWithCommas(icoInfo.roundCVolume) + " BLC");
+
+	$("#admin-round").text(icoInfo.round);
+	$("#admin-startPreSale").text((new Date(icoInfo.startPreSale)).toUTCString() + " / " + (new Date(icoInfo.startPreSale)).toLocaleString());
+	$("#admin-endPreSale").text((new Date(icoInfo.endPreSale)).toUTCString() + " / " + (new Date(icoInfo.endPreSale)).toLocaleString());
+	$("#admin-endRoundA").text((new Date(icoInfo.endRoundA)).toUTCString() + " / " + (new Date(icoInfo.endRoundA)).toLocaleString());
+	$("#admin-endRoundB").text((new Date(icoInfo.endRoundB)).toUTCString() + " / " + (new Date(icoInfo.endRoundB)).toLocaleString());
+	$("#admin-endRoundC").text((new Date(icoInfo.endRoundC)).toUTCString() + " / " + (new Date(icoInfo.endRoundC)).toLocaleString());
+	
+	$("#admin-exchangeRate").text("1ETH = " + parseInt(numberWithCommas(icoInfo.exchangeRate)));
+	$("#admin-bonusPreSale").text(parseInt(numberWithCommas(icoInfo.bonusPreSale * 100)) + " %");
+	$("#admin-bonusRoundA").text(parseInt(numberWithCommas(icoInfo.bonusRoundA * 100)) + " %");
+	$("#admin-bonusRoundB").text(parseInt(numberWithCommas(icoInfo.bonusRoundB * 100)) + " %");
+	$("#admin-bonusRoundC").text(parseInt(numberWithCommas(icoInfo.bonusRoundC * 100)) + " %");
+	$("#admin-bonusVolume10Eth").text(parseInt(numberWithCommas(icoInfo.bonusVolume10Eth * 100)) + " %");
+	$("#admin-bonusVolume30Eth").text(parseInt(numberWithCommas(icoInfo.bonusVolume30Eth * 100)) + " %");
+	$("#admin-bonusVolume50Eth").text(parseInt(numberWithCommas(icoInfo.bonusVolume50Eth * 100)) + " %");
+	$("#admin-bonusReferral").text(parseInt(numberWithCommas(icoInfo.bonusReferral * 100)) + " %");
+	
+	getIcoAddr(function(err, data) {
+		if (err) {
+			;
+		}
+		else {
+			$("#admin-contractAddress").text(data.contractAddr);
+			$("#admin-icoAddress").text(data.icoAddr);
+		}
+	});
+	
+}
+
 function genTransactionHistory(data, callback) {
 	if (data.investInfo.numOfdata != 0) {
 		for (var i=0, len = data.investInfo.numOfdata; i < len; i++) { 
@@ -229,7 +302,11 @@ function calculateWillReceiveToken(userInfo, icoInfo) {
 		roundBonusRate = icoInfo.bonusRoundB * 100;
 		roundBonusToken = token * icoInfo.bonusRoundB;
 	}
-	else if (icoInfo.round == "roundC" || icoInfo.round == "undefined"){
+	else if (icoInfo.round == "roundC") {
+		roundBonusRate = icoInfo.bonusRoundC * 100;
+		roundBonusToken = token * icoInfo.bonusRoundC;
+	}
+	else {
 		roundBonusRate = 0;
 		roundBonusToken = 0;
 	}
