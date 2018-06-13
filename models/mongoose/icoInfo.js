@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
+const fs = require('fs');
+let config = require('../../config/config.json');
 
 // IcoInfo Schema
 var icoInfoSchema = mongoose.Schema({
@@ -70,6 +72,7 @@ var icoInfoSchema = mongoose.Schema({
 });
 
 var IcoInfo = module.exports = mongoose.model('IcoInfo', icoInfoSchema);
+var tokenName = config.data.icoInfo.tokenString;
 
 module.exports.createIcoInfo = function(tokenString, callback) {
 	var newIcoInfo = new IcoInfo({
@@ -89,15 +92,14 @@ module.exports.createIcoInfo = function(tokenString, callback) {
 		endRoundC : 0,
 
 		exchangeRate : 100000,
-		bonusPreSale : 0.3,
-		bonusRoundA : 0.05,
-		bonusRoundB : 0.03,
-		bonusRoundB : 0.00,
-		bonusRoundC : 0.00,
-		bonusVolume10Eth : 0.03,
-		bonusVolume30Eth : 0.05,
-		bonusVolume50Eth : 0.07,
-		bonusReferral : 0.05
+		bonusPreSale : 30,
+		bonusRoundA : 5,
+		bonusRoundB : 3,
+		bonusRoundC : 0,
+		bonusVolume10Eth : 3,
+		bonusVolume30Eth : 5,
+		bonusVolume50Eth : 7,
+		bonusReferral : 5
 	});
 	newIcoInfo.save(callback);
 }
@@ -108,7 +110,7 @@ module.exports.getIcoInfo = function(Name, callback){
 }
 
 module.exports.saveIcoInfoAll = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, { $set:{
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, { $set:{
 													totalSalesVolume: icoInfo.totalSalesVolume,
 													preSalesVolume: icoInfo.preSalesVolume,
 													roundAVolume: icoInfo.preSalesVolume,
@@ -134,82 +136,82 @@ module.exports.saveIcoInfoAll = function(icoInfo, callback) {
 										}, callback);
 }
 
-module.exports.saveIcoInfoTotalSalesVolume = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{totalSalesVolume: icoInfo.totalSalesVolume}}, callback);
+module.exports.saveIcoInfoTotalSalesVolume = function(value, callback) {
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{totalSalesVolume: value}}, callback);
 }
 
-module.exports.saveIcoInfoPreSalesVolume = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{preSalesVolume: icoInfo.preSalesVolume}}, callback);
+module.exports.saveIcoInfoPreSalesVolume = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{preSalesVolume: value}}, callback);
 }
 
-module.exports.saveIcoInfoRoundAVolume = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{roundAVolume: icoInfo.roundAVolume}}, callback);
+module.exports.saveIcoInfoRoundAVolume = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{roundAVolume: value}}, callback);
 }
 
-module.exports.saveIcoInfoRoundBVolume = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{roundBVolume: icoInfo.roundBVolume}}, callback);
+module.exports.saveIcoInfoRoundBVolume = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{roundBVolume: value}}, callback);
 }
 
-module.exports.saveIcoInfoRoundCVolume = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{roundCVolume: icoInfo.roundCVolume}}, callback);
+module.exports.saveIcoInfoRoundCVolume = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{roundCVolume: value}}, callback);
 }
 
-module.exports.saveIcoInfoRound = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{round: icoInfo.round}}, callback);
+module.exports.saveIcoInfoRound = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{round: value}}, callback);
 }
 
-module.exports.saveIcoInfoStartPreSale = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{startPreSale: icoInfo.startPreSale}}, callback);
+module.exports.saveIcoInfoStartPreSale = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{startPreSale: value}}, callback);
 }
 
-module.exports.saveIcoInfoEndPreSale = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{endPreSale: icoInfo.endPreSale}}, callback);
+module.exports.saveIcoInfoEndPreSale = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{endPreSale: value}}, callback);
 }
 
-module.exports.saveIcoInfoEndRoundA = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{endRoundA: icoInfo.endRoundA}}, callback);
+module.exports.saveIcoInfoEndRoundA = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{endRoundA: value}}, callback);
 }
 
-module.exports.saveIcoInfoEndRoundB = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{endRoundB: icoInfo.endRoundB}}, callback);
+module.exports.saveIcoInfoEndRoundB = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{endRoundB: value}}, callback);
 }
 
-module.exports.saveIcoInfoEndRoundC = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{endRoundC: icoInfo.endRoundC}}, callback);
+module.exports.saveIcoInfoEndRoundC = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{endRoundC: value}}, callback);
 }
 
-module.exports.saveIcoInfoExchangeRate = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{exchangeRate: icoInfo.exchangeRate}}, callback);
+module.exports.saveIcoInfoExchangeRate = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{exchangeRate: value}}, callback);
 }
 
-module.exports.saveIcoInfoBonusPreSale = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{bonusPreSale: icoInfo.bonusPreSale}}, callback);
+module.exports.saveIcoInfoBonusPreSale = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusPreSale: value}}, callback);
 }
 
-module.exports.saveIcoInfoBonusRoundA = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{bonusRoundA: icoInfo.bonusRoundA}}, callback);
+module.exports.saveIcoInfoBonusRoundA = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusRoundA: value}}, callback);
 }
 
-module.exports.saveIcoInfoBonusRoundB = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{bonusRoundB: icoInfo.bonusRoundB}}, callback);
+module.exports.saveIcoInfoBonusRoundB = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusRoundB: value}}, callback);
 }
 
-module.exports.saveIcoInfoBonusRoundC = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{bonusRoundC: icoInfo.bonusRoundC}}, callback);
+module.exports.saveIcoInfoBonusRoundC = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusRoundC: value}}, callback);
 }
 
-module.exports.saveIcoInfoBonusVolume10Eth = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{bonusVolume10Eth: icoInfo.bonusVolume10Eth}}, callback);
+module.exports.saveIcoInfoBonusVolume10Eth = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusVolume10Eth: value}}, callback);
 }
 
-module.exports.saveIcoInfoBonusVolume30Eth = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{bonusVolume30Eth: icoInfo.bonusVolume30Eth}}, callback);
+module.exports.saveIcoInfoBonusVolume30Eth = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusVolume30Eth: value}}, callback);
 }
 
-module.exports.saveIcoInfoBonusVolume50Eth = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{bonusVolume50Eth: icoInfo.bonusVolume50Eth}}, callback);
+module.exports.saveIcoInfoBonusVolume50Eth = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusVolume50Eth: value}}, callback);
 }
 
-module.exports.saveIcoInfoBonusReferral = function(icoInfo, callback) {	
-	IcoInfo.update({name:icoInfo.name}, {$set:{bonusReferral: icoInfo.bonusReferral}}, callback);
+module.exports.saveIcoInfoBonusReferral = function(value, callback) {	
+	IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusReferral: value}}, callback);
 }

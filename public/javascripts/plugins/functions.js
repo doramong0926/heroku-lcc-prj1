@@ -211,38 +211,37 @@ function showProfileInfo(userInfo) {
 }
 
 function showAdminIcoInfo(icoInfo) {
-	$("#admin-tokenName").text(icoInfo.name);
+	document.getElementById("admin-tokenName").value = icoInfo.name;
+	document.getElementById("admin-totalSalesVolume").value = numberWithCommas(icoInfo.totalSalesVolume);
+	document.getElementById("admin-preSalesVolume").value = numberWithCommas(icoInfo.preSalesVolume);
+	document.getElementById("admin-roundAVolume").value = numberWithCommas(icoInfo.roundAVolume);
+	document.getElementById("admin-roundBVolume").value = numberWithCommas(icoInfo.roundBVolume);
+	document.getElementById("admin-roundCVolume").value = numberWithCommas(icoInfo.roundCVolume);
 
-	$("#admin-totalSalesVolume").text(numberWithCommas(icoInfo.totalSalesVolume) + " BLC");
-	$("#admin-preSalesVolume").text(numberWithCommas(icoInfo.preSalesVolume) + " BLC");
-	$("#admin-roundAVolume").text(numberWithCommas(icoInfo.roundAVolume) + " BLC");
-	$("#admin-roundBVolume").text(numberWithCommas(icoInfo.roundBVolume) + " BLC");
-	$("#admin-roundCVolume").text(numberWithCommas(icoInfo.roundCVolume) + " BLC");
+	document.getElementById("admin-round").value = icoInfo.round;
+	document.getElementById("admin-startPreSale").value = (new Date(icoInfo.startPreSale)).toUTCString() + " / " + (new Date(icoInfo.startPreSale)).toLocaleString();
+	document.getElementById("admin-endPreSale").value = (new Date(icoInfo.endPreSale)).toUTCString() + " / " + (new Date(icoInfo.endPreSale)).toLocaleString();
+	document.getElementById("admin-endRoundA").value = (new Date(icoInfo.endRoundA)).toUTCString() + " / " + (new Date(icoInfo.endRoundA)).toLocaleString();
+	document.getElementById("admin-endRoundB").value = (new Date(icoInfo.endRoundB)).toUTCString() + " / " + (new Date(icoInfo.endRoundB)).toLocaleString();
+	document.getElementById("admin-endRoundC").value = (new Date(icoInfo.endRoundC)).toUTCString() + " / " + (new Date(icoInfo.endRoundC)).toLocaleString();
 
-	$("#admin-round").text(icoInfo.round);
-	$("#admin-startPreSale").text((new Date(icoInfo.startPreSale)).toUTCString() + " / " + (new Date(icoInfo.startPreSale)).toLocaleString());
-	$("#admin-endPreSale").text((new Date(icoInfo.endPreSale)).toUTCString() + " / " + (new Date(icoInfo.endPreSale)).toLocaleString());
-	$("#admin-endRoundA").text((new Date(icoInfo.endRoundA)).toUTCString() + " / " + (new Date(icoInfo.endRoundA)).toLocaleString());
-	$("#admin-endRoundB").text((new Date(icoInfo.endRoundB)).toUTCString() + " / " + (new Date(icoInfo.endRoundB)).toLocaleString());
-	$("#admin-endRoundC").text((new Date(icoInfo.endRoundC)).toUTCString() + " / " + (new Date(icoInfo.endRoundC)).toLocaleString());
-	
-	$("#admin-exchangeRate").text("1ETH = " + parseInt(numberWithCommas(icoInfo.exchangeRate)));
-	$("#admin-bonusPreSale").text(parseInt(numberWithCommas(icoInfo.bonusPreSale * 100)) + " %");
-	$("#admin-bonusRoundA").text(parseInt(numberWithCommas(icoInfo.bonusRoundA * 100)) + " %");
-	$("#admin-bonusRoundB").text(parseInt(numberWithCommas(icoInfo.bonusRoundB * 100)) + " %");
-	$("#admin-bonusRoundC").text(parseInt(numberWithCommas(icoInfo.bonusRoundC * 100)) + " %");
-	$("#admin-bonusVolume10Eth").text(parseInt(numberWithCommas(icoInfo.bonusVolume10Eth * 100)) + " %");
-	$("#admin-bonusVolume30Eth").text(parseInt(numberWithCommas(icoInfo.bonusVolume30Eth * 100)) + " %");
-	$("#admin-bonusVolume50Eth").text(parseInt(numberWithCommas(icoInfo.bonusVolume50Eth * 100)) + " %");
-	$("#admin-bonusReferral").text(parseInt(numberWithCommas(icoInfo.bonusReferral * 100)) + " %");
-	
+	document.getElementById("admin-exchangeRate").value = numberWithCommas(parseInt(icoInfo.exchangeRate));
+	document.getElementById("admin-bonusPreSale").value = numberWithCommas(parseInt(icoInfo.bonusPreSale));
+	document.getElementById("admin-bonusRoundA").value = numberWithCommas(parseInt(icoInfo.bonusRoundA));
+	document.getElementById("admin-bonusRoundB").value = numberWithCommas(parseInt(icoInfo.bonusRoundB));
+	document.getElementById("admin-bonusRoundC").value = numberWithCommas(parseInt(icoInfo.bonusRoundC));
+	document.getElementById("admin-bonusVolume10Eth").value = numberWithCommas(parseInt(icoInfo.bonusVolume10Eth));
+	document.getElementById("admin-bonusVolume30Eth").value = numberWithCommas(parseInt(icoInfo.bonusVolume30Eth));
+	document.getElementById("admin-bonusVolume50Eth").value = numberWithCommas(parseInt(icoInfo.bonusVolume50Eth));
+	document.getElementById("admin-bonusReferral").value = numberWithCommas(parseInt(icoInfo.bonusReferral));
+
 	getIcoAddr(function(err, data) {
 		if (err) {
 			;
 		}
 		else {
-			$("#admin-contractAddress").text(data.contractAddr);
-			$("#admin-icoAddress").text(data.icoAddr);
+			document.getElementById("admin-contractAddress").value = data.contractAddr;
+			document.getElementById("admin-icoAddress").value = data.icoAddr;
 		}
 	});
 	
@@ -290,48 +289,47 @@ function calculateWillReceiveToken(userInfo, icoInfo) {
 	token = (eth.value * icoInfo.exchangeRate);
 
 	if (icoInfo.round == "commingSoon" || icoInfo.round == "preSale" ) {
-		roundBonusRate = icoInfo.bonusPreSale * 100;
-		roundBonusToken = token * icoInfo.bonusPreSale;
+		roundBonusRate = icoInfo.bonusPreSale;
+		roundBonusToken = token * icoInfo.bonusPreSale / 100;
 
 	}
 	else if (icoInfo.round == "roundA") {
-		roundBonusRate = icoInfo.bonusRoundA * 100;
-		roundBonusToken = token * icoInfo.bonusRoundA;
+		roundBonusRate = icoInfo.bonusRoundA;
+		roundBonusToken = token * icoInfo.bonusRoundA / 100;
 	}
 	else if (icoInfo.round == "roundB") {
-		roundBonusRate = icoInfo.bonusRoundB * 100;
-		roundBonusToken = token * icoInfo.bonusRoundB;
+		roundBonusRate = icoInfo.bonusRoundB;
+		roundBonusToken = token * icoInfo.bonusRoundB / 100;
 	}
 	else if (icoInfo.round == "roundC") {
-		roundBonusRate = icoInfo.bonusRoundC * 100;
-		roundBonusToken = token * icoInfo.bonusRoundC;
+		roundBonusRate = icoInfo.bonusRoundC;
+		roundBonusToken = token * icoInfo.bonusRoundC / 100;
 	}
 	else {
 		roundBonusRate = 0;
 		roundBonusToken = 0;
 	}
 
-	if (eth.value >= 50) {               
-		volumeBonusToken = token * icoInfo.bonusVolume50Eth;
-		volumeBonusRate = parseInt(icoInfo.bonusVolume50Eth * 100);
-		
+	if (eth.value >= 50) {               		
+		volumeBonusRate = parseInt(icoInfo.bonusVolume50Eth);
+		volumeBonusToken = token * icoInfo.bonusVolume50Eth / 100;		
 	}
-	else if (eth.value >= 30) {
-		volumeBonusToken = token * icoInfo.bonusVolume30Eth;
-		volumeBonusRate = parseInt(icoInfo.bonusVolume30Eth * 100);
+	else if (eth.value >= 30) {		
+		volumeBonusRate = parseInt(icoInfo.bonusVolume30Eth);
+		volumeBonusToken = token * icoInfo.bonusVolume30Eth / 100;
 	}
-	else if (eth.value >= 10) {
-		volumeBonusToken = token * icoInfo.bonusVolume10Eth;
-		volumeBonusRate = parseInt(icoInfo.bonusVolume10Eth * 100);
+	else if (eth.value >= 10) {		
+		volumeBonusRate = parseInt(icoInfo.bonusVolume10Eth);
+		volumeBonusToken = token * icoInfo.bonusVolume10Eth / 100;
 	}
 	else if (eth.value < 10) {
 		volumeBonusToken = 0;
 		volumeBonusRate = 0;
 	}		
 
-	if (userInfo.referralAddr != "") {
-		referralBonusToken = token * icoInfo.bonusReferral;
-		referralBonusRate = parseInt(icoInfo.bonusReferral * 100);
+	if (userInfo.referralAddr != "") {		
+		referralBonusRate = parseInt(icoInfo.bonusReferral);
+		referralBonusToken = token * icoInfo.bonusReferral / 100;
 	}
 	else {
 		referralBonusToken = 0;

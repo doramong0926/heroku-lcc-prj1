@@ -161,7 +161,7 @@ module.exports.getTotalDistributedToken = function(contractAddr, icoAddr, callba
 			for (var i=0, len = result.length; i < len; i++) {					
 				if ((result[i].from.toLowerCase() == icoAddr.toLowerCase()))
 				{		
-					distributedToken = distributedToken + parseInt(result[i].value);
+					distributedToken = distributedToken + parseInt(result[i].value);					
 				}						
 			}					
 		}

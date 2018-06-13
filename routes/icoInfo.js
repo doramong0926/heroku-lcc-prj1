@@ -79,5 +79,20 @@ router.post('/icoAddr', function(req, res,) {
 	res.json({ success: 'true', contractAddr: config.data.icoInfo.contractAddr, icoAddr: config.data.icoInfo.icoAddr});
 });
 
+// post saveTotalSalesVolume
+router.post('/saveTotalSalesVolume', function(req, res,) {	
+	var saveData = req.body.saveData;
+	req.checkBody('saveData', 'saveData is required').notEmpty();
+	IcoInfo.saveIcoInfoTotalSalesVolume(saveData, function (err) {				
+		if (err) {
+			console.log("Fail to save TotalSalesVolume.");	
+			res.json({ success: 'false'});
+		}
+		else{
+			res.json({ success: 'true'});
+		}				
+	});
+});
+
 
 module.exports = router;
