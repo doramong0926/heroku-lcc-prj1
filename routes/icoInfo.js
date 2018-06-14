@@ -80,19 +80,23 @@ router.post('/icoAddr', function(req, res,) {
 });
 
 // post saveTotalSalesVolume
-router.post('/saveTotalSalesVolume', function(req, res,) {	
-	var saveData = req.body.saveData;
+router.post('/saveIcoInfo', function(req, res,) {	
+	var infoItem = req.body.infoItem;
+	var saveData = req.body.saveData;	
+	req.checkBody('infoItem', 'infoItem is required').notEmpty();
 	req.checkBody('saveData', 'saveData is required').notEmpty();
-	IcoInfo.saveIcoInfoTotalSalesVolume(saveData, function (err) {				
+
+	console.log("infoItem : " + infoItem + " saveData : " + saveData);
+
+	IcoInfo.saveIcoInfo(infoItem, saveData, function (err) {				
 		if (err) {
-			console.log("Fail to save TotalSalesVolume.");	
-			res.json({ success: 'false'});
+			console.log("Fail to save " + infoItem);	
+			res.json({ success: 'false', err: err});
 		}
 		else{
 			res.json({ success: 'true'});
 		}				
 	});
 });
-
 
 module.exports = router;

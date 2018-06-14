@@ -19,6 +19,19 @@ function getIcoInfo(callback) {
     });
 }
 
+function saveIcoInfo(infoItem, saveData) {
+	$.post("/icoInfo/saveIcoInfo", {infoItem: infoItem, saveData: saveData}, function(data) {
+		if (data.success == 'false') {
+			console.log(data.err);
+		}
+		else
+		{
+			$.get("/admin");
+			window.location.replace("/admin"); 
+		}
+	});
+}
+
 function getInvestedInfo(callback) {
 	var err = false;
     $.post("/icoInfo/investedInfo", function(data) {
@@ -217,13 +230,16 @@ function showAdminIcoInfo(icoInfo) {
 	document.getElementById("admin-roundAVolume").value = numberWithCommas(icoInfo.roundAVolume);
 	document.getElementById("admin-roundBVolume").value = numberWithCommas(icoInfo.roundBVolume);
 	document.getElementById("admin-roundCVolume").value = numberWithCommas(icoInfo.roundCVolume);
-
-	document.getElementById("admin-round").value = icoInfo.round;
 	document.getElementById("admin-startPreSale").value = (new Date(icoInfo.startPreSale)).toUTCString() + " / " + (new Date(icoInfo.startPreSale)).toLocaleString();
+	document.getElementById("admin-startPreSale-picker").value = (new Date(icoInfo.startPreSale)).toLocaleString();
 	document.getElementById("admin-endPreSale").value = (new Date(icoInfo.endPreSale)).toUTCString() + " / " + (new Date(icoInfo.endPreSale)).toLocaleString();
+	document.getElementById("admin-endPreSale-picker").value = (new Date(icoInfo.startPreSale)).toLocaleString();
 	document.getElementById("admin-endRoundA").value = (new Date(icoInfo.endRoundA)).toUTCString() + " / " + (new Date(icoInfo.endRoundA)).toLocaleString();
+	document.getElementById("admin-endRoundA-picker").value = (new Date(icoInfo.startPreSale)).toLocaleString();
 	document.getElementById("admin-endRoundB").value = (new Date(icoInfo.endRoundB)).toUTCString() + " / " + (new Date(icoInfo.endRoundB)).toLocaleString();
+	document.getElementById("admin-endRoundB-picker").value = (new Date(icoInfo.startPreSale)).toLocaleString();
 	document.getElementById("admin-endRoundC").value = (new Date(icoInfo.endRoundC)).toUTCString() + " / " + (new Date(icoInfo.endRoundC)).toLocaleString();
+	document.getElementById("admin-endRoundC-picker").value = (new Date(icoInfo.startPreSale)).toLocaleString();
 
 	document.getElementById("admin-exchangeRate").value = numberWithCommas(parseInt(icoInfo.exchangeRate));
 	document.getElementById("admin-bonusPreSale").value = numberWithCommas(parseInt(icoInfo.bonusPreSale));
@@ -234,6 +250,19 @@ function showAdminIcoInfo(icoInfo) {
 	document.getElementById("admin-bonusVolume30Eth").value = numberWithCommas(parseInt(icoInfo.bonusVolume30Eth));
 	document.getElementById("admin-bonusVolume50Eth").value = numberWithCommas(parseInt(icoInfo.bonusVolume50Eth));
 	document.getElementById("admin-bonusReferral").value = numberWithCommas(parseInt(icoInfo.bonusReferral));
+
+	document.getElementById("admin-round").value = icoInfo.round;	
+	if (icoInfo.round == "commingSoon")	{
+		$("#admin-round-selectBox").val("1").attr("selected", "selected");
+	} else if (icoInfo.round == "preSale") {
+		$("#admin-round-selectBox").val("2").attr("selected", "selected");
+	} else if (icoInfo.round == "roundA") {
+		$("#admin-round-selectBox").val("3").attr("selected", "selected");
+	} else if (icoInfo.round == "roundB") {
+		$("#admin-round-selectBox").val("4").attr("selected", "selected");
+	} else if (icoInfo.round == "roundC") {
+		$("#admin-round-selectBox").val("5").attr("selected", "selected");
+	}
 
 	getIcoAddr(function(err, data) {
 		if (err) {
