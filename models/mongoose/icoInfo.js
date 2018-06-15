@@ -106,11 +106,11 @@ module.exports.createIcoInfo = function(tokenString, callback) {
 		roundCVolume : 2500000,
 		
 		round : "commingSoon",		
-		startPreSale : 1534345200000,
-		endPreSale : 0,
-		endRoundA : 0,
-		endRoundB : 0,
-		endRoundC : 0,
+		startPreSale : 1535709600000,
+		endPreSale : 1535709600000,
+		endRoundA : 1535709600000,
+		endRoundB : 1535709600000,
+		endRoundC : 1535709600000,
 
 		exchangeRate : 100000,
 		bonusPreSale : 30,
@@ -137,11 +137,11 @@ module.exports.initIcoInfo = function(tokenString, callback) {
 													roundCVolume : 2500000,
 													
 													round : "commingSoon",		
-													startPreSale : 1534345200000,
-													endPreSale : 0,
-													endRoundA : 0,
-													endRoundB : 0,
-													endRoundC : 0,
+													startPreSale : 1535709600000,
+													endPreSale : 1535709600000,
+													endRoundA : 1535709600000,
+													endRoundB : 1535709600000,
+													endRoundC : 1535709600000,
 
 													exchangeRate : 100000,
 													bonusPreSale : 30,
