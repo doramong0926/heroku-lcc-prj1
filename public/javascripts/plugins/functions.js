@@ -32,19 +32,22 @@ function saveIcoInfo(infoItem, saveData) {
 	});
 }
 
+function controlIcoInfo(controlType) {
+	$.post("/icoInfo/controlIcoInfo", {controlType: controlType}, function(data) {
+		if (data.success == 'false') {
+			console.log(data.err);
+		}
+		else
+		{
+			$.get("/admin");
+			window.location.replace("/admin"); 
+		}
+	});
+}
+
 function getInvestedInfo(callback) {
 	var err = false;
     $.post("/icoInfo/investedInfo", function(data) {
-		if (data.success == 'false') {
-			err = true;
-		}
-		callback(err, data)		
-    });
-}
-
-function getIcoAddr(callback) {
-	var err = false;
-    $.post("/icoInfo/icoAddr", function(data) {
 		if (data.success == 'false') {
 			err = true;
 		}
@@ -88,14 +91,22 @@ function showNavAdmin(showHide) {
 	}
 }
 
+function showOnlySuperAdmin() {
+	$("#create-IcoInfo").show();
+	$("#init-IcoInfo").show();
+	$("#icoDbControl").show();
+	$("#unlock-contractAddr").show();
+	$("#unlock-icoAddr").show();
+}
+
 function showInvestedInfo(icoInfo, investedInfo) {
-	var ariaValuenow = investedInfo.totalDistributedToken / icoInfo.totalSalesVolume * 100;
+	var ariaValuenow = parseFloat(investedInfo.totalDistributedToken / icoInfo.totalSalesVolume * 100).toFixed(2);
 	var styleWidth = "width: " + ariaValuenow + "%";
 	$("#progress-info").attr('style', styleWidth);
 	$("#progress-info").attr('aria-valuenow', ariaValuenow);
 	$("#progress-info").text(ariaValuenow + "%");	
 	$("#totalSalesVolume").text(numberWithCommas(icoInfo.totalSalesVolume) + " BLC");	
-	$("#currentDistribution").text(numberWithCommas(investedInfo.totalDistributedToken) + " BLC / " + numberWithCommas(investedInfo.totalInvestedEth) + " ETH");	
+	$("#currentDistribution").text(numberWithCommas(parseFloat(investedInfo.totalDistributedToken).toFixed(2)) + " BLC / " + numberWithCommas(investedInfo.totalInvestedEth) + " ETH");	
 }
 
 function showIcoMainEthWalletAddr(showHide) {
@@ -212,10 +223,10 @@ function showProfileInfo(userInfo) {
 			err = true;
 		}
 		else {
-			$("#investeReceviedToken").text(numberWithCommas(data.investInfo.receviedToken) + " BLC");
-			$("#investeReceviedToken-sm").text(numberWithCommas(data.investInfo.receviedToken) + " BLC");	
-			$("#investeInvestEth").text(numberWithCommas(data.investInfo.investEth) + " ETH");
-			$("#investeInvestEth-sm").text(numberWithCommas(data.investInfo.investEth) + " ETH");
+			$("#investeReceviedToken").text(numberWithCommas(parseFloat(data.investInfo.receviedToken).toFixed(2)) + " BLC");
+			$("#investeReceviedToken-sm").text(numberWithCommas(parseFloat(data.investInfo.receviedToken).toFixed(2)) + " BLC");	
+			$("#investeInvestEth").text(numberWithCommas(parseFloat(data.investInfo.investEth).toFixed(2)) + " ETH");
+			$("#investeInvestEth-sm").text(numberWithCommas(parseFloat(data.investInfo.investEth).toFixed(2)) + " ETH");
 			genTransactionHistory(data, function(history) {				
 				$("#transactionHistory").html(history);
 			});
@@ -224,21 +235,25 @@ function showProfileInfo(userInfo) {
 }
 
 function showAdminIcoInfo(icoInfo) {
+	console.log(icoInfo);
+	
 	document.getElementById("admin-tokenName").value = icoInfo.name;
+	document.getElementById("admin-contractAddr").value = icoInfo.contractAddr;
+	document.getElementById("admin-icoAddr").value = icoInfo.icoAddr;
 	document.getElementById("admin-totalSalesVolume").value = numberWithCommas(icoInfo.totalSalesVolume);
 	document.getElementById("admin-preSalesVolume").value = numberWithCommas(icoInfo.preSalesVolume);
 	document.getElementById("admin-roundAVolume").value = numberWithCommas(icoInfo.roundAVolume);
 	document.getElementById("admin-roundBVolume").value = numberWithCommas(icoInfo.roundBVolume);
 	document.getElementById("admin-roundCVolume").value = numberWithCommas(icoInfo.roundCVolume);
-	document.getElementById("admin-startPreSale").value = (new Date(icoInfo.startPreSale)).toUTCString() + " / " + (new Date(icoInfo.startPreSale)).toLocaleString();
+	document.getElementById("admin-startPreSale").value = (new Date(icoInfo.startPreSale)).toLocaleString() + " / " + (new Date(icoInfo.startPreSale)).toUTCString();
 	document.getElementById("admin-startPreSale-picker").value = (new Date(icoInfo.startPreSale)).toLocaleString();
-	document.getElementById("admin-endPreSale").value = (new Date(icoInfo.endPreSale)).toUTCString() + " / " + (new Date(icoInfo.endPreSale)).toLocaleString();
+	document.getElementById("admin-endPreSale").value = (new Date(icoInfo.endPreSale)).toLocaleString() + " / " + (new Date(icoInfo.endPreSale)).toUTCString();
 	document.getElementById("admin-endPreSale-picker").value = (new Date(icoInfo.startPreSale)).toLocaleString();
-	document.getElementById("admin-endRoundA").value = (new Date(icoInfo.endRoundA)).toUTCString() + " / " + (new Date(icoInfo.endRoundA)).toLocaleString();
+	document.getElementById("admin-endRoundA").value = (new Date(icoInfo.endRoundA)).toLocaleString() + " / " + (new Date(icoInfo.endRoundA)).toUTCString();
 	document.getElementById("admin-endRoundA-picker").value = (new Date(icoInfo.startPreSale)).toLocaleString();
-	document.getElementById("admin-endRoundB").value = (new Date(icoInfo.endRoundB)).toUTCString() + " / " + (new Date(icoInfo.endRoundB)).toLocaleString();
+	document.getElementById("admin-endRoundB").value = (new Date(icoInfo.endRoundB)).toLocaleString() + " / " + (new Date(icoInfo.endRoundB)).toUTCString();
 	document.getElementById("admin-endRoundB-picker").value = (new Date(icoInfo.startPreSale)).toLocaleString();
-	document.getElementById("admin-endRoundC").value = (new Date(icoInfo.endRoundC)).toUTCString() + " / " + (new Date(icoInfo.endRoundC)).toLocaleString();
+	document.getElementById("admin-endRoundC").value = (new Date(icoInfo.endRoundC)).toLocaleString() + " / " + (new Date(icoInfo.endRoundC)).toUTCString();
 	document.getElementById("admin-endRoundC-picker").value = (new Date(icoInfo.startPreSale)).toLocaleString();
 
 	document.getElementById("admin-exchangeRate").value = numberWithCommas(parseInt(icoInfo.exchangeRate));
@@ -250,6 +265,7 @@ function showAdminIcoInfo(icoInfo) {
 	document.getElementById("admin-bonusVolume30Eth").value = numberWithCommas(parseInt(icoInfo.bonusVolume30Eth));
 	document.getElementById("admin-bonusVolume50Eth").value = numberWithCommas(parseInt(icoInfo.bonusVolume50Eth));
 	document.getElementById("admin-bonusReferral").value = numberWithCommas(parseInt(icoInfo.bonusReferral));
+	document.getElementById("admin-minimumInvesteEth").value = numberWithCommas(parseFloat(icoInfo.minimumInvesteEth));
 
 	document.getElementById("admin-round").value = icoInfo.round;	
 	if (icoInfo.round == "commingSoon")	{
@@ -263,23 +279,12 @@ function showAdminIcoInfo(icoInfo) {
 	} else if (icoInfo.round == "roundC") {
 		$("#admin-round-selectBox").val("5").attr("selected", "selected");
 	}
-
-	getIcoAddr(function(err, data) {
-		if (err) {
-			;
-		}
-		else {
-			document.getElementById("admin-contractAddress").value = data.contractAddr;
-			document.getElementById("admin-icoAddress").value = data.icoAddr;
-		}
-	});
-	
 }
 
 function genTransactionHistory(data, callback) {
 	if (data.investInfo.numOfdata != 0) {
+		var history = "";
 		for (var i=0, len = data.investInfo.numOfdata; i < len; i++) { 
-			var history;
 			if (data.investInfo.result[i].inOut == 'in') {
 				history = history + "<tr><td>You received " + numberWithCommas(data.investInfo.result[i].value) + " " + data.investInfo.result[i].tokenSymbol + "(" + data.investInfo.result[i].timeStamp + ")"
 							+  " : <a href='https://ropsten.etherscan.io/tx/" + data.investInfo.result[i].txId + "' " + "target='_blank'>check TXID</a></td></tr>"; 
@@ -289,6 +294,9 @@ function genTransactionHistory(data, callback) {
 							+  " : <a href='https://ropsten.etherscan.io/tx/" + data.investInfo.result[i].txId + "' " + "target='_blank'>check TXID</a></td></tr>"; 
 			}			
 		}
+		console.log("ddddddddddd");
+		console.log(history);
+		
 		callback(history);
 	}
 }

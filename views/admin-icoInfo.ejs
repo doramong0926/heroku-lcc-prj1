@@ -6,31 +6,45 @@
             <div class="features">
                 <div class="row">
                     <div class="col-12 text-left">
+                        <h2 class="title" id="icoDbControl" style="display:none;"># ICO DB Control</h2> 
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-left">
+                        <button class="btn btn-primary btn-sm" id="create-IcoInfo" style="display:none;">Create icoInfo DB</button>
+                        <button class="btn btn-primary btn-sm" id="init-IcoInfo" style="display:none;">Init icoInfo DB</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 text-left">
                         <h2 class="title"># ICO INFO</h2> 
                     </div>
                 </div>
                 <div class="row">
-                    <h4 class="col-sm-3 col-form-label text-left" >Token Name : </h4>   
+                    <div class="col-sm-3 col-form-label text-left"><h4>Token Name : </h4></div>  
                     <div class="col-sm-7">
                         <h4><input type="text" readonly class="form-control-plaintext" id="admin-tokenName"></h4>
                     </div>
                 </div>
                 <div class="row">
-                    <h4 class="col-sm-3 col-form-label text-left">Contract Address : </h4>   
+                    <div class="col-sm-3 col-form-label text-left"><h4>Contract Address : </h4></div>  
                     <div class="col-sm-7">
-                        <h4><input type="text" readonly class="form-control-plaintext" id="admin-contractAddress"></h4>
+                        <h4><input type="text" readonly class="form-control-plaintext" id="admin-contractAddr"></h4>
                     </div>
                     <div class="col-sm-2  text-left">
-                        <button class="btn btn-primary btn-sm" id="unlock-icoInfo">Unlock</button>
+                            <button class="btn btn-primary btn-sm" id="unlock-contractAddr" style="display:none;">Unlock</button>
+                            <button class="btn btn-primary btn-sm" id="save-contractAddr" style="display:none;">Save</button>
                     </div>
                 </div>
                 <div class="row">
-                    <h4 class="col-sm-3 col-form-label text-left">Ico Address : </h4>   
+                    <div class="col-sm-3 col-form-label text-left"><h4>Ico Address : </h4></div>  
                     <div class="col-sm-7">
-                        <h4><input type="text" readonly class="form-control-plaintext" id="admin-icoAddress"></h4>
+                        <h4><input type="text" readonly class="form-control-plaintext" id="admin-icoAddr"></h4>
                     </div>
                     <div class="col-sm-2  text-left">
-                        <button class="btn btn-primary btn-sm" id="unlock-icoInfo">Unlock</button>
+                            <button class="btn btn-primary btn-sm" id="unlock-icoAddr" style="display:none;">Unlock</button>
+                            <button class="btn btn-primary btn-sm" id="save-icoAddr" style="display:none;">Save</button>
                     </div>
                 </div>
 
@@ -127,6 +141,16 @@
                 <div class="row">
                     <div class="col-12 text-left">
                         <h2 class="title"># ICO SALES VOLUME</h2> 
+                    </div>
+                </div>                
+                <div class="row">
+                    <h4 class="col-sm-3 col-form-label text-left" >minimum Investe Etherium(ETH) : </h4>   
+                    <div class="col-sm-7">
+                        <h4><input type="text" readonly class="form-control-plaintext" id="admin-minimumInvesteEth"></h4>
+                    </div>
+                    <div class="col-sm-2  text-left">
+                        <button class="btn btn-primary btn-sm" id="unlock-minimumInvesteEth">Unlock</button>
+                        <button class="btn btn-primary btn-sm" id="save-minimumInvesteEth" style="display:none;">Save</button>
                     </div>
                 </div>
                 <div class="row">

@@ -53,14 +53,14 @@ router.post('/isAdmin', function(req, res,){
 	if (req.isAuthenticated()) {
 		isAdmin(req, function callback(ret, userType) {			
 			if(ret == false) {
-				res.json({"isAdmin" : "false", "adminType" : userType});
+				res.json({"isAdmin" : "false", "userType" : userType});
 			}
 			else {
-				res.json({"isAdmin" : "true", "adminType" : userType});	
+				res.json({"isAdmin" : "true", "userType" : userType});	
 			}
 		});
 	} else {
-		res.json({"isAdmin" : "false", "adminType" : "nomal"});	
+		res.json({"isAdmin" : "false", "userType" : "nomal"});	
 	}
 });
 

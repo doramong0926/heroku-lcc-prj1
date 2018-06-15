@@ -26,22 +26,12 @@ router.get('/', ensureAuthenticated, function(req, res, next){
 				if (err) {
 					console.log("Fail to get Ico info.");			
 				}
-				if (!icoInfo) {
-					IcoInfo.createIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {				
-						if (err) {
-							console.log("Fail to create Ico info.");	
-						}
-						res.redirect('/');
-					});
-				}
-				else {
-					res.render('index', {	isLogin : "true", 
+				res.render('index', {	isLogin : "true", 
 											navbarType : "index", 
 											success: 'true', 
 											icoInfo: icoInfo,
 											totalInvestedEth: totalInvestedEth,
 											totalDistributedToken: totalDistributedToken});	
-				}
 			});	
 		});
 	});
@@ -174,12 +164,6 @@ passport.deserializeUser(function (id, done) {
 });
 
 function ensureAuthenticated(req, res, next){	
-	/*
-	var tmpDate = new Date("2018-8-16");
-	var tmpDate2 = new Date(1534345200000);
-	console.log(tmpDate.valueOf() );
-	console.log(tmpDate2);
-	*/	
 	if (req.query.ref != undefined) {
 		req.session.ref = req.query.ref;		
 	}
@@ -187,7 +171,6 @@ function ensureAuthenticated(req, res, next){
 	if (req.isAuthenticated()) {
 		return next();
 	} else {
-		//res.render('index', {isLogin : "false", navbarType : "index"});
 		web3Control.getTotalInvestedEth(config.data.icoInfo.icoAddr, function(err, totalInvestedEth) {
 			if (err) {
 				console.log("Fail to getTotalDistributedToken");	
@@ -200,22 +183,12 @@ function ensureAuthenticated(req, res, next){
 					if (err) {
 						console.log("Fail to get Ico info.");			
 					}
-					if (!icoInfo) {
-						IcoInfo.createIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {				
-							if (err) {
-								console.log("Fail to create Ico info.");	
-							}
-							res.redirect('/');
-						});
-					}
-					else {
-						res.render('index', {	isLogin : "false", 
+					res.render('index', {	isLogin : "false", 
 												navbarType : "index", 
 												success: 'true', 
 												icoInfo: icoInfo,
 												totalInvestedEth: totalInvestedEth,
 												totalDistributedToken: totalDistributedToken});	
-					}
 				});	
 			});
 		});

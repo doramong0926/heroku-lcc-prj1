@@ -5,6 +5,9 @@ $(document).ready(function() {
 			$.get("/");
 		}
 		else {
+			if (userType == "superAdmin") {
+				showOnlySuperAdmin();
+			}
 			getIcoInfo( function(err, icoInfo) {
 				if (err) {	
 					;
@@ -32,6 +35,37 @@ $(document).ready(function() {
 
 
 $(document).ready(function(){
+	$("#create-IcoInfo").click(function() {
+		var controlType = "create";
+		controlIcoInfo(controlType);
+	});
+
+	$("#init-IcoInfo").click(function() {
+		var controlType = "init";
+		controlIcoInfo(controlType);
+	});
+
+	$("#unlock-contractAddr").click(function() {
+		$("#admin-contractAddr").prop("readonly", false);
+		$("#save-contractAddr").show(); 
+		$("#unlock-contractAddr").hide();
+	});
+	$("#save-contractAddr").click(function() {
+		var saveData = $("#admin-contractAddr").val();
+		var infoItem = "contractAddr";
+		saveIcoInfo(infoItem, saveData);
+	});
+
+	$("#unlock-icoAddr").click(function() {
+		$("#admin-icoAddr").prop("readonly", false);
+		$("#save-icoAddr").show(); 
+		$("#unlock-icoAddr").hide();
+	});
+	$("#save-icoAddr").click(function() {
+		var saveData = $("#admin-icoAddr").val();
+		var infoItem = "icoAddr";
+		saveIcoInfo(infoItem, saveData);
+	});
 
 	$("#unlock-round").click(function() {
 		$("#admin-round").hide();
@@ -258,7 +292,17 @@ $(document).ready(function(){
 		var infoItem = "bonusReferral";
 		saveIcoInfo(infoItem, saveData);
 	});
-	
+
+	$("#unlock-minimumInvesteEth").click(function() {
+		$("#admin-minimumInvesteEth").prop("readonly", false);
+		$("#save-minimumInvesteEth").show(); 
+		$("#unlock-minimumInvesteEth").hide();
+	});
+	$("#save-minimumInvesteEth").click(function() {
+		var saveData = $("#admin-minimumInvesteEth").val();
+		var infoItem = "minimumInvesteEth";
+		saveIcoInfo(infoItem, saveData);
+	});
 });
 
 

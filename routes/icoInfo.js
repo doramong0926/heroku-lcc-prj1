@@ -52,42 +52,22 @@ router.get('/icoSchedule', function (req, res) {
 // post icoSchedule
 router.post('/icoSchedule', function(req, res,) {	
 	IcoInfo.getIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {
-		if (err) {
-			console.log("Fail to get Ico info.");			
-		}
-		if (!icoInfo) {
-			IcoInfo.createIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {				
-				if (err) {
-					console.log("Fail to create Ico info.");	
-				}
-				res.redirect('/');
-			});
-		}
-		else {
+		if (err || !icoInfo) {
+			console.log("Fail to get Ico info.");	
+			res.json({ success: 'false', icoInfo: icoInfo});		
+		} else {
 			res.json({ success: 'true', icoInfo: icoInfo});
 		}		
 	});	
-});
-
-// get icoAddr
-router.get('/icoAddr', function (req, res) {
-	res.redirect('/');
-});
-
-// post icoAddr
-router.post('/icoAddr', function(req, res,) {	
-	res.json({ success: 'true', contractAddr: config.data.icoInfo.contractAddr, icoAddr: config.data.icoInfo.icoAddr});
 });
 
 // post saveTotalSalesVolume
 router.post('/saveIcoInfo', function(req, res,) {	
 	var infoItem = req.body.infoItem;
 	var saveData = req.body.saveData;	
+	console.log("infoItem : " + infoItem + " saveData : " + saveData);
 	req.checkBody('infoItem', 'infoItem is required').notEmpty();
 	req.checkBody('saveData', 'saveData is required').notEmpty();
-
-	console.log("infoItem : " + infoItem + " saveData : " + saveData);
-
 	IcoInfo.saveIcoInfo(infoItem, saveData, function (err) {				
 		if (err) {
 			console.log("Fail to save " + infoItem);	
@@ -98,5 +78,33 @@ router.post('/saveIcoInfo', function(req, res,) {
 		}				
 	});
 });
+
+// post createIcoInfo
+router.post('/controlIcoInfo', function(req, res,) {	
+	var controlType = req.body.controlType;
+	console.log("controlType : " + controlType);
+	req.checkBody('controlType', 'controlType is required').notEmpty();	
+	if (controlType == "create") {
+		IcoInfo.createIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {				
+			if (err) {
+				console.log("Fail to create Ico info : " + err);
+				res.json({ success: 'false', err: err});	
+			} else {
+				res.json({ success: 'true'});
+			}
+		});
+	} else if (controlType == "init"){
+		IcoInfo.initIcoInfo(config.data.icoInfo.tokenString, function (err) {				
+			if (err) {
+				console.log("Fail to init IcoInfo :  " + err);	
+				res.json({ success: 'false', err: err});
+			}
+			else{
+				res.json({ success: 'true'});
+			}				
+		});
+	}
+});
+
 
 module.exports = router;
