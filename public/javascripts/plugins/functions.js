@@ -26,8 +26,8 @@ function saveIcoInfo(infoItem, saveData) {
 		}
 		else
 		{
-			$.get("/admin");
-			window.location.replace("/admin"); 
+			$.get("/admin/icoInfo");
+			window.location.replace("/admin/icoInfo"); 
 		}
 	});
 }
@@ -39,8 +39,8 @@ function controlIcoInfo(controlType) {
 		}
 		else
 		{
-			$.get("/admin");
-			window.location.replace("/admin"); 
+			$.get("/admin/icoInfo");
+			window.location.replace("/admin/icoInfo"); 
 		}
 	});
 }
@@ -97,6 +97,16 @@ function showOnlySuperAdmin() {
 	$("#icoDbControl").show();
 	$("#unlock-contractAddr").show();
 	$("#unlock-icoAddr").show();
+}
+
+function getUserList(callback) {
+	var err = false;
+    $.post("/admin/getUserList", function(data) {
+		if (data.success == 'false') {
+			err = true;
+		}
+		callback(err, data.userList)		
+    });
 }
 
 function showInvestedInfo(icoInfo, investedInfo) {

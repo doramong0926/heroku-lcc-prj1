@@ -84,10 +84,7 @@ var Utc = 'UTC';
 			targetTime.setSeconds(options.targetOffset.sec + targetTime.getSeconds());
 		}
 
-		var nowTime = new Date();
-		console.log("target : " + targetTime);
-		console.log("now : " + nowTime);
-		
+		var nowTime = new Date();	
 
 		diffSecs = Math.floor((targetTime.valueOf()-nowTime.valueOf())/1000);
 

@@ -51,14 +51,38 @@ function hideModal() {
     }, 230);
 }
 
-function checkLoginStatusAdmin(){
+function checkAdminIcoInfo(){
     var checkLogin = false;
     $.post("/userInfo/isAdmin", function(data) {        
         if (data.isAdmin == 'false') {
             $.get("/");
         } else {
-            $.get("/admin");
-            window.location.replace("/admin");  
+            $.get("/admin/icoInfo");
+            window.location.replace("/admin/icoInfo");  
+        }   
+    });
+}
+
+function checkAdminUserList(){
+    var checkLogin = false;
+    $.post("/userInfo/isAdmin", function(data) {        
+        if (data.isAdmin == 'false') {
+            $.get("/");
+        } else {
+            $.get("/admin/userList");
+            window.location.replace("/admin/userList");  
+        }   
+    });
+}
+
+function checkAdminKycInfo(){
+    var checkLogin = false;
+    $.post("/userInfo/isAdmin", function(data) {        
+        if (data.isAdmin == 'false') {
+            $.get("/");
+        } else {
+            $.get("/admin/kycInfo");
+            window.location.replace("/admin/kycInfo");  
         }   
     });
 }

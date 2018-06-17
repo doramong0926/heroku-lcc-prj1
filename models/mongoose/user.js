@@ -93,3 +93,8 @@ module.exports.findInvitation = function(referralAddr, callback) {
 	var query = {referralAddr: referralAddr};
 	User.findOne(query, callback);
 }
+
+
+module.exports.getUserList = function(callback){
+	User.find(callback);
+}
