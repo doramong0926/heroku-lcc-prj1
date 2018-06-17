@@ -23,6 +23,8 @@ $(document).ready(function(){
 					;	
 				}
 				else {
+					$("#address-eth").text(icoInfo.icoAddr);
+					showIcoMainEthWalletAddr(true);
 					calculateWillReceiveToken(userInfo, icoInfo);					
 				}
 			});

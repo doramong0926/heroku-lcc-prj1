@@ -5,7 +5,28 @@
     "icoInfo": {
       "tokenString": "bluecots",
       "contractAddr": "0x7d25311209e3b43e23f87569089bd052e696d7c5",
-      "icoAddr": "0x5cdd23c850b3447c674de4f37ce9006d480e4413"
+      "icoAddr": "0x5cdd23c850b3447c674de4f37ce9006d480e4413",
+      "totalSalesVolume" : 100000000,
+      "preSalesVolume" : 2500000,
+      "roundAVolume" : 2500000,
+      "roundBVolume" : 2500000,
+      "roundCVolume" : 2500000,
+      "round" : "commingSoon",
+      "startPreSale" : 1535709600000,
+      "endPreSale" : 1535709600000,
+      "endRoundA" : 1535709600000,
+      "endRoundB" : 1535709600000,
+      "endRoundC" : 1535709600000,
+      "exchangeRate" : 100000,
+      "bonusPreSale" : 30,
+      "bonusRoundA" : 5,
+      "bonusRoundB" : 3,
+      "bonusRoundC" : 0,
+      "bonusVolume10Eth" : 3,
+      "bonusVolume30Eth" : 5,
+      "bonusVolume50Eth" : 7,
+      "bonusReferral" : 5,
+      "minimumInvesteEth" : 0.1
     },
     "mongodb": {
       "addr": "mongodb://doramong0926:*realkdk8105@ds263639.mlab.com:63639/lcc-userdb"
