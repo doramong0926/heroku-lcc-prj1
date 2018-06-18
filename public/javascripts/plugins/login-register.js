@@ -125,14 +125,11 @@ function checkLoginStatusKyc(){
 
 function loginAjax(){
     $.post("/login", {email: $('#email').val(), password: $('#password').val()}, function(data) {
-        console.log('loginAjax checkLogin email: ' + $('#email').val() + $('#password').val()); 
         if(data.success == 'true'){
-            console.log('data.success : ' + data.success);
             hideModal();
             window.location.replace("/");  
         } else{
             shakeModal(); 
-            console.log('data.success : ' + data.success);
         }
     });
 }
