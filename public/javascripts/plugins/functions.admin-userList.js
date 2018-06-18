@@ -23,6 +23,12 @@ $(document).ready(function() {
 								action: function () {
 									var data = table.row('.selected').data();
 								}
+							},
+							{
+								text : 'PW RESET',
+								action: function () {
+									var data = table.row('.selected').data();
+								}
 							}
 						],
 						fixedColumns:   {
