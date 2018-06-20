@@ -9,6 +9,18 @@ function getUserInfo(callback) {
     });
 }
 
+function getDetailUserInfo(user, callback) {
+	var err = false;
+    $.post("/userInfo/getDetailUserInfo", {requetEmail : user.email}, function(data) {
+		if (data.success == 'false') {
+			err = true;
+		}
+		console.log(data.investInfo);
+		
+		callback(err, data.userInfo, data.investInfo)		
+    });
+}
+
 function getIcoInfo(callback) {
 	var err = false;
     $.post("/icoInfo", function(data) {
@@ -304,7 +316,6 @@ function genTransactionHistory(data, callback) {
 							+  " : <a href='https://ropsten.etherscan.io/tx/" + data.investInfo.result[i].txId + "' " + "target='_blank'>check TXID</a></td></tr>"; 
 			}			
 		}
-		console.log("ddddddddddd");
 		console.log(history);
 		
 		callback(history);
@@ -393,6 +404,125 @@ function calculateWillReceiveToken(userInfo, icoInfo) {
 	document.getElementById("bonusToken-volume").innerHTML = "volume bonus : " + volumeBonusRate + "%";
 	document.getElementById("bonusToken-referral").innerHTML = "referral bonus : " + referralBonusRate + "%";
 }
+
+function updateUserList(userList)
+{
+	$('#tableUserList').show();
+	var table = $('#tableUserList').DataTable({
+		"dom" : "Blfrtip",
+		"buttons" : [		
+			{
+				"text" : "SHOW DETAIL INFO",
+				"action" : function () {					
+					var user = table.row('.selected').data();	
+					showUserListModal(user);
+					
+				}
+			},
+			{
+				"text" : "PW RESET",
+				"action" : function () {
+					var data = table.row('.selected').data();
+				}
+			},
+			"excelHtml5",
+			"csvHtml5",
+			"pdfHtml5",
+		],
+		"fixedColumns" :   {
+			leftColumns: 2
+		},
+		"columnDefs" : [ {
+			"orderable" : false,
+			"className" : "select-checkbox",
+			"targets" :   0,
+			"render" : function (data, type, full, meta){
+				return '<p name="id[]" value="' + $('<div/>').text(data).html() + '">';
+			}
+		} ],
+		"select" : {
+			"style" :    "os",
+			"selector" : "td:first-child"
+		},
+		"order": [[ 1, 'asc' ]],		
+		"lengthMenu" : [[ 5, 10, 30, -1 ], [ 5, 10, 30, "All" ]],
+		"scrollX": true,
+		"data" : userList,
+		"columns": [
+			null,
+			{"data" : "email"},
+			{"data" : "userType"},		
+			{"data" : "kycStatus"},	
+			{"data" : "walletAddr"},	
+			{"data" : "invitation"},
+			{"data" : "referralAddr"},
+			{"data" : "firstName"},
+			{"data" : "lastName"},
+		]		
+	});
+}
+
+function showUserListModal(user) {	
+	$('#detailUser-err').hide();
+	$('#DetailUser-kycPassport').attr('src', null);
+	$('#DetailUser-kycBill').attr('src', null);
+	$('#detailUser-kycStatus').text(null);
+	$('#detailUser-email').text(null);
+	$('#DetailUser-kycName').text(null);
+	$('#DetailUser-kycWallet').text(null);
+	$('#detailUser-userType').text(null);
+	$('#detailUser-investEth').text(null);
+	$('#detailUser-receviedToken').text(null);
+	$('#detailUser-kycWallet').text(null);
+	$('#detailUser-referralAddr').text(null);
+	
+	if (user == null)
+	{
+		$('#detailUser-err').show();
+	}
+	else 
+	{
+		getDetailUserInfo(user, function(err, userInfo, investInfo){			
+			if (err)
+			{
+				;
+			}
+			else {
+				if (userInfo.kycStatus != "ready")
+				{
+					$('#DetailUser-kycPassport').attr('src', './../' + userInfo.kycPicturePath1);
+					$('#DetailUser-kycPassport').attr('width', 400);
+					$('#DetailUser-kycBill').attr('src', './../' + userInfo.kycPicturePath2);
+					$('#DetailUser-kycBill').attr('width', 400);
+					$('#DetailUser-kycName').text("Name : " + userInfo.firstName + " " + userInfo.lastName);
+					$('#DetailUser-kycWallet').text("Wallet : " + userInfo.walletAddr);	
+				}
+				if(userInfo.walletAddr)
+				{
+					$('#detailUser-investEth').text("investEth : " + investInfo.investEth + " ETH");
+					$('#detailUser-receviedToken').text("receviedToken : " + investInfo.receviedToken + " BLC");					
+				}
+				
+				$('#detailUser-email').text("ID :" + userInfo.email);
+				$('#detailUser-userType').text("UserType :" + userInfo.userType);
+				$('#detailUser-kycStatus').text("KYC status : " + userInfo.kycStatus);
+				$('#detailUser-referralAddr').text("ReferralAddr : " + userInfo.referralAddr);
+			}
+		});
+	}
+
+	setTimeout(function(){		
+		$('#userListModal').modal('show');    
+	}, 230);
+    
+}
+
+function hideUserListModal() {
+    setTimeout(function(){
+        $('#userListModal').modal('hide');    
+    }, 230);
+}
+
 
 function numberWithCommas(x) {
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

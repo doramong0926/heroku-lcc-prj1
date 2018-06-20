@@ -15,7 +15,8 @@ var userSchema = mongoose.Schema({
 		/* 
 			superAdmin
 			nomalAdmin
-			nomalUser
+			manager
+			nomal
 		*/
 	},
 	referralAddr: {

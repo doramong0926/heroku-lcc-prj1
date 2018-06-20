@@ -29,19 +29,45 @@ router.post('/', ensureAuthenticated, function(req, res, next) {
 router.post('/investInfo', ensureAuthenticated, function(req, res, next) {	
 	User.getUserByEmail(req.user.email, function (err, user) {
 		if (err || !user) {
-			res.json({ success : 'false', investInfo : investInfo });
+			res.json({ success : 'false', investInfo : null });
 		} else {
 			if (user.walletAddr == "") {
 				console.log("user.walletAddr is empty");	
+				res.json({ success : 'false', investInfo : null });
 			}
 			else {
 				web3Control.getUserInvestInfo(config.data.icoInfo.icoAddr, config.data.icoInfo.contractAddr, user.walletAddr, function(err, investInfo) {		
 					if (err) {
 						console.log("fail to get UserInvestInfo.");	
-						res.json({ success : 'false', investInfo : investInfo });
+						res.json({ success : 'false', investInfo : null });
 					}
 					else {
 						res.json({ success : 'true', investInfo : investInfo });
+					}
+				});
+			}
+		}
+	});
+});
+
+router.post('/getDetailUserInfo', ensureAuthenticated, function(req, res, next) {	
+	var requetEmail = req.body.requetEmail;
+	User.getUserByEmail(requetEmail, function (err, user) {
+		if (err || !user) {
+			res.json({ success : 'false', userInfo : null, investInfo : null});
+		} else {
+			if (user.walletAddr == "") {
+				console.log("user.walletAddr is empty");	
+				res.json({ success : 'true', userInfo : user, investInfo : null });
+			}
+			else {
+				web3Control.getUserInvestInfo(config.data.icoInfo.icoAddr, config.data.icoInfo.contractAddr, user.walletAddr, function(err, investInfo) {		
+					if (err) {
+						console.log("fail to get UserInvestInfo.");	
+						res.json({ success : 'true', userInfo : user, investInfo : null });
+					}
+					else {
+						res.json({ success : 'true', userInfo : user, investInfo : investInfo });
 					}
 				});
 			}
