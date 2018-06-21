@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-signup animated">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Detail UserList</h4>
+                <h3 class="modal-title">Detail UserList</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body">  
@@ -11,6 +11,23 @@
                         <div class="row" id="detailUser-err" style="display:none;">
                             <h2>There is no User Email.</h2>
                         </div>
+                        <div class="row text-center">
+                            <button class="btn btn-primary btn-sm" id="detailUser-lockControl" style="display:none;">Lock Control</button>
+                            <button class="btn btn-primary btn-sm" id="detailUser-unlockControl" style="display:none;">Unlock Control</button>
+                            <button class="btn btn-primary btn-sm" id="detailUser-unlockUserType" style="display:none;">Unlock UserType</button>
+                            <button class="btn btn-primary btn-sm" id="detailUser-lockUserType" style="display:none;">lock UserType</button>
+                        </div>
+                        <div class="row text-center">
+                            <button class="btn btn-primary btn-sm" id="detailUser-resetPassword" style="display:none;">Reset Password</button>                            
+                            <button class="btn btn-primary btn-sm" id="detailUser-completeKyc" style="display:none;">Complete KYC</button>
+                            <button class="btn btn-primary btn-sm" id="detailUser-rejectKyc" style="display:none;">Reject KYC</button>
+                            <button class="btn btn-primary btn-sm" id="detailUser-resetKyc" style="display:none;">Reset KYC</button>
+                        </div>
+                        <div class="row text-center">
+                            <button class="btn btn-primary btn-sm" id="detailUser-changeUserTypeToAdmin" style="display:none;">UserType to Admin</button>
+                            <button class="btn btn-primary btn-sm" id="detailUser-changeUserTypeToManager" style="display:none;">UserType to Manager</button>
+                            <button class="btn btn-primary btn-sm" id="detailUser-changeUserTypeToNomal" style="display:none;">UserType to Nomal</button>
+                            </div>
                         <div class="row">
                             <h4 id="detailUser-email"></h4>
                         </div>
@@ -38,13 +55,13 @@
                         <div class="row">
                             <div class="col-6 ml-auto mr-auto">
                                 <div class="picture-container">
-                                    <img src="" class="kycPictureSrc" id="DetailUser-kycPassport" title=""/>
+                                    <img src="" class="kycPictureSrc align-items-center" id="detailUser-kycPassport" title=""/>
                                     <h4 id="detailUser-kycPassport-path"></h4>
                                 </div>
                             </div>
                             <div class="col-6 ml-auto mr-auto">
                                 <div class="picture-container">
-                                    <img src="" class="kycPictureSrc" id="DetailUser-kycBill" title=""/>
+                                    <img src="" class="kycPictureSrc align-items-center" id="detailUser-kycBill" title=""/>
                                     <h4 id="detailUser-kycBill-path"></h4>
                                 </div>
                             </div>
@@ -54,7 +71,7 @@
             </div>
             <div class="modal-footer">
                 <div class="forgot login-footer">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >Close</button>
                 </div>
             </div>        
         </div>

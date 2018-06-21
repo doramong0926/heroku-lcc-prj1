@@ -86,7 +86,7 @@ function showNavLogin(showHide, userInfo) {
 	else {
 		$("#nav-login").hide();
 		$("#nav-logout").show();
-		if (userInfo.userType == "superAdmin" || userInfo.userType == "nomalAdmin")	{
+		if (userInfo.userType == "superAdmin" || userInfo.userType == "admin")	{
 			showNavAdmin(true);
 		} else {
 			showNavAdmin(false);
@@ -412,21 +412,15 @@ function updateUserList(userList)
 		"dom" : "Blfrtip",
 		"buttons" : [		
 			{
-				"text" : "SHOW DETAIL INFO",
+				"text" : "Detail",
 				"action" : function () {					
 					var user = table.row('.selected').data();	
 					showUserListModal(user);
 					
 				}
 			},
-			{
-				"text" : "PW RESET",
-				"action" : function () {
-					var data = table.row('.selected').data();
-				}
-			},
 			"excelHtml5",
-			"csvHtml5",
+			//"csvHtml5",
 			"pdfHtml5",
 		],
 		"fixedColumns" :   {
@@ -464,17 +458,27 @@ function updateUserList(userList)
 
 function showUserListModal(user) {	
 	$('#detailUser-err').hide();
-	$('#DetailUser-kycPassport').attr('src', null);
-	$('#DetailUser-kycBill').attr('src', null);
+	$('#detailUser-unlockUserType').hide();
+	$('#detailUser-lockUserType').hide();
+	$('#detailUser-changeUserTypeToAdmin').hide();
+	$('#detailUser-changeUserTypeToManager').hide();
+	$('#detailUser-changeUserTypeToNomal').hide();
+	$('#detailUser-lockControl').hide();
+	$('#detailUser-unlockControl').hide();
+	$('#detailUser-changeUserType').hide();
+	$('#detailUser-resetPassword').hide();
+	$('#detailUser-rejectKyc').hide();
+	$('#detailUser-kycPassport').attr('src', null);
+	$('#detailUser-kycBill').attr('src', null);
 	$('#detailUser-kycStatus').text(null);
 	$('#detailUser-email').text(null);
-	$('#DetailUser-kycName').text(null);
-	$('#DetailUser-kycWallet').text(null);
+	$('#detailUser-kycName').text(null);
+	$('#detailUser-kycWallet').text(null);
 	$('#detailUser-userType').text(null);
 	$('#detailUser-investEth').text(null);
 	$('#detailUser-receviedToken').text(null);
 	$('#detailUser-kycWallet').text(null);
-	$('#detailUser-referralAddr').text(null);
+	$('#detailUser-referralAddr').text(null);	
 	
 	if (user == null)
 	{
@@ -482,31 +486,47 @@ function showUserListModal(user) {
 	}
 	else 
 	{
-		getDetailUserInfo(user, function(err, userInfo, investInfo){			
-			if (err)
-			{
-				;
+		isAdmin( function(err, userType) {
+			if (err) {
+				$.get("/");
 			}
 			else {
-				if (userInfo.kycStatus != "ready")
-				{
-					$('#DetailUser-kycPassport').attr('src', './../' + userInfo.kycPicturePath1);
-					$('#DetailUser-kycPassport').attr('width', 400);
-					$('#DetailUser-kycBill').attr('src', './../' + userInfo.kycPicturePath2);
-					$('#DetailUser-kycBill').attr('width', 400);
-					$('#DetailUser-kycName').text("Name : " + userInfo.firstName + " " + userInfo.lastName);
-					$('#DetailUser-kycWallet').text("Wallet : " + userInfo.walletAddr);	
-				}
-				if(userInfo.walletAddr)
-				{
-					$('#detailUser-investEth').text("investEth : " + investInfo.investEth + " ETH");
-					$('#detailUser-receviedToken').text("receviedToken : " + investInfo.receviedToken + " BLC");					
-				}
-				
-				$('#detailUser-email').text("ID :" + userInfo.email);
-				$('#detailUser-userType').text("UserType :" + userInfo.userType);
-				$('#detailUser-kycStatus').text("KYC status : " + userInfo.kycStatus);
-				$('#detailUser-referralAddr').text("ReferralAddr : " + userInfo.referralAddr);
+				getDetailUserInfo(user, function(err, userInfo, investInfo) {			
+					if (err)
+					{
+						;
+					}
+					else {		
+						if (userType == "superAdmin")	
+						{
+							;
+						}
+		
+						if (userType == "superAdmin" || userType== "admin")	
+						{
+							$('#detailUser-unlockControl').show();
+							if (userInfo.kycStatus != "ready") 
+							{
+								$('#detailUser-kycPassport').attr('src', './../' + userInfo.kycPicturePath1);
+								$('#detailUser-kycPassport').attr('width', 400);
+								$('#detailUser-kycBill').attr('src', './../' + userInfo.kycPicturePath2);
+								$('#detailUser-kycBill').attr('width', 400);
+								$('#detailUser-kycName').text("Name : " + userInfo.firstName + " " + userInfo.lastName);
+								$('#detailUser-kycWallet').text("Wallet : " + userInfo.walletAddr);	
+							}
+							if(userInfo.walletAddr)
+							{
+								$('#detailUser-investEth').text("investEth : " + investInfo.investEth + " ETH");
+								$('#detailUser-receviedToken').text("receviedToken : " + investInfo.receviedToken + " BLC");					
+							}
+							
+							$('#detailUser-email').text("ID :" + userInfo.email);	
+							$('#detailUser-userType').text("UserType : " + userInfo.userType);							
+							$('#detailUser-kycStatus').text("KYC status : " + userInfo.kycStatus);
+							$('#detailUser-referralAddr').text("ReferralAddr : " + userInfo.referralAddr);
+						} 
+					}
+				});
 			}
 		});
 	}

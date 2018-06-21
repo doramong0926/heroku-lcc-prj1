@@ -14,7 +14,7 @@ var userSchema = mongoose.Schema({
 		type: String
 		/* 
 			superAdmin
-			nomalAdmin
+			admin
 			manager
 			nomal
 		*/

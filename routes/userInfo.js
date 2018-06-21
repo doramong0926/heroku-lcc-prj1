@@ -100,7 +100,7 @@ function ensureAuthenticated(req, res, next) {
 
 function isAdmin(req, callback) {
 	User.getUserByEmail(req.user.email, function (err, user) {
-		if (err || !user || (user.userType != "superAdmin" && user.userType != "nomalAdmin")) {
+		if (err || !user || (user.userType != "superAdmin" && user.userType != "admin")) {
 			callback(false, user.userType);
 		} else {						
 			callback(true, user.userType);
