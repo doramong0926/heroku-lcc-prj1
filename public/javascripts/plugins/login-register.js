@@ -150,6 +150,7 @@ function registeAjax() {
 function logoutAjax(){
     $.post( "/logout", function( data ) {
         if(data.success == 'true'){
+            $.get("/");
             window.location.replace("/");            
         } else {
                 shakeModal(); 

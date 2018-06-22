@@ -14,9 +14,7 @@ function getDetailUserInfo(user, callback) {
     $.post("/userInfo/getDetailUserInfo", {requetEmail : user.email}, function(data) {
 		if (data.success == 'false') {
 			err = true;
-		}
-		console.log(data.investInfo);
-		
+		}		
 		callback(err, data.userInfo, data.investInfo)		
     });
 }
@@ -54,6 +52,17 @@ function controlIcoInfo(controlType) {
 			$.get("/admin/icoInfo");
 			window.location.replace("/admin/icoInfo"); 
 		}
+	});
+}
+
+function controlUserInfo(controlType, email, item, value, callback) {	
+	$.post("/userInfo/controlUserInfo", {controlType: controlType, email : email, item : item, value : value }, function(data) {
+		var err = false;
+		if (data.success == 'false') {
+			err = true;
+			console.log(data.err);
+		}
+		callback(err, data);
 	});
 }
 
@@ -416,7 +425,6 @@ function updateUserList(userList)
 				"action" : function () {					
 					var user = table.row('.selected').data();	
 					showUserListModal(user);
-					
 				}
 			},
 			"excelHtml5",
@@ -467,6 +475,8 @@ function showUserListModal(user) {
 	$('#detailUser-unlockControl').hide();
 	$('#detailUser-changeUserType').hide();
 	$('#detailUser-resetPassword').hide();
+	$('#detailUser-completeKyc').hide();
+	$('#detailUser-resetKyc').hide();
 	$('#detailUser-rejectKyc').hide();
 	$('#detailUser-kycPassport').attr('src', null);
 	$('#detailUser-kycBill').attr('src', null);
@@ -511,19 +521,19 @@ function showUserListModal(user) {
 								$('#detailUser-kycPassport').attr('width', 400);
 								$('#detailUser-kycBill').attr('src', './../' + userInfo.kycPicturePath2);
 								$('#detailUser-kycBill').attr('width', 400);
-								$('#detailUser-kycName').text("Name : " + userInfo.firstName + " " + userInfo.lastName);
-								$('#detailUser-kycWallet').text("Wallet : " + userInfo.walletAddr);	
+								$('#detailUser-kycName').text(userInfo.firstName + " " + userInfo.lastName);
+								$('#detailUser-kycWallet').text(userInfo.walletAddr);	
 							}
-							if(userInfo.walletAddr)
+							if(userInfo.walletAddr && investInfo != null)
 							{
-								$('#detailUser-investEth').text("investEth : " + investInfo.investEth + " ETH");
-								$('#detailUser-receviedToken').text("receviedToken : " + investInfo.receviedToken + " BLC");					
+								$('#detailUser-investEth').text(numberWithCommas(parseFloat(investInfo.investEth).toFixed(2)));
+								$('#detailUser-receviedToken').text(numberWithCommas(parseFloat(investInfo.receviedToken).toFixed(2)));
 							}
 							
-							$('#detailUser-email').text("ID :" + userInfo.email);	
-							$('#detailUser-userType').text("UserType : " + userInfo.userType);							
-							$('#detailUser-kycStatus').text("KYC status : " + userInfo.kycStatus);
-							$('#detailUser-referralAddr').text("ReferralAddr : " + userInfo.referralAddr);
+							$('#detailUser-email').text(userInfo.email);	
+							$('#detailUser-userType').text(userInfo.userType);							
+							$('#detailUser-kycStatus').text(userInfo.kycStatus);
+							$('#detailUser-referralAddr').text( userInfo.referralAddr);
 						} 
 					}
 				});

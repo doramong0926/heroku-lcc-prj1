@@ -75,6 +75,155 @@ router.post('/getDetailUserInfo', ensureAuthenticated, function(req, res, next) 
 	});
 });
 
+router.post('/controlUserInfo', function(req, res,){	
+	var controlType = req.body.controlType;
+	var email = req.body.email;
+	var item = req.body.item;
+	var value = req.body.value;
+	console.log("controlType : " + controlType + " email : " + email + " item : " + item + " value" + value);
+	
+	if (req.isAuthenticated()) {
+		isAdmin(req, function callback(ret, userType) {	
+			if (controlType == "change") {
+				if (item == "userType") {
+					if (ret == false) {
+						res.redirect('/');
+						return;
+					}
+					if (value != "nomal" && value != "admin" && value != "manager")
+					{
+						res.redirect('/');
+						return;
+					}
+
+					if(userType != "superAdmin") {
+						res.redirect('/');
+						return;
+					} 
+					User.changeUserType(email, value, function (err){
+						if(err) {
+							res.json({ 'success' : 'false', "err" : err});
+						}
+						else {
+							res.json({ 'success' : 'true', "err" : ""});
+						}
+		
+					})
+				} else if (item == "kycStatus") {
+					if(ret == false) {
+						res.redirect('/');
+						return;
+					} 
+					if (value != "reset" && value != "rejected" && value != "completed") {
+						res.redirect('/');
+						return;
+					}					
+					if (value == "reset") {
+						if(userType != "superAdmin") {
+							res.redirect('/');
+							return;
+						}
+					}
+					if (value == "completed" || value == "rejected") {
+						if(userType != "superAdmin" && userType != "admin") {
+							res.redirect('/');
+							return;
+						}
+					}
+
+					if (value == "reset") {
+						User.getUserByEmail(email, function (err, user) {
+							if (err || !user) {
+								res.json({ 'success' : 'false', "err" : err});
+							} else {
+								fs.exists("./" + user.kycPicturePath1, function(ret){
+									if (ret == false) {
+										fs.exists("./" + user.kycPicturePath2, function(ret){
+											if (ret == false) {
+												User.initKycInfo(email, function (err){							
+													if (err) {
+														res.json({ 'success' : 'false', "err" : err});
+													} else {
+														res.json({ 'success' : 'true', "err" : ""});
+													}
+												});
+											} else {
+												fs.unlink("./" + user.kycPicturePath2, function(err) {
+													if (err) {
+														console.log("fail to delete file : " + user.kycPicturePath2);
+														res.json({ 'success' : 'false', "err" : err});
+													} else {
+														User.initKycInfo(email, function (err){							
+															if (err) {
+																res.json({ 'success' : 'false', "err" : err});
+															} else {
+																res.json({ 'success' : 'true', "err" : ""});
+															}
+														});
+													}
+												});
+											}
+										})
+									} else {
+										fs.unlink("./" + user.kycPicturePath1, function(err) {
+											if (err) {
+												console.log("fail to delete file : " + user.kycPicturePath1);
+												res.json({ 'success' : 'false', "err" : err});
+											} else {
+												fs.exists("./" + user.kycPicturePath2, function(ret){
+													if (ret == false) {
+														User.initKycInfo(email, function (err){							
+															if (err) {
+																res.json({ 'success' : 'false', "err" : err});
+															} else {
+																res.json({ 'success' : 'true', "err" : ""});
+															}
+														});
+													} else {
+														fs.unlink("./" + user.kycPicturePath2, function(err) {
+															if (err) {
+																console.log("fail to delete file : " + user.kycPicturePath2);
+																res.json({ 'success' : 'false', "err" : err});
+															} else {
+																User.initKycInfo(email, function (err){							
+																	if (err) {
+																		res.json({ 'success' : 'false', "err" : err});
+																	} else {
+																		res.json({ 'success' : 'true', "err" : ""});
+																	}
+																});
+															}
+														});
+													}
+												})
+											}
+										});
+									}
+								})
+							}
+						});
+					}
+					else {
+						User.changeKycStatus(email, value, function (err){
+							if(err) {
+								res.json({ 'success' : 'false', "err" : err});
+							} else {
+								res.json({ 'success' : 'true', "err" : ""});
+							}
+						})
+					}	
+				} else{
+					res.json({ 'success' : 'false', "err" : ""});
+				}	
+			} else {
+				res.json({ 'success' : 'false', "err" : ""});
+			}
+		});
+	} else {
+		res.redirect('/');
+	}
+});
+
 router.post('/isAdmin', function(req, res,){
 	if (req.isAuthenticated()) {
 		isAdmin(req, function callback(ret, userType) {			
@@ -86,7 +235,7 @@ router.post('/isAdmin', function(req, res,){
 			}
 		});
 	} else {
-		res.json({"isAdmin" : "false", "userType" : "nomal"});	
+		res.redirect('/');	
 	}
 });
 

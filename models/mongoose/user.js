@@ -53,9 +53,7 @@ var userSchema = mongoose.Schema({
 
 var User = module.exports = mongoose.model('User', userSchema);
 
-module.exports.createUser = function(newUser, callback){
-	console.log(newUser.referralAddr);
-	
+module.exports.createUser = function(newUser, callback){	
 	bcrypt.genSalt(10, function(err, salt) {
 	    bcrypt.hash(newUser.password, salt, function(err, hash) {
 	        newUser.password = hash;
@@ -95,7 +93,33 @@ module.exports.findInvitation = function(referralAddr, callback) {
 	User.findOne(query, callback);
 }
 
-
 module.exports.getUserList = function(callback){
 	User.find(callback);
+}
+
+module.exports.changeUserType = function(email, value, callback){
+	User.update({email:email}, {$set:{ userType : value}}, callback);
+}
+
+module.exports.changeWalletAddr = function(email, value, callback){
+	User.update({email:email}, {$set:{ walletAddr : value}}, callback);
+}
+
+module.exports.changeFirstName = function(email, value, callback){
+	User.update({email:email}, {$set:{ firstName : value}}, callback);
+}
+module.exports.changeLastName = function(email, value, callback){
+	User.update({email:email}, {$set:{ lastName : value}}, callback);
+}
+
+module.exports.changeKycStatus = function(email, value, callback){
+	User.update({email:email}, {$set:{ kycStatus : value}}, callback);
+}
+
+module.exports.changeKycPicturePath1 = function(email, value, callback){
+	User.update({email:email}, {$set:{ kycPicturePath1 : value}}, callback);
+}
+
+module.exports.changeKycPicturePath2 = function(email, value, callback){
+	User.update({email:email}, {$set:{ kycPicturePath2 : value}}, callback);
 }
