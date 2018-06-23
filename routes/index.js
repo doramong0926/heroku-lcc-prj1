@@ -14,7 +14,7 @@ let config = require('../config/config.json');
 // Get index
 router.get('/', ensureAuthenticated, function(req, res, next){
 	IcoInfo.getIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {
-		if (err) {
+		if (err) {						
 			res.render('index', {	isLogin : "true", 
 									navbarType : "index", 
 									success: 'true', 
@@ -31,9 +31,6 @@ router.get('/', ensureAuthenticated, function(req, res, next){
 				web3Control.getTotalDistributedToken(icoInfo.contractAddr, icoInfo.icoAddr, icoInfo.ownerAddr, function(err, totalDistributedToken) {
 					if (err) {
 						console.log("Fail to getTotalDistributedToken");	
-					}
-					if (err) {
-						console.log("Fail to get Ico info.");			
 					}
 					res.render('index', {	isLogin : "true", 
 											navbarType : "index", 
@@ -191,7 +188,7 @@ function ensureAuthenticated(req, res, next){
 				}
 				IcoInfo.getIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {
 					if (err) {
-						console.log("Fail to get Ico info.");			
+						console.log("Fail to get Ico info.");								
 					}
 					res.render('index', {	isLogin : "false", 
 												navbarType : "index", 
