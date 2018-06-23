@@ -15,6 +15,9 @@ var icoInfoSchema = mongoose.Schema({
 	icoAddr: {
 		type: String,
 	},
+	ownerAddr: {
+		type: String,
+	},
 	totalSalesVolume: {
 		type: Number,
 	},
@@ -99,6 +102,7 @@ module.exports.createIcoInfo = function(tokenString, callback) {
 		name : config.data.icoInfo.tokenString,
 		contractAddr : "0x",
 		icoAddr : "0x",
+		ownerAddr : "0x",
 		totalSalesVolume : 0,
 		preSalesVolume : 0,
 		roundAVolume : 0,
@@ -130,6 +134,8 @@ module.exports.initIcoInfo = function(tokenString, callback) {
 	IcoInfo.update({name: tokenString}, { $set:{
 													contractAddr : config.data.icoInfo.contractAddr,
 													icoAddr : config.data.icoInfo.icoAddr,
+													ownerAddr : config.data.icoInfo.ownerAddr,
+
 													totalSalesVolume : config.data.icoInfo.totalSalesVolume,
 													preSalesVolume : config.data.icoInfo.preSalesVolume,
 													roundAVolume : config.data.icoInfo.roundAVolume,
@@ -161,6 +167,7 @@ module.exports.saveIcoInfoAll = function(icoInfo, callback) {
 	IcoInfo.update({name:config.data.icoInfo.tokenString}, { $set:{
 																	contractAddr : icoInfo.contractAddr,
 																	icoAddr : icoInfo.icoAddr,
+																	ownerAddr : icoInfo.ownerAddr,
 
 																	totalSalesVolume: icoInfo.totalSalesVolume,
 																	preSalesVolume: icoInfo.preSalesVolume,
@@ -193,6 +200,8 @@ module.exports.saveIcoInfo = function(icoItem, value, callback) {
 		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{contractAddr: value}}, callback);
 	} else if (icoItem == "icoAddr") {
 		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{icoAddr: value}}, callback);
+	} else if (icoItem == "ownerAddr") {
+		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{ownerAddr: value}}, callback);
 	} else if (icoItem == "totalSalesVolume") {
 		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{totalSalesVolume: value}}, callback);
 	} else if(icoItem == "preSalesVolume") {

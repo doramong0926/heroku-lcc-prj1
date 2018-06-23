@@ -13,27 +13,37 @@ let config = require('../config/config.json');
 
 // Get index
 router.get('/', ensureAuthenticated, function(req, res, next){
-	web3Control.getTotalInvestedEth(config.data.icoInfo.icoAddr, function(err, totalInvestedEth) {
+	IcoInfo.getIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {
 		if (err) {
-			console.log("Fail to getTotalInvestedEth");	
+			res.render('index', {	isLogin : "true", 
+									navbarType : "index", 
+									success: 'true', 
+									icoInfo: null,
+									totalInvestedEth: null,
+									totalDistributedToken: null});	
 		}
-
-		web3Control.getTotalDistributedToken(config.data.icoInfo.contractAddr, config.data.icoInfo.icoAddr, function(err, totalDistributedToken) {
-			if (err) {
-				console.log("Fail to getTotalDistributedToken");	
-			}
-			IcoInfo.getIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {
+		else {
+			web3Control.getTotalInvestedEth(icoInfo.icoAddr, function(err, totalInvestedEth) {
 				if (err) {
-					console.log("Fail to get Ico info.");			
+					console.log("Fail to getTotalInvestedEth");	
 				}
-				res.render('index', {	isLogin : "true", 
+		
+				web3Control.getTotalDistributedToken(icoInfo.contractAddr, icoInfo.icoAddr, icoInfo.ownerAddr, function(err, totalDistributedToken) {
+					if (err) {
+						console.log("Fail to getTotalDistributedToken");	
+					}
+					if (err) {
+						console.log("Fail to get Ico info.");			
+					}
+					res.render('index', {	isLogin : "true", 
 											navbarType : "index", 
 											success: 'true', 
 											icoInfo: icoInfo,
 											totalInvestedEth: totalInvestedEth,
 											totalDistributedToken: totalDistributedToken});	
-			});	
-		});
+					});
+			});
+		}
 	});
 });
 
@@ -175,7 +185,7 @@ function ensureAuthenticated(req, res, next){
 			if (err) {
 				console.log("Fail to getTotalDistributedToken");	
 			}
-			web3Control.getTotalDistributedToken(config.data.icoInfo.contractAddr, config.data.icoInfo.icoAddr, function(err, totalDistributedToken) {
+			web3Control.getTotalDistributedToken(config.data.icoInfo.contractAddr, config.data.icoInfo.icoAddr, config.data.icoInfo.ownerAddr, function(err, totalDistributedToken) {
 				if (err) {
 					console.log("Fail to getTotalDistributedToken");	
 				}

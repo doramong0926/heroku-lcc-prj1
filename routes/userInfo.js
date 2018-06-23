@@ -31,7 +31,7 @@ router.post('/investInfo', ensureAuthenticated, function(req, res, next) {
 				res.json({ success : 'false', investInfo : null });
 			}
 			else {
-				web3Control.getUserInvestInfo(config.data.icoInfo.icoAddr, config.data.icoInfo.contractAddr, user.walletAddr, function(err, investInfo) {		
+				web3Control.getUserInvestInfo(config.data.icoInfo.icoAddr, config.data.icoInfo.contractAddr, config.data.icoInfo.ownerAddr, user.walletAddr, function(err, investInfo) {		
 					if (err) {
 						console.log("fail to get UserInvestInfo.");	
 						res.json({ success : 'false', investInfo : null });
@@ -56,7 +56,7 @@ router.post('/getDetailUserInfo', ensureAuthenticated, function(req, res, next) 
 				res.json({ success : 'true', userInfo : user, investInfo : null });
 			}
 			else {
-				web3Control.getUserInvestInfo(config.data.icoInfo.icoAddr, config.data.icoInfo.contractAddr, user.walletAddr, function(err, investInfo) {		
+				web3Control.getUserInvestInfo(config.data.icoInfo.icoAddr, config.data.icoInfo.contractAddr, config.data.icoInfo.ownerAddr, user.walletAddr, function(err, investInfo) {		
 					if (err) {
 						console.log("fail to get UserInvestInfo.");	
 						res.json({ success : 'true', userInfo : user, investInfo : null });

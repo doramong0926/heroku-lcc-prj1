@@ -36,7 +36,7 @@ router.post('/investedInfo', function(req, res) {
 					res.json({success : 'false' , totalInvestedEth : "0", totalDistributedToken : "0"});	
 				}
 				else {	
-					web3Control.getTotalDistributedToken(icoInfo.contractAddr, icoInfo.icoAddr, function(err, totalDistributedToken) {
+					web3Control.getTotalDistributedToken(icoInfo.contractAddr, icoInfo.icoAddr, icoInfo.ownerAddr, function(err, totalDistributedToken) {
 						if (err) {
 							console.log("Fail to getTotalDistributedToken");	
 							res.json({success : 'false' , totalInvestedEth : "0", totalDistributedToken : "0"});	

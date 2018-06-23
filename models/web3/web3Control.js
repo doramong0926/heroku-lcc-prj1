@@ -151,7 +151,7 @@ module.exports.getTotalInvestedEth = function(icoAddr, callback) {
 	});
 }
 
-module.exports.getTotalDistributedToken = function(contractAddr, icoAddr, callback) {
+module.exports.getTotalDistributedToken = function(contractAddr, icoAddr, ownerAddr, callback) {
 	var distributedToken = 0;	
 	var err = false;
 	getErc20TokenTxlist(contractAddr, function (err, result) {								
@@ -160,7 +160,8 @@ module.exports.getTotalDistributedToken = function(contractAddr, icoAddr, callba
 		}
 		else {					
 			for (var i=0, len = result.length; i < len; i++) {					
-				if ((result[i].from.toLowerCase() == icoAddr.toLowerCase()))
+				if ((result[i].from.toLowerCase() == icoAddr.toLowerCase()) && 
+					(result[i].to.toLowerCase() != ownerAddr.toLowerCase()))
 				{		
 					distributedToken = distributedToken + parseInt(result[i].value);					
 				}						
