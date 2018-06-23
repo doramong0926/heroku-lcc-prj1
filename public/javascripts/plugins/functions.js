@@ -233,7 +233,7 @@ function showInvestedInfo(icoInfo, investedInfo) {
 	$("#progress-info").attr('aria-valuenow', ariaValuenow);
 	$("#progress-info").text(ariaValuenow + "%");	
 	$("#totalSalesVolume").text(numberWithCommas(icoInfo.totalSalesVolume) + " BLC");	
-	$("#currentDistribution").text(numberWithCommas(parseFloat(investedInfo.totalDistributedToken).toFixed(2)) + " BLC / " + numberWithCommas(investedInfo.totalInvestedEth) + " ETH");	
+	$("#currentDistribution").text(numberWithCommas(parseFloat(investedInfo.totalDistributedToken).toFixed(2)) + " BLC / " + numberWithCommas(parseFloat(investedInfo.totalInvestedEth).toFixed(2)) + " ETH");	
 }
 
 function showIcoMainEthWalletAddr(showHide) {
