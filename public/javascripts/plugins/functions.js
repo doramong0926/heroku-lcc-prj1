@@ -1,58 +1,55 @@
 
+function movePage(dst) {
+	$.get(dst);
+	window.location.replace(dst);
+}
+
+function getUserList(callback) {
+	var err = false;
+    $.post("/admin/getUserList", function(data) {
+		if (data.success == 'false' || !data) {
+			err = true;
+			callback(err, null)
+		} else {
+			callback(err, data.userList)
+		}	
+    });
+}
+
 function getUserInfo(callback) {
 	var err = false;
     $.post("/userInfo", function(data) {
-		if (data.success == 'false') {
+		if (data.success == 'false' || !data) {
 			err = true;
+			callback(err, null)
+		} else {
+			callback(err, data.userInfo)
+		}				
+    });
+}
+
+function getUserType(callback) {
+	var err = false;	
+    $.post("/userInfo", function(data) {
+		if (data.success == 'false' || !data) {
+			err = true;
+			callback(err, null)	
+		} else {
+			callback(err, data.userInfo.userType)	
 		}
-		callback(err, data.userInfo)		
     });
 }
 
 function getDetailUserInfo(user, callback) {
 	var err = false;
     $.post("/userInfo/getDetailUserInfo", {requetEmail : user.email}, function(data) {
-		if (data.success == 'false') {
+		if (data.success == 'false' || !data) {
 			err = true;
-		}		
-		callback(err, data.userInfo, data.investInfo)		
+			callback(err, null, null)		
+		} else {
+			callback(err, data.userInfo, data.investInfo)
+		}	
     });
-}
-
-function getIcoInfo(callback) {
-	var err = false;
-    $.post("/icoInfo", function(data) {
-		if (data.success == 'false') {
-			err = true;
-		}
-		callback(err, data.icoInfo)		
-    });
-}
-
-function saveIcoInfo(infoItem, saveData) {
-	$.post("/icoInfo/saveIcoInfo", {infoItem: infoItem, saveData: saveData}, function(data) {
-		if (data.success == 'false') {
-			console.log(data.err);
-		}
-		else
-		{
-			$.get("/admin/icoInfo");
-			window.location.replace("/admin/icoInfo"); 
-		}
-	});
-}
-
-function controlIcoInfo(controlType) {
-	$.post("/icoInfo/controlIcoInfo", {controlType: controlType}, function(data) {
-		if (data.success == 'false') {
-			console.log(data.err);
-		}
-		else
-		{
-			$.get("/admin/icoInfo");
-			window.location.replace("/admin/icoInfo"); 
-		}
-	});
 }
 
 function controlUserInfo(controlType, email, item, value, callback) {	
@@ -60,31 +57,142 @@ function controlUserInfo(controlType, email, item, value, callback) {
 		var err = false;
 		if (data.success == 'false') {
 			err = true;
-			console.log(data.err);
+			callback(err, data);
+			
+		} else {
+			err = false;
+			callback(err, data);
 		}
-		callback(err, data);
 	});
+}
+
+function getIcoInfo(callback) {
+	var err = false;
+    $.post("/icoInfo", function(data) {
+		if (data.success == 'false' || !data) {
+			err = true;
+			callback(err, null)	
+		} else {
+			callback(err, data.icoInfo)	
+		}
+    });
 }
 
 function getInvestedInfo(callback) {
 	var err = false;
     $.post("/icoInfo/investedInfo", function(data) {
-		if (data.success == 'false') {
+		if (data.success == 'false' || !data) {
 			err = true;
+			callback(err, null)
+		} else {
+			callback(err, data)	
 		}
-		callback(err, data)		
     });
 }
 
-function isAdmin(callback) {
-	var err = false;
-    $.post("/userInfo/isAdmin", function(data) {
-		if (data.isAdmin == 'false') {
-			err = true;
+function controlIcoInfo(controlType) {
+	$.post("/icoInfo/controlIcoInfo", {controlType: controlType}, function(data) {
+		if (data.success == 'false' || !data) {
+			alertify.set({ delay: 3000 });
+			alertify.error("Error : fail to control icoInfo controlType[" + controlType + "]");
 		}
-		callback(err, data.userType)		
-    });
+		else
+		{
+			alertify.set({ delay: 3000 });
+			alertify.success("Success : success to control icoInfo controlType[" + controlType + "]");
+			movePage("/admin/icoInfo");
+		}
+	});
 }
+
+function saveIcoInfo(infoItem, saveData) {
+	$.post("/icoInfo/saveIcoInfo", {infoItem: infoItem, saveData: saveData}, function(data) {
+		if (data.success == 'false' || !data) {
+			alertify.set({ delay: 3000 });
+			alertify.error("Error : fail to save icoInfo infoItem[" + infoItem + "] saveData[" + saveData + "]");
+		}
+		else
+		{
+			alertify.set({ delay: 3000 });
+			alertify.success("Success : success to save icoInfo infoItem[" + infoItem + "] saveData[" + saveData + "]");
+			movePage("/admin/icoInfo");
+		}
+	});
+}
+
+function chageUserType (userTypeTo) {
+	var targetEmail = $('#detailUser-email').text();
+	var userTypeFrom = 	$('#detailUser-userType').text();
+
+	console.log("try to change userType from[" + userTypeFrom + "] to[" + userTypeTo + "]");
+
+	getUserType(function(err, userType) {
+		if (err || (userType !="superAdmin" && userType !="admin")) {
+			movePage("/");
+		} else {
+			if ((userTypeTo != "admin" && userTypeTo != "manager" && userTypeTo != "nomal") ||
+				(userType != "superAdmin" && userType != "admin") ||
+				(userTypeTo == "admin" && userType != "superAdmin") ||
+				(userTypeFrom == "superAdmin")) {
+					alertify.set({ delay: 3000 });
+					alertify.error("Error : fail to change userType to " + userTypeTo);
+			} else {
+				controlUserInfo("change", targetEmail, "userType", userTypeTo, function(err, data) {
+					if (err) {
+						alertify.set({ delay: 3000 });
+						alertify.error("Error : fail to change userType to " + userTypeTo);
+					}
+					else{
+						getUserList(function(err, userList) {
+							if (err) {
+								alertify.set({ delay: 3000 });
+								alertify.error("Error : fail to change userType to " + userTypeTo);
+							} else 
+							{
+								alertify.set({ delay: 3000 });
+								alertify.success("Success : success to change userType to " + userTypeTo);
+								movePage("/admin/userList");
+							}
+						});
+					}
+				});
+			}
+		}
+	});
+}
+
+function chageKycStatus(kycStatusTo) {	
+	var targetEmail = $('#detailUser-email').text();
+	var kycStatusFrom = $('#detailUser-kycStatus').text();
+
+	console.log("try to change kycStatus from[" + kycStatusFrom + "] to[" + kycStatusTo + "]");
+
+	getUserType(function(err, userType) {
+		console.log(userType);
+		if (err || (userType != "superAdmin" && userType != "admin")) {
+			movePage("/");
+		} else if ((userType != "superAdmin" && kycStatusTo == "reset") ||
+			(kycStatusTo != "completed" && kycStatusTo != "rejected" && kycStatusTo != "reset") ||
+			(kycStatusFrom == "rejected" && kycStatusTo == "completed") ||
+			(kycStatusFrom == "completed") ||
+			(kycStatusFrom == "ready")) {
+				alertify.set({ delay: 3000 });
+				alertify.error("Error : fail to change kycStatus to " + kycStatusTo);
+		} else {
+			controlUserInfo("change", targetEmail, "kycStatus", kycStatusTo, function(err, data){
+				if (err) {
+					alertify.set({ delay: 3000 });
+					alertify.error("Error : fail to change kycStatus to " + kycStatusTo);
+				} else {
+					alertify.set({ delay: 3000 });
+					alertify.success("Success : success to change kycStatus to " + kycStatusTo);
+					movePage("/admin/userList");
+				}
+			});
+		}
+	});
+}
+
 
 function showNavLogin(showHide, userInfo) {	
 	if (showHide == true) {
@@ -110,24 +218,6 @@ function showNavAdmin(showHide) {
 	else {
 		$("#nav-admin").hide();		
 	}
-}
-
-function showOnlySuperAdmin() {
-	$("#create-IcoInfo").show();
-	$("#init-IcoInfo").show();
-	$("#icoDbControl").show();
-	$("#unlock-contractAddr").show();
-	$("#unlock-icoAddr").show();
-}
-
-function getUserList(callback) {
-	var err = false;
-    $.post("/admin/getUserList", function(data) {
-		if (data.success == 'false') {
-			err = true;
-		}
-		callback(err, data.userList)		
-    });
 }
 
 function showInvestedInfo(icoInfo, investedInfo) {
@@ -265,8 +355,15 @@ function showProfileInfo(userInfo) {
     });
 }
 
-function showAdminIcoInfo(icoInfo) {
-	console.log(icoInfo);
+function showAdminIcoInfo(userType, icoInfo) {
+
+	if (userType == "superAdmin") {
+		$("#create-IcoInfo").show();
+		$("#init-IcoInfo").show();
+		$("#icoDbControl").show();
+		$("#unlock-contractAddr").show();
+		$("#unlock-icoAddr").show();
+	}
 	
 	document.getElementById("admin-tokenName").value = icoInfo.name;
 	document.getElementById("admin-contractAddr").value = icoInfo.contractAddr;
@@ -312,6 +409,92 @@ function showAdminIcoInfo(icoInfo) {
 	}
 }
 
+function showUserListModal(user) {	
+	$('#detailUser-err').hide();
+	$('#detailUser-unlockUserType').hide();
+	$('#detailUser-lockUserType').hide();
+	$('#detailUser-changeUserTypeToAdmin').hide();
+	$('#detailUser-changeUserTypeToManager').hide();
+	$('#detailUser-changeUserTypeToNomal').hide();
+	$('#detailUser-lockControl').hide();
+	$('#detailUser-unlockControl').hide();
+	$('#detailUser-changeUserType').hide();
+	$('#detailUser-resetPassword').hide();
+	$('#detailUser-completeKyc').hide();
+	$('#detailUser-resetKyc').hide();
+	$('#detailUser-rejectKyc').hide();
+	$('#detailUser-kycPassport').attr('src', null);
+	$('#detailUser-kycBill').attr('src', null);
+	$('#detailUser-kycStatus').text(null);
+	$('#detailUser-email').text(null);
+	$('#detailUser-kycName').text(null);
+	$('#detailUser-kycWallet').text(null);
+	$('#detailUser-userType').text(null);
+	$('#detailUser-investEth').text(null);
+	$('#detailUser-receviedToken').text(null);
+	$('#detailUser-kycWallet').text(null);
+	$('#detailUser-referralAddr').text(null);	
+	
+	if (user == null)
+	{
+		$('#detailUser-err').show();
+	}
+	else 
+	{
+		getUserType(function(err, userType) {
+			if (err || (userType !="superAdmin" && userType !="admin" && userType !="manager")) {
+				movePage("/");
+			}
+			else {
+				getDetailUserInfo(user, function(err, userInfo, investInfo) {			
+					if (err)
+					{
+						;
+					}
+					else {		
+						if (userType == "superAdmin" || userType== "admin")	
+						{
+							$('#detailUser-unlockControl').show();
+						}
+		
+						if (userInfo.kycStatus != "ready") 
+						{
+							$('#detailUser-kycPassport').attr('src', './../' + userInfo.kycPicturePath1);
+							$('#detailUser-kycPassport').attr('width', 400);
+							$('#detailUser-kycBill').attr('src', './../' + userInfo.kycPicturePath2);
+							$('#detailUser-kycBill').attr('width', 400);
+							$('#detailUser-kycName').text(userInfo.firstName + " " + userInfo.lastName);
+							$('#detailUser-kycWallet').text(userInfo.walletAddr);	
+						}
+
+						if(userInfo.walletAddr && investInfo != null)
+						{
+							$('#detailUser-investEth').text(numberWithCommas(parseFloat(investInfo.investEth).toFixed(2)));
+							$('#detailUser-receviedToken').text(numberWithCommas(parseFloat(investInfo.receviedToken).toFixed(2)));
+						}
+						
+						$('#detailUser-email').text(userInfo.email);	
+						$('#detailUser-userType').text(userInfo.userType);							
+						$('#detailUser-kycStatus').text(userInfo.kycStatus);
+						$('#detailUser-referralAddr').text( userInfo.referralAddr);
+					}
+				});
+			}
+		});
+	}
+
+	setTimeout(function(){		
+		$('#userListModal').modal('show');    
+	}, 230);
+    
+}
+
+function hideUserListModal() {
+    setTimeout(function(){
+        $('#userListModal').modal('hide');    
+    }, 230);
+}
+
 function genTransactionHistory(data, callback) {
 	if (data.investInfo.numOfdata != 0) {
 		var history = "";
@@ -340,7 +523,6 @@ function copyToClipboard(element) {
 }
 
 function checkLoginStatusTokenSale(){
-    var checkLogin = false;
     $.post("/tokenSale", {checkLogin: true}, function(data) {        
         if (data.LoginState == 'false') {
             openLoginModal();
@@ -463,96 +645,6 @@ function updateUserList(userList)
 		]		
 	});
 }
-
-function showUserListModal(user) {	
-	$('#detailUser-err').hide();
-	$('#detailUser-unlockUserType').hide();
-	$('#detailUser-lockUserType').hide();
-	$('#detailUser-changeUserTypeToAdmin').hide();
-	$('#detailUser-changeUserTypeToManager').hide();
-	$('#detailUser-changeUserTypeToNomal').hide();
-	$('#detailUser-lockControl').hide();
-	$('#detailUser-unlockControl').hide();
-	$('#detailUser-changeUserType').hide();
-	$('#detailUser-resetPassword').hide();
-	$('#detailUser-completeKyc').hide();
-	$('#detailUser-resetKyc').hide();
-	$('#detailUser-rejectKyc').hide();
-	$('#detailUser-kycPassport').attr('src', null);
-	$('#detailUser-kycBill').attr('src', null);
-	$('#detailUser-kycStatus').text(null);
-	$('#detailUser-email').text(null);
-	$('#detailUser-kycName').text(null);
-	$('#detailUser-kycWallet').text(null);
-	$('#detailUser-userType').text(null);
-	$('#detailUser-investEth').text(null);
-	$('#detailUser-receviedToken').text(null);
-	$('#detailUser-kycWallet').text(null);
-	$('#detailUser-referralAddr').text(null);	
-	
-	if (user == null)
-	{
-		$('#detailUser-err').show();
-	}
-	else 
-	{
-		isAdmin( function(err, userType) {
-			if (err) {
-				$.get("/");
-			}
-			else {
-				getDetailUserInfo(user, function(err, userInfo, investInfo) {			
-					if (err)
-					{
-						;
-					}
-					else {		
-						if (userType == "superAdmin")	
-						{
-							;
-						}
-		
-						if (userType == "superAdmin" || userType== "admin")	
-						{
-							$('#detailUser-unlockControl').show();
-							if (userInfo.kycStatus != "ready") 
-							{
-								$('#detailUser-kycPassport').attr('src', './../' + userInfo.kycPicturePath1);
-								$('#detailUser-kycPassport').attr('width', 400);
-								$('#detailUser-kycBill').attr('src', './../' + userInfo.kycPicturePath2);
-								$('#detailUser-kycBill').attr('width', 400);
-								$('#detailUser-kycName').text(userInfo.firstName + " " + userInfo.lastName);
-								$('#detailUser-kycWallet').text(userInfo.walletAddr);	
-							}
-							if(userInfo.walletAddr && investInfo != null)
-							{
-								$('#detailUser-investEth').text(numberWithCommas(parseFloat(investInfo.investEth).toFixed(2)));
-								$('#detailUser-receviedToken').text(numberWithCommas(parseFloat(investInfo.receviedToken).toFixed(2)));
-							}
-							
-							$('#detailUser-email').text(userInfo.email);	
-							$('#detailUser-userType').text(userInfo.userType);							
-							$('#detailUser-kycStatus').text(userInfo.kycStatus);
-							$('#detailUser-referralAddr').text( userInfo.referralAddr);
-						} 
-					}
-				});
-			}
-		});
-	}
-
-	setTimeout(function(){		
-		$('#userListModal').modal('show');    
-	}, 230);
-    
-}
-
-function hideUserListModal() {
-    setTimeout(function(){
-        $('#userListModal').modal('hide');    
-    }, 230);
-}
-
 
 function numberWithCommas(x) {
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

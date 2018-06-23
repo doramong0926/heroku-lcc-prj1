@@ -1,23 +1,21 @@
 
 $(document).ready(function() {	
-	isAdmin( function(err, userType) {
-		if (err) {
-			$.get("/");
+	getUserType(function(err, userType) {
+		if (err || (userType !="superAdmin" && userType !="admin" && userType !="manager")) {
+			movePage("/");
 		}
 		else {
-			if (userType == "superAdmin") {
-				showOnlySuperAdmin();
-			}
 			getIcoInfo( function(err, icoInfo) {
 				if (err) {	
 					;
 				}
 				else {
-					showAdminIcoInfo(icoInfo);
+					showAdminIcoInfo(userType, icoInfo);
 				}
 			});
 		}
 	});
+	
 	$(".datetimepicker").datetimepicker({
 		icons: {
 			time: "fa fa-clock-o",
@@ -304,6 +302,4 @@ $(document).ready(function(){
 		saveIcoInfo(infoItem, saveData);
 	});
 });
-
-
 

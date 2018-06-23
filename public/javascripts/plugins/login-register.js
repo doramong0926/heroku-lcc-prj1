@@ -51,42 +51,6 @@ function hideModal() {
     }, 230);
 }
 
-function checkAdminIcoInfo(){
-    var checkLogin = false;
-    $.post("/userInfo/isAdmin", function(data) {        
-        if (data.isAdmin == 'false') {
-            $.get("/");
-        } else {
-            $.get("/admin/icoInfo");
-            window.location.replace("/admin/icoInfo");  
-        }   
-    });
-}
-
-function checkAdminUserList(){
-    var checkLogin = false;
-    $.post("/userInfo/isAdmin", function(data) {        
-        if (data.isAdmin == 'false') {
-            $.get("/");
-        } else {
-            $.get("/admin/userList");
-            window.location.replace("/admin/userList");  
-        }   
-    });
-}
-
-function checkAdminKycInfo(){
-    var checkLogin = false;
-    $.post("/userInfo/isAdmin", function(data) {        
-        if (data.isAdmin == 'false') {
-            $.get("/");
-        } else {
-            $.get("/admin/kycInfo");
-            window.location.replace("/admin/kycInfo");  
-        }   
-    });
-}
-
 function checkLoginStatusTokenSale(){
     var checkLogin = false;
     $.post("/tokenSale", {checkLogin: true}, function(data) {        

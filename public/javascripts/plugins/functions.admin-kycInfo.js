@@ -1,8 +1,8 @@
 
 $(document).ready(function() {
-	isAdmin( function(err, userType) {
-		if (err) {
-			$.get("/");
+	getUserType(function(err, userType) {
+		if (err || (userType !="superAdmin" && userType !="admin" && userType !="manager")) {
+			movePage("/");
 		}
 		else {
 		}
