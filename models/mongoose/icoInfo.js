@@ -97,9 +97,9 @@ module.exports.getIcoInfo = function(Name, callback){
 	IcoInfo.findOne(query, callback);
 }
 
-module.exports.createIcoInfo = function(tokenString, callback) {
+module.exports.createIcoInfo = function(tokenString, callback) {	
 	var newIcoInfo = new IcoInfo({
-		name : config.data.icoInfo.tokenString,
+		name : tokenString,
 		contractAddr : "0x",
 		icoAddr : "0x",
 		ownerAddr : "0x",

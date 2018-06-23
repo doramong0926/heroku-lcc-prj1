@@ -60,17 +60,7 @@ router.get('/icoSchedule', function (req, res) {
 router.post('/icoSchedule', function(req, res,) {	
 	IcoInfo.getIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {
 		if (err || !icoInfo) {
-			console.log("warning!!! Fail to get Ico info.");
-			/*
-			IcoInfo.createIcoInfo(config.data.icoInfo.tokenString, function (err) {
-				if (err) {
-					console.log("fail to create IcoInfo");
-				} else {
-					console.log("success to create IcoInfo");
-				}
-				res.redirect('/');
-			});
-			*/		
+			console.log("warning!!! Fail to get Ico info.");				
 			res.json({ success: 'false', icoInfo: icoInfo});		
 		} else {
 			res.json({ success: 'true', icoInfo: icoInfo});
@@ -85,6 +75,11 @@ router.post('/saveIcoInfo', function(req, res,) {
 	console.log("infoItem : " + infoItem + " saveData : " + saveData);
 	req.checkBody('infoItem', 'infoItem is required').notEmpty();
 	req.checkBody('saveData', 'saveData is required').notEmpty();
+
+	if (infoItem == "contractAddr" || infoItem == "icoAddr" || infoItem == "ownerAddr") {
+		saveData = saveData.toLowerCase();
+	}
+	
 	IcoInfo.saveIcoInfo(infoItem, saveData, function (err) {				
 		if (err) {
 			console.log("Fail to save " + infoItem);	

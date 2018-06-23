@@ -178,26 +178,33 @@ function ensureAuthenticated(req, res, next){
 	if (req.isAuthenticated()) {
 		return next();
 	} else {
-		web3Control.getTotalInvestedEth(config.data.icoInfo.icoAddr, function(err, totalInvestedEth) {
-			if (err) {
-				console.log("Fail to getTotalDistributedToken");	
-			}
-			web3Control.getTotalDistributedToken(config.data.icoInfo.contractAddr, config.data.icoInfo.icoAddr, config.data.icoInfo.ownerAddr, function(err, totalDistributedToken) {
-				if (err) {
-					console.log("Fail to getTotalDistributedToken");	
-				}
-				IcoInfo.getIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {
+		IcoInfo.getIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {
+			if (err || !icoInfo) {
+				console.log("Fail to get Ico info.");		
+				res.render('index', {	isLogin : "false", 
+										navbarType : "index", 
+										success: 'true', 
+										icoInfo: null,
+										totalInvestedEth: null,
+										totalDistributedToken: null});							
+			} else {
+				web3Control.getTotalInvestedEth(icoInfo.icoAddr, function(err, totalInvestedEth) {
 					if (err) {
-						console.log("Fail to get Ico info.");								
+						console.log("Fail to getTotalDistributedToken");	
 					}
-					res.render('index', {	isLogin : "false", 
+					web3Control.getTotalDistributedToken(icoInfo.contractAddr, icoInfo.icoAddr, icoInfo.ownerAddr, function(err, totalDistributedToken) {
+						if (err) {
+							console.log("Fail to getTotalDistributedToken");	
+						}
+						res.render('index', {	isLogin : "false", 
 												navbarType : "index", 
 												success: 'true', 
 												icoInfo: icoInfo,
 												totalInvestedEth: totalInvestedEth,
 												totalDistributedToken: totalDistributedToken});	
-				});	
-			});
+					});
+				});
+			}		
 		});
 	}
 }

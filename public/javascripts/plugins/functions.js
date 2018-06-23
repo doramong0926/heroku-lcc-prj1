@@ -350,8 +350,8 @@ function showProfileInfo(userInfo) {
 			err = true;
 		}
 		else {
-			$("#investeReceviedToken").text(numberWithCommas(parseFloat(data.investInfo.receviedToken).toFixed(2)) + " BLC");
-			$("#investeReceviedToken-sm").text(numberWithCommas(parseFloat(data.investInfo.receviedToken).toFixed(2)) + " BLC");	
+			$("#investeReceviedToken").text(numberWithCommas(parseFloat(data.investInfo.receviedToken).toFixed(0)) + " BLC");
+			$("#investeReceviedToken-sm").text(numberWithCommas(parseFloat(data.investInfo.receviedToken).toFixed(0)) + " BLC");	
 			$("#investeInvestEth").text(numberWithCommas(parseFloat(data.investInfo.investEth).toFixed(2)) + " ETH");
 			$("#investeInvestEth-sm").text(numberWithCommas(parseFloat(data.investInfo.investEth).toFixed(2)) + " ETH");
 			genTransactionHistory(data, function(history) {				
@@ -369,6 +369,7 @@ function showAdminIcoInfo(userType, icoInfo) {
 		$("#icoDbControl").show();
 		$("#unlock-contractAddr").show();
 		$("#unlock-icoAddr").show();
+		$("#unlock-ownerAddr").show();
 	}
 
 	if (userType == "superAdmin" || userType == "admin") {
@@ -396,8 +397,9 @@ function showAdminIcoInfo(userType, icoInfo) {
 	}
 	
 	document.getElementById("admin-tokenName").value = icoInfo.name;
-	document.getElementById("admin-contractAddr").value = icoInfo.contractAddr;
-	document.getElementById("admin-icoAddr").value = icoInfo.icoAddr;
+	document.getElementById("admin-contractAddr").value = icoInfo.contractAddr.toLowerCase();
+	document.getElementById("admin-icoAddr").value = icoInfo.icoAddr.toLowerCase();
+	document.getElementById("admin-ownerAddr").value = icoInfo.ownerAddr.toLowerCase();
 	document.getElementById("admin-totalSalesVolume").value = numberWithCommas(icoInfo.totalSalesVolume);
 	document.getElementById("admin-preSalesVolume").value = numberWithCommas(icoInfo.preSalesVolume);
 	document.getElementById("admin-roundAVolume").value = numberWithCommas(icoInfo.roundAVolume);
@@ -500,7 +502,7 @@ function showUserListModal(user) {
 						if(userInfo.walletAddr && investInfo != null)
 						{
 							$('#detailUser-investEth').text(numberWithCommas(parseFloat(investInfo.investEth).toFixed(2)));
-							$('#detailUser-receviedToken').text(numberWithCommas(parseFloat(investInfo.receviedToken).toFixed(2)));
+							$('#detailUser-receviedToken').text(numberWithCommas(parseFloat(investInfo.receviedToken).toFixed(0)));
 						}
 						
 						$('#detailUser-email').text(userInfo.email);	
@@ -530,7 +532,7 @@ function genTransactionHistory(data, callback) {
 		var history = "";
 		for (var i=0, len = data.investInfo.numOfdata; i < len; i++) { 
 			if (data.investInfo.result[i].inOut == 'in') {
-				history = history + "<tr><td>You received " + numberWithCommas(parseFloat(data.investInfo.result[i].value).toFixed(2)) + " " + data.investInfo.result[i].tokenSymbol + "(" + data.investInfo.result[i].timeStamp + ")"
+				history = history + "<tr><td>You received " + numberWithCommas(parseFloat(data.investInfo.result[i].value).toFixed(0)) + " " + data.investInfo.result[i].tokenSymbol + "(" + data.investInfo.result[i].timeStamp + ")"
 							+  " : <a href='https://ropsten.etherscan.io/tx/" + data.investInfo.result[i].txId + "' " + "target='_blank'>check TXID</a></td></tr>"; 
 			}
 			else {

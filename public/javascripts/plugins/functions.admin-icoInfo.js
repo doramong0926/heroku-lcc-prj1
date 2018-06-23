@@ -49,7 +49,7 @@ $(document).ready(function(){
 		$("#unlock-contractAddr").hide();
 	});
 	$("#save-contractAddr").click(function() {
-		var saveData = $("#admin-contractAddr").val();
+		var saveData = $("#admin-contractAddr").val().toLowerCase();
 		var infoItem = "contractAddr";
 		saveIcoInfo(infoItem, saveData);
 	});
@@ -60,8 +60,19 @@ $(document).ready(function(){
 		$("#unlock-icoAddr").hide();
 	});
 	$("#save-icoAddr").click(function() {
-		var saveData = $("#admin-icoAddr").val();
+		var saveData = $("#admin-icoAddr").val().toLowerCase();
 		var infoItem = "icoAddr";
+		saveIcoInfo(infoItem, saveData);
+	});
+
+	$("#unlock-ownerAddr").click(function() {
+		$("#admin-ownerAddr").prop("readonly", false);
+		$("#save-ownerAddr").show(); 
+		$("#unlock-ownerAddr").hide();
+	});
+	$("#save-ownerAddr").click(function() {
+		var saveData = $("#admin-ownerAddr").val().toLowerCase();
+		var infoItem = "ownerAddr";
 		saveIcoInfo(infoItem, saveData);
 	});
 

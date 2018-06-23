@@ -1,18 +1,26 @@
 var Web3 = require('web3');  
 var axios = require('axios');
+const fs = require('fs');
+let config = require('../../config/config.json');
 
-const providerInfura = 'https://mainnet.infura.io/';
-const providerInfuraRopsten = 'https://mainnet.infura.io/';
-const infuraApiKey = 'boKaU6ROXir6GBk9fqEk';
-const etherScanRopstenApiAddr = 'https://api-ropsten.etherscan.io/api?';
-etherScanApiKey = 'ZGZW3C6175M2MNQTS14HDDIGBYFDHEMXBR';
+var web3 = new Web3();
+var etherScanApiString;
+var providerString;
+var etherScanApiKey = config.data.etherScan.apiKey;
+
+if (config.data.web3.networkType == "ropsten") {
+	etherScanApiString = config.data.etherScan.providerMainNet;
+	providerString = config.data.infura.providerMainNet + config.data.infura.apiKey;
+} else {
+	etherScanApiString = config.data.etherScan.providerRopsten;
+	providerString = config.data.infura.providerRopsten + config.data.infura.apiKey;
+}
 
 // web3 setting
-var web3 = new Web3();
-web3.setProvider(new web3.providers.HttpProvider(providerInfuraRopsten + infuraApiKey));
+web3.setProvider(new web3.providers.HttpProvider(providerString));
 
 module.exports.getTokenbalance = function(contractAddr, walletAddr, callback) {
-	axios.get(etherScanRopstenApiAddr + "module=account&action=tokenbalance&contractaddress=" + contractAddr +"&address=" + walletAddr + "&tag=latest&apikey=" + etherScanApiKey)
+	axios.get(etherScanApiString + "?module=account&action=tokenbalance&contractaddress=" + contractAddr +"&address=" + walletAddr + "&tag=latest&apikey=" + etherScanApiKey)
 .then(res => {
 	const balance = res.data.result / Math.pow(10, 18);
 	var err = false;
@@ -25,7 +33,7 @@ module.exports.getTokenbalance = function(contractAddr, walletAddr, callback) {
 }
 
 getNomalTxlist = function(walletAddr, callback) {
-	axios.get(etherScanRopstenApiAddr + "module=account&action=txlist&address=" + walletAddr + "&startblock=0&endblock=99999999&sort=asc&apikey=" + etherScanApiKey)
+	axios.get(etherScanApiString + "?module=account&action=txlist&address=" + walletAddr + "&startblock=0&endblock=99999999&sort=asc&apikey=" + etherScanApiKey)
 	.then(res => {
 		var err = false;
 		if(res.data.message != 'OK') {
@@ -37,7 +45,7 @@ getNomalTxlist = function(walletAddr, callback) {
 }
 
 getErc20TokenTxlistWithAddress = function(contractAddr, walletAddr, callback) {	
-	axios.get(etherScanRopstenApiAddr + "module=account&action=tokentx&contractaddress=" + contractAddr + "&address=" + walletAddr + "&startblock=0&endblock=999999999&sort=asc&apikey=" + etherScanApiKey)
+	axios.get(etherScanApiString + "?module=account&action=tokentx&contractaddress=" + contractAddr + "&address=" + walletAddr + "&startblock=0&endblock=999999999&sort=asc&apikey=" + etherScanApiKey)
 	.then(res => {
 		var err = false;
 		if(res.data.message != 'OK') {
@@ -49,7 +57,7 @@ getErc20TokenTxlistWithAddress = function(contractAddr, walletAddr, callback) {
 }
 
 getErc20TokenTxlist = function(contractAddr, callback) {
-	axios.get(etherScanRopstenApiAddr + "module=account&action=tokentx&contractaddress=" + contractAddr + "&startblock=0&endblock=999999999&sort=asc&apikey=" + etherScanApiKey)
+	axios.get(etherScanApiString + "?module=account&action=tokentx&contractaddress=" + contractAddr + "&startblock=0&endblock=999999999&sort=asc&apikey=" + etherScanApiKey)
 	.then(res => {
 		var err = false;
 		if(res.data.message != 'OK') {
@@ -61,7 +69,7 @@ getErc20TokenTxlist = function(contractAddr, callback) {
 }
 
 getTokenTxReceiptStatus = function(txid, callback) {
-	axios.get(etherScanRopstenApiAddr + "module=transaction&action=gettxreceiptstatus&txhash=" + txid + "&apikey=" + etherScanApiKey)
+	axios.get(etherScanApiString + "?module=transaction&action=gettxreceiptstatus&txhash=" + txid + "&apikey=" + etherScanApiKey)
 	.then(res => {
 		var err = false;
 		if(res.data.message != 'OK') {
@@ -72,7 +80,7 @@ getTokenTxReceiptStatus = function(txid, callback) {
 	.catch(console.log);
 }
 
-module.exports.getUserInvestInfo = function(icoAddr, contractAddr, walletAddr, callback) {
+module.exports.getUserInvestInfo = function(icoAddr, contractAddr, ownerAddr, walletAddr, callback) {
 	var tempArray = new Array();
 	var investInfo = new Array();
 	var numOfdata = 0;
@@ -123,10 +131,10 @@ module.exports.getUserInvestInfo = function(icoAddr, contractAddr, walletAddr, c
 							receviedToken = receviedToken + parseInt(result[i].value);
 							numOfdata = parseInt(numOfdata) + 1;
 						}						
-					}					
+					}		
+					investInfo = {numOfdata : numOfdata, investEth : investEth / Math.pow(10, 18), receviedToken : receviedToken / Math.pow(10, 18), result : tempArray.sort(tempArray.timeStamp)};
+					callback(err, investInfo);				
 				}
-				investInfo = {numOfdata : numOfdata, investEth : investEth / Math.pow(10, 18), receviedToken : receviedToken / Math.pow(10, 18), result : tempArray.sort(tempArray.timeStamp)};
-				callback(err, investInfo);	
 			});
 		}
 	});

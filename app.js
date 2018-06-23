@@ -23,6 +23,7 @@ var icoInfoRouter = require('./routes/icoInfo')
 var userInfoRouter = require('./routes/userInfo')
 var adminRouter = require('./routes/admin')
 let config = require('./config/config.json');
+var IcoInfo = require('./models/mongoose/icoInfo');
 
 // app init
 var app = express();
@@ -32,8 +33,26 @@ var db = mongoose.connection;
 mongoose.Promise = global.Promise;
 mongoose.connect(config.data.mongodb.addr);
 db.on('error', console.log.bind(console,'MongoDB connention error :'));
-db.once('open', function(){
-  console.log('connected to mongod server');
+db.once('open', function() {
+    console.log('connected to mongod server');
+    IcoInfo.getIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {
+        if (!err && icoInfo == null) {
+            IcoInfo.createIcoInfo(config.data.icoInfo.tokenString, function (err) {
+                if (err) {
+                    console.log("fail to create IcoInfo");
+                } else {
+                    console.log("success to create IcoInfo");
+                    IcoInfo.initIcoInfo(config.data.icoInfo.tokenString, function (err) {
+                        if (err) {
+                            console.log("fail to init IcoInfo");
+                        } else {
+                            console.log("success to init IcoInfo");
+                        }
+                    });
+                }
+            });
+        }
+  });
 });
 
 // view engine setup
