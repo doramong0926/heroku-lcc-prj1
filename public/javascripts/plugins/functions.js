@@ -91,31 +91,43 @@ function getInvestedInfo(callback) {
 }
 
 function controlIcoInfo(controlType) {
-	$.post("/icoInfo/controlIcoInfo", {controlType: controlType}, function(data) {
-		if (data.success == 'false' || !data) {
-			alertify.set({ delay: 3000 });
-			alertify.error("Error : fail to control icoInfo controlType[" + controlType + "]");
-		}
-		else
-		{
-			alertify.set({ delay: 3000 });
-			alertify.success("Success : success to control icoInfo controlType[" + controlType + "]");
-			movePage("/admin/icoInfo");
+	getUserType(function(err, userType) {
+		if (err || userType !="superAdmin") {
+			movePage("/");
+		} else {	
+			$.post("/icoInfo/controlIcoInfo", {controlType: controlType}, function(data) {
+				if (data.success == 'false' || !data) {
+					alertify.set({ delay: 3000 });
+					alertify.error("Error : fail to control icoInfo controlType[" + controlType + "]");
+				}
+				else
+				{
+					alertify.set({ delay: 3000 });
+					alertify.success("Success : success to control icoInfo controlType[" + controlType + "]");
+					movePage("/admin/icoInfo");
+				}
+			});
 		}
 	});
 }
 
 function saveIcoInfo(infoItem, saveData) {
-	$.post("/icoInfo/saveIcoInfo", {infoItem: infoItem, saveData: saveData}, function(data) {
-		if (data.success == 'false' || !data) {
-			alertify.set({ delay: 3000 });
-			alertify.error("Error : fail to save icoInfo infoItem[" + infoItem + "] saveData[" + saveData + "]");
-		}
-		else
-		{
-			alertify.set({ delay: 3000 });
-			alertify.success("Success : success to save icoInfo infoItem[" + infoItem + "] saveData[" + saveData + "]");
-			movePage("/admin/icoInfo");
+	getUserType(function(err, userType) {
+		if (err || (userType !="superAdmin" && userType !="admin")) {
+			movePage("/");
+		} else {		
+			$.post("/icoInfo/saveIcoInfo", {infoItem: infoItem, saveData: saveData}, function(data) {
+				if (data.success == 'false' || !data) {
+					alertify.set({ delay: 3000 });
+					alertify.error("Error : fail to save icoInfo infoItem[" + infoItem + "] saveData[" + saveData + "]");
+				}
+				else
+				{
+					alertify.set({ delay: 3000 });
+					alertify.success("Success : success to save icoInfo infoItem[" + infoItem + "] saveData[" + saveData + "]");
+					movePage("/admin/icoInfo");
+				}
+			});
 		}
 	});
 }
@@ -357,6 +369,30 @@ function showAdminIcoInfo(userType, icoInfo) {
 		$("#icoDbControl").show();
 		$("#unlock-contractAddr").show();
 		$("#unlock-icoAddr").show();
+	}
+
+	if (userType == "superAdmin" || userType == "admin") {
+		$("#unlock-round").show();
+		$("#unlock-startPreSale").show();
+		$("#unlock-endPreSale").show();
+		$("#unlock-endRoundA").show();
+		$("#unlock-endRoundB").show();
+		$("#unlock-endRoundC").show();
+		$("#unlock-minimumInvesteEth").show();
+		$("#unlock-totalSalesVolume").show();
+		$("#unlock-preSalesVolume").show();
+		$("#unlock-roundAVolume").show();
+		$("#unlock-roundBVolume").show();
+		$("#unlock-roundCVolume").show();
+		$("#unlock-exchangeRate").show();
+		$("#unlock-bonusPreSale").show();
+		$("#unlock-bonusRoundA").show();
+		$("#unlock-bonusRoundB").show();
+		$("#unlock-bonusRoundC").show();
+		$("#unlock-bonusVolume10Eth").show();
+		$("#unlock-bonusVolume30Eth").show();
+		$("#unlock-bonusVolume50Eth").show();
+		$("#unlock-bonusReferral").show();
 	}
 	
 	document.getElementById("admin-tokenName").value = icoInfo.name;
