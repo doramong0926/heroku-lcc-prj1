@@ -88,29 +88,7 @@ function uploadKyc() {
         var formData2 = new FormData();
         formData1.append("photo",file1);
         formData2.append("photo",file2);  
-
-        // temp upload
-        if (result.success == "true")
-        {
-            $.post("/kyc/saveKyc", {firstName: $('#first-name').val(), lastName: $('#last-name').val()
-                , wallet: $('#eth-address').val()}, function( data ) {
-                if(data.success == 'true') {
-                    $.get("/kyc");
-                    window.location.replace("/kyc"); 
-                    alertify.set({ delay: 3000 });
-                    alertify.success("Success : kyc info uploading is completed.");
-                }
-                else{
-                    alertify.set({ delay: 3000 });
-                    alertify.error("Error : fail to upload utility bill picture");
-                }
-            });
-        }else {
-            alertify.set({ delay: 3000 });
-            alertify.error("Error : fail to upload utility bill picture");
-        }
        
-        /*
         $.ajax({
             url: '/kyc/kycPicture1',
             processData: false,
@@ -161,7 +139,6 @@ function uploadKyc() {
                 alertify.error("Error : fail to upload passport picture");
             }
         });
-        */
     
         delete formData1;
         delete formData2;
