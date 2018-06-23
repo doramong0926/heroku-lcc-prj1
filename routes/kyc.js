@@ -85,8 +85,7 @@ router.route('/kycPicture1').post(uploadKycPicture1.array('photo', 1), function 
 		tmpKycPicturePath1 = req.files[0].path;		
 		res.json({success: 'true'});		
 	} else {
-		//res.json({success: 'false'});
-		res.json({success: 'true'});		
+		res.json({success: 'false'});
 	}
 	
 });
@@ -96,8 +95,7 @@ router.route('/kycPicture2').post(uploadKycPicture2.array('photo', 1), function 
 		tmpKycPicturePath2 = req.files[0].path;
 		res.json({success: 'true'});		
 	} else {
-		//res.json({success: 'false'});
-		res.json({success: 'true'});		
+		res.json({success: 'false'});		
 	}
 });
 
