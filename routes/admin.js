@@ -8,7 +8,7 @@ var web3Control = require('../models/web3/web3Control');
 // Get /admin/icoInfo
 router.get('/icoInfo', ensureAuthenticated, function(req, res, next){	
 	User.getUserByEmail(req.user.email, function (err, user) {
-		if (err || !user || (user.userType != "superAdmin" && user.userType != "admin")) {
+		if (err || !user || (user.userType != "superAdmin" && user.userType != "admin" || user.userType != "manager")) {
 			res.redirect('/');
 		} else {						
 			res.render('admin-icoInfo', {
@@ -22,7 +22,7 @@ router.get('/icoInfo', ensureAuthenticated, function(req, res, next){
 // Get /admin/userList
 router.get('/userList', ensureAuthenticated, function(req, res, next){	
 	User.getUserByEmail(req.user.email, function (err, user) {
-		if (err || !user || (user.userType != "superAdmin" && user.userType != "admin")) {
+		if (err || !user || (user.userType != "superAdmin" && user.userType != "admin" || user.userType != "manager")) {
 			res.redirect('/');
 		} else {						
 			res.render('admin-userList', {
@@ -36,7 +36,7 @@ router.get('/userList', ensureAuthenticated, function(req, res, next){
 // Get /admin/kycInfo
 router.get('/kycInfo', ensureAuthenticated, function(req, res, next){	
 	User.getUserByEmail(req.user.email, function (err, user) {
-		if (err || !user || (user.userType != "superAdmin" && user.userType != "admin")) {
+		if (err || !user || (user.userType != "superAdmin" && user.userType != "admin" || user.userType != "manager")) {
 			res.redirect('/');
 		} else {						
 			res.render('admin-kycInfo', {
@@ -50,7 +50,7 @@ router.get('/kycInfo', ensureAuthenticated, function(req, res, next){
 // post getUserList
 router.post('/getUserList', function(req, res,) {	
 	User.getUserByEmail(req.user.email, function (err, user) {
-		if (err || !user || (user.userType != "superAdmin" && user.userType != "admin")) {
+		if (err || !user || (user.userType != "superAdmin" && user.userType != "admin" || user.userType != "manager")) {
 			res.redirect('/');
 		} else {
 			User.getUserList(function(err, userList) {				
