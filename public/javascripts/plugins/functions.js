@@ -530,13 +530,13 @@ function genTransactionHistory(data, callback) {
 		var history = "";
 		for (var i=0, len = data.investInfo.numOfdata; i < len; i++) { 
 			if (data.investInfo.result[i].inOut == 'in') {
-				history = history + "<tr><td>You received " + numberWithCommas(data.investInfo.result[i].value) + " " + data.investInfo.result[i].tokenSymbol + "(" + data.investInfo.result[i].timeStamp + ")"
+				history = history + "<tr><td>You received " + numberWithCommas(parseFloat(investInfo.result[i].value).toFixed(2)) + " " + data.investInfo.result[i].tokenSymbol + "(" + data.investInfo.result[i].timeStamp + ")"
 							+  " : <a href='https://ropsten.etherscan.io/tx/" + data.investInfo.result[i].txId + "' " + "target='_blank'>check TXID</a></td></tr>"; 
 			}
 			else {
-				history = history + "<tr><td>You sent " + numberWithCommas(data.investInfo.result[i].value) + " " + data.investInfo.result[i].tokenSymbol + "(" + data.investInfo.result[i].timeStamp + ")"
+				history = history + "<tr><td>You sent " + numberWithCommas(parseFloat(data.investInfo.result[i].value).toFixed(2)) + " " + data.investInfo.result[i].tokenSymbol + "(" + data.investInfo.result[i].timeStamp + ")"
 							+  " : <a href='https://ropsten.etherscan.io/tx/" + data.investInfo.result[i].txId + "' " + "target='_blank'>check TXID</a></td></tr>"; 
-			}			
+			}
 		}
 		console.log(history);
 		
