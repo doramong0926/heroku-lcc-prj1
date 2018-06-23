@@ -4,8 +4,8 @@
   "data": {
     "icoInfo": {
       "tokenString": "bluecots",
-      "contractAddr": "0x396253BB4df81e346e41e7f0DB90C00b14a5A84d",
-      "icoAddr": "0x396253BB4df81e346e41e7f0DB90C00b14a5A84d",
+      "contractAddr": "0xBB61bFe39d37baEF627D1765c2F1121dB4582ca3",
+      "icoAddr": "0xBB61bFe39d37baEF627D1765c2F1121dB4582ca3",
       "totalSalesVolume" : 100000000,
       "preSalesVolume" : 2500000,
       "roundAVolume" : 2500000,

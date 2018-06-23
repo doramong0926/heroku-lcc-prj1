@@ -24,22 +24,29 @@ router.post('/', function(req, res) {
 	});
 });
 
-router.post('/investedInfo', function(req, res) {	
-	web3Control.getTotalInvestedEth(config.data.icoInfo.icoAddr, function(err, totalInvestedEth) {
+router.post('/investedInfo', function(req, res) {
+	IcoInfo.getIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {
 		if (err) {
-			console.log("Fail to getTotalInvestedEth");	
-			res.json({success : 'false' , totalInvestedEth : "0", totalDistributedToken : "0"});	
+			res.json({success : 'false' , totalInvestedEth : "0", totalDistributedToken : "0"});			
 		}
-		else {	
-			web3Control.getTotalDistributedToken(config.data.icoInfo.contractAddr, config.data.icoInfo.icoAddr, function(err, totalDistributedToken) {
+		else {
+			web3Control.getTotalInvestedEth(icoInfo.icoAddr, function(err, totalInvestedEth) {
 				if (err) {
-					console.log("Fail to getTotalDistributedToken");	
+					console.log("Fail to getTotalInvestedEth");	
 					res.json({success : 'false' , totalInvestedEth : "0", totalDistributedToken : "0"});	
 				}
-				else {
-					res.json({success : 'true' , totalInvestedEth : totalInvestedEth, totalDistributedToken : totalDistributedToken});	
+				else {	
+					web3Control.getTotalDistributedToken(icoInfo.contractAddr, icoInfo.icoAddr, function(err, totalDistributedToken) {
+						if (err) {
+							console.log("Fail to getTotalDistributedToken");	
+							res.json({success : 'false' , totalInvestedEth : "0", totalDistributedToken : "0"});	
+						}
+						else {
+							res.json({success : 'true' , totalInvestedEth : totalInvestedEth, totalDistributedToken : totalDistributedToken});	
+						}
+					});
 				}
-			});
+			});	
 		}
 	});
 });
