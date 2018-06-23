@@ -75,11 +75,11 @@ router.post('/controlUserInfo', function(req, res,){
 	var targetEmail = req.body.email;
 	var item = req.body.item;
 	var changeTo = req.body.value;
-	console.log("controlType : " + controlType + " targetEmail : " + targetEmail + " item : " + item + " changeTo" + changeTo);
+	console.log("controlType : " + controlType + " targetEmail : " + targetEmail + " item : " + item + " changeTo " + changeTo);
 	
 	if (!req.isAuthenticated()) {
 		res.redirect('/');
-	} else if (controlType != "change" || (item != "userTye" && item != "kycStatus")) {
+	} else if (controlType != "change" || (item != "userType" && item != "kycStatus")) {
 		res.redirect('/');
 	} else {
 		User.getUserByEmail(req.user.email, function (err, user) {
@@ -93,7 +93,7 @@ router.post('/controlUserInfo', function(req, res,){
 							res.redirect('/');
 						} else {
 							User.changeUserType(targetEmail, changeTo, function (err){
-								if(err) {
+								if(err) {									
 									res.json({ 'success' : 'false', "err" : err});
 								}
 								else {

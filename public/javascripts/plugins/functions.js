@@ -133,6 +133,7 @@ function chageUserType (userTypeTo) {
 			if ((userTypeTo != "admin" && userTypeTo != "manager" && userTypeTo != "nomal") ||
 				(userType != "superAdmin" && userType != "admin") ||
 				(userTypeTo == "admin" && userType != "superAdmin") ||
+				(userTypeFrom == userTypeTo) ||
 				(userTypeFrom == "superAdmin")) {
 					alertify.set({ delay: 3000 });
 					alertify.error("Error : fail to change userType to " + userTypeTo);
@@ -143,17 +144,9 @@ function chageUserType (userTypeTo) {
 						alertify.error("Error : fail to change userType to " + userTypeTo);
 					}
 					else{
-						getUserList(function(err, userList) {
-							if (err) {
-								alertify.set({ delay: 3000 });
-								alertify.error("Error : fail to change userType to " + userTypeTo);
-							} else 
-							{
-								alertify.set({ delay: 3000 });
-								alertify.success("Success : success to change userType to " + userTypeTo);
-								movePage("/admin/userList");
-							}
-						});
+						alertify.set({ delay: 3000 });
+						alertify.success("Success : success to change userType to " + userTypeTo);
+						movePage("/admin/userList");
 					}
 				});
 			}
@@ -174,6 +167,7 @@ function chageKycStatus(kycStatusTo) {
 		} else if ((userType != "superAdmin" && kycStatusTo == "reset") ||
 			(kycStatusTo != "completed" && kycStatusTo != "rejected" && kycStatusTo != "reset") ||
 			(kycStatusFrom == "rejected" && kycStatusTo == "completed") ||
+			(kycStatusFrom == kycStatusTo) ||
 			(kycStatusFrom == "completed") ||
 			(kycStatusFrom == "ready")) {
 				alertify.set({ delay: 3000 });
