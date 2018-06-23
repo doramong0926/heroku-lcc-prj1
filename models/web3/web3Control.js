@@ -36,7 +36,7 @@ getNomalTxlist = function(walletAddr, callback) {
 	.catch(console.log);
 }
 
-getErc20TokenTxlistWithAddress = function(contractAddr, walletAddr, callback) {
+getErc20TokenTxlistWithAddress = function(contractAddr, walletAddr, callback) {	
 	axios.get(etherScanRopstenApiAddr + "module=account&action=tokentx&contractaddress=" + contractAddr + "&address=" + walletAddr + "&startblock=0&endblock=999999999&sort=asc&apikey=" + etherScanApiKey)
 	.then(res => {
 		var err = false;
@@ -79,6 +79,7 @@ module.exports.getUserInvestInfo = function(icoAddr, contractAddr, walletAddr, c
 	var investEth = 0;	
 	var receviedToken = 0;
 	var err = false;
+
 	getNomalTxlist(walletAddr, function (err, result) {
 		if (err == true) {
 			investInfo = {numOfdata : numOfdata, investEth : investEth / Math.pow(10, 18), receviedToken : receviedToken / Math.pow(10, 18), result : tempArray.sort(tempArray.timeStamp)};
@@ -101,7 +102,7 @@ module.exports.getUserInvestInfo = function(icoAddr, contractAddr, walletAddr, c
 					numOfdata = parseInt(numOfdata) + 1;					
 				}		
 			}	
-			getErc20TokenTxlistWithAddress(contractAddr, walletAddr, function (err, result) {								
+			getErc20TokenTxlistWithAddress(contractAddr, walletAddr, function (err, result) {		
 				if (err == true) {
 					investInfo = {numOfdata : numOfdata, investEth : investEth / Math.pow(10, 18), receviedToken : receviedToken / Math.pow(10, 18), result : tempArray.sort(tempArray.timeStamp)};
 					callback(err, investInfo);
