@@ -38,9 +38,13 @@ var icoInfoSchema = mongoose.Schema({
 		/*
 		commingSoon
 		preSale
+		completePreSale
 		roundA
+		completeRoundA
 		roundB
+		completeRoundB
 		roundC
+		completeRoundC
 		*/
 	},
 	startPreSale: {
@@ -94,7 +98,33 @@ var IcoInfo = module.exports = mongoose.model('IcoInfo', icoInfoSchema);
 
 module.exports.getIcoInfo = function(Name, callback){
 	var query = {name: Name};
-	IcoInfo.findOne(query, callback);
+	IcoInfo.findOne(query, function(err, res){		
+		var currentDate = new Date();
+		if (res.round == "completePreSale" && (currentDate < res.endPreSale)) {
+			res.round = "completePreSale";
+		} else if (res.round == "completeRoundA" && ((res.endPreSale < currentDate) && (currentDate < res.endRoundA))) {
+			res.round = "completeRoundA";
+		} else if (res.round == "completeRoundB" && ((res.endRoundA < currentDate) && (currentDate < res.endRoundB))) {
+			res.round = "completeRoundB";	
+		} else if (res.round == "completeRoundC" && ((res.endRoundB < currentDate) && (currentDate < res.endRoundC))) {
+			res.round = "completeRoundC";
+		} else {
+			if (currentDate < res.startPreSale) {
+				res.round = "commingSoon";
+			} else if (currentDate < res.endPreSale) {
+				res.round = "preSale";
+			} else if(currentDate < res.endRoundA) {
+				res.round = "roundA";
+			} else if(currentDate < res.endRoundB) {
+				res.round = "roundB";
+			} else if(currentDate < res.endRoundC) {
+				res.round = "roundC";
+			} else {
+				res.round = "completeRoundC";
+			}
+		}
+		callback(err, res);
+	});
 }
 
 module.exports.createIcoInfo = function(tokenString, callback) {	

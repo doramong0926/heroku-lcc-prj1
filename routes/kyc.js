@@ -117,7 +117,7 @@ router.post('/saveKyc', function (req, res) {
 			email : req.user.email,
 			firstName : req.body.firstName,
 			lastName : req.body.lastName,
-			walletAddr : req.body.wallet,
+			walletAddr : req.body.wallet.toLowerCase(),
 			kycPicturePath1 : tmpKycPicturePath1,
 			kycPicturePath2 : tmpKycPicturePath2,
 			kycStatus: "approving"

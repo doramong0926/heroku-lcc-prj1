@@ -262,35 +262,51 @@ function showIcoStageString(icoInfo) {
 		$("#ico-stage").text("ROUND-B STAGE");
 	} else if (icoInfo.round == "roundC") {
 		$("#ico-stage").text("ROUND-C STAGE");
+	} else if (icoInfo.round == "completePreSale") {
+		$("#ico-stage").text("PRESALE IS COMPLETED");
+	} else if (icoInfo.round == "completeRoundA") {
+		$("#ico-stage").text("ROUND-A IS COMPLETED");
+	} else if (icoInfo.round == "completeRoundB") {
+		$("#ico-stage").text("ROUND-B IS COMPLETED");
+	} else if (icoInfo.round == "completeRoundC") {
+		$("#ico-stage").text("ROUND-C IS COMPLETED");
 	}
 }
 
 function showIcoSchedule(icoInfo) {	
-	if (icoInfo.round == "commingSoon")
-	{
-		$("#dash-icoInfo").text("PRESALE WILL BE START IN : ");
+	if (icoInfo.round == "completePreSale" || icoInfo.round == "completeRoundA" || icoInfo.round == "completeRoundB" || icoInfo.round == "completeRoundC") {
+		if (icoInfo.round == "completePreSale") {
+			$("#dash-icoInfo").text("PRESALE IS COMPLETED");
+		} else if (icoInfo.round == "completeRoundA") {
+			$("#dash-icoInfo").text("ROUND-A IS COMPLETED");
+		} else if (icoInfo.round == "completeRoundB") {
+			$("#dash-icoInfo").text("ROUND-B IS COMPLETED");
+		} else if (icoInfo.round == "completeRoundC") {
+			$("#dash-icoInfo").text("ROUND-C IS COMPLETED");
+		}
+	} else {
+		if (icoInfo.round == "commingSoon")
+		{
+			$("#dash-icoInfo").text("PRESALE WILL BE START IN : ");
+		}
+		else if (icoInfo.round == "preSale")
+		{
+			$("#dash-icoInfo").text("PRESALE WILL BE END IN : ");
+		}
+		else if (icoInfo.round == "roundA")
+		{
+			$("#dash-icoInfo").text("ROUND-A WILL BE END IN : ");
+		}
+		else if (icoInfo.round == "roundB")
+		{
+			$("#dash-icoInfo").text("ROUND-B WILL BE END IN : ");
+		}
+		else if (icoInfo.round == "roundC")
+		{
+			$("#dash-icoInfo").text("ROUND-C WILL BE END IN : ");
+		}
+		$("#dash-icoDate").text((new Date(icoInfo.startPreSale)).toUTCString());		
 	}
-	else if (icoInfo.round == "preSale")
-	{
-		$("#dash-icoInfo").text("PRESALE WILL BE END IN : ");
-	}
-	else if (icoInfo.round == "roundA")
-	{
-		$("#dash-icoInfo").text("ROUND-A WILL BE END IN : ");
-	}
-	else if (icoInfo.round == "roundB")
-	{
-		$("#dash-icoInfo").text("ROUND-B WILL BE END IN : ");
-	}
-	else if (icoInfo.round == "roundC")
-	{
-		$("#dash-icoInfo").text("ROUND-C WILL BE END IN : ");
-	}
-	else
-	{
-		$("#dash-icoInfo").text("ICO SALE IS END IN :");
-	}
-	$("#dash-icoDate").text((new Date(icoInfo.startPreSale)).toUTCString());		
 }
 
 function showKycInfo(userInfo) {	 
@@ -438,6 +454,14 @@ function showAdminIcoInfo(userType, icoInfo) {
 		$("#admin-round-selectBox").val("4").attr("selected", "selected");
 	} else if (icoInfo.round == "roundC") {
 		$("#admin-round-selectBox").val("5").attr("selected", "selected");
+	} else if (icoInfo.round == "completePreSale") {
+		$("#admin-round-selectBox").val("6").attr("selected", "selected");
+	} else if (icoInfo.round == "completeRoundA") {
+		$("#admin-round-selectBox").val("7").attr("selected", "selected");
+	} else if (icoInfo.round == "completeRoundB") {
+		$("#admin-round-selectBox").val("8").attr("selected", "selected");
+	} else if (icoInfo.round == "completeRoundC") {
+		$("#admin-round-selectBox").val("9").attr("selected", "selected");
 	}
 }
 
