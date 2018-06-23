@@ -197,7 +197,7 @@ function showNavLogin(showHide, userInfo) {
 	else {
 		$("#nav-login").hide();
 		$("#nav-logout").show();
-		if (userInfo.userType == "superAdmin" || userInfo.userType == "admin")	{
+		if (userInfo.userType == "superAdmin" || userInfo.userType == "admin" || userInfo.userType == "manager") {
 			showNavAdmin(true);
 		} else {
 			showNavAdmin(false);
