@@ -174,7 +174,20 @@ var Utc = 'UTC';
 (function ($) {
 	$.post( "/icoInfo/icoSchedule", function( data ) {		
 		if(data.success == 'true'){
-			var time = new Date(data.icoInfo.startPreSale);					
+			
+			var time;
+			if (data.icoInfo.round == "commingSoon") {
+				time = new Date(data.icoInfo.startPreSale);						
+			} else if (data.icoInfo.round == "preSale" || data.icoInfo.round == "completePreSale" ) {
+				time = new Date(data.icoInfo.endPreSale);						
+			}  else if (data.icoInfo.round == "roundA" || data.icoInfo.round == "completeRoundA" ) {
+				time = new Date(data.icoInfo.endRoundA);						
+			}  else if (data.icoInfo.round == "roundB" || data.icoInfo.round == "completeRoundB" ) {
+				time = new Date(data.icoInfo.endRoundB);						
+			}  else if (data.icoInfo.round == "roundC" || data.icoInfo.round == "completeRoundC" ) {
+				time = new Date(data.icoInfo.endRoundC);						
+			}			
+			
 			Year = time.getUTCFullYear();
 			Month = time.getUTCMonth() + 1;
 			Day = time.getUTCDate();

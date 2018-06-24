@@ -123,7 +123,12 @@ module.exports.getIcoInfo = function(Name, callback){
 				res.round = "completeRoundC";
 			}
 		}
-		callback(err, res);
+		IcoInfo.saveIcoInfo("round", res.round, function(err) {
+			if (err) {
+				;
+			}
+			callback(err, res);
+		});
 	});
 }
 

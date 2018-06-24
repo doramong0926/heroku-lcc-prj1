@@ -277,35 +277,46 @@ function showIcoSchedule(icoInfo) {
 	if (icoInfo.round == "completePreSale" || icoInfo.round == "completeRoundA" || icoInfo.round == "completeRoundB" || icoInfo.round == "completeRoundC") {
 		if (icoInfo.round == "completePreSale") {
 			$("#dash-icoInfo").text("PRESALE IS COMPLETED");
+			$("#dash-icoInfo").text("ROUND-A WILL BE START IN : ");
+			$("#dash-icoDate").text((new Date(icoInfo.endPreSale)).toLocaleString());
 		} else if (icoInfo.round == "completeRoundA") {
 			$("#dash-icoInfo").text("ROUND-A IS COMPLETED");
+			$("#dash-icoInfo").text("ROUND-B WILL BE START IN : ");
+			$("#dash-icoDate").text((new Date(icoInfo.endRoundA)).toLocaleString());
 		} else if (icoInfo.round == "completeRoundB") {
 			$("#dash-icoInfo").text("ROUND-B IS COMPLETED");
+			$("#dash-icoInfo").text("ROUND-C WILL BE START IN : ");
+			$("#dash-icoDate").text((new Date(icoInfo.endRoundB)).toLocaleString());
 		} else if (icoInfo.round == "completeRoundC") {
 			$("#dash-icoInfo").text("ROUND-C IS COMPLETED");
+			$("#dash-icoInfo").text("ALL THE ICO SALE SCHEDULE IS END");
 		}
 	} else {
 		if (icoInfo.round == "commingSoon")
 		{
 			$("#dash-icoInfo").text("PRESALE WILL BE START IN : ");
+			$("#dash-icoDate").text((new Date(icoInfo.startPreSale)).toLocaleString());		
 		}
 		else if (icoInfo.round == "preSale")
 		{
 			$("#dash-icoInfo").text("PRESALE WILL BE END IN : ");
+			$("#dash-icoDate").text((new Date(icoInfo.endPreSale)).toLocaleString());		
 		}
 		else if (icoInfo.round == "roundA")
 		{
 			$("#dash-icoInfo").text("ROUND-A WILL BE END IN : ");
+			$("#dash-icoDate").text((new Date(icoInfo.endRoundA)).toLocaleString());		
 		}
 		else if (icoInfo.round == "roundB")
 		{
 			$("#dash-icoInfo").text("ROUND-B WILL BE END IN : ");
+			$("#dash-icoDate").text((new Date(icoInfo.endRoundB)).toLocaleString());		
 		}
 		else if (icoInfo.round == "roundC")
 		{
 			$("#dash-icoInfo").text("ROUND-C WILL BE END IN : ");
+			$("#dash-icoDate").text((new Date(icoInfo.endRoundC)).toLocaleString());		
 		}
-		$("#dash-icoDate").text((new Date(icoInfo.startPreSale)).toUTCString());		
 	}
 }
 
