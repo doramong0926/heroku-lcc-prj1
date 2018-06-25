@@ -258,36 +258,69 @@ $(document).ready(function(){
 		saveIcoInfo(infoItem, saveData);
 	});
 
-	$("#unlock-bonusVolume10Eth").click(function() {
-		$("#admin-bonusVolume10Eth").prop("readonly", false);
-		$("#save-bonusVolume10Eth").show(); 
-		$("#unlock-bonusVolume10Eth").hide();
+	$("#unlock-bonusVolumeA").click(function() {
+		$("#admin-bonusVolumeA").prop("readonly", false);
+		$("#save-bonusVolumeA").show(); 
+		$("#unlock-bonusVolumeA").hide();
 	});
-	$("#save-bonusVolume10Eth").click(function() {
-		var saveData = $("#admin-bonusVolume10Eth").val();
-		var infoItem = "bonusVolume10Eth";
+	$("#save-bonusVolumeA").click(function() {
+		var saveData = $("#admin-bonusVolumeA").val();
+		var infoItem = "bonusVolumeA";
 		saveIcoInfo(infoItem, saveData);
 	});
 
-	$("#unlock-bonusVolume30Eth").click(function() {
-		$("#admin-bonusVolume30Eth").prop("readonly", false);
-		$("#save-bonusVolume30Eth").show(); 
-		$("#unlock-bonusVolume30Eth").hide();
+	$("#unlock-bonusVolumeB").click(function() {
+		$("#admin-bonusVolumeB").prop("readonly", false);
+		$("#save-bonusVolumeB").show(); 
+		$("#unlock-bonusVolumeB").hide();
 	});
-	$("#save-bonusVolume30Eth").click(function() {
-		var saveData = $("#admin-bonusVolume30Eth").val();
-		var infoItem = "bonusVolume30Eth";
+	$("#save-bonusVolumeB").click(function() {
+		var saveData = $("#admin-bonusVolumeB").val();
+		var infoItem = "bonusVolumeB";
 		saveIcoInfo(infoItem, saveData);
 	});
 
-	$("#unlock-bonusVolume50Eth").click(function() {
-		$("#admin-bonusVolume50Eth").prop("readonly", false);
-		$("#save-bonusVolume50Eth").show(); 
-		$("#unlock-bonusVolume50Eth").hide();
+	$("#unlock-bonusVolumeC").click(function() {
+		$("#admin-bonusVolumeC").prop("readonly", false);
+		$("#save-bonusVolumeC").show(); 
+		$("#unlock-bonusVolumeC").hide();
 	});
-	$("#save-bonusVolume50Eth").click(function() {
-		var saveData = $("#admin-bonusVolume50Eth").val();
-		var infoItem = "bonusVolume50Eth";
+	$("#save-bonusVolumeC").click(function() {
+		var saveData = $("#admin-bonusVolumeC").val();
+		var infoItem = "bonusVolumeC";
+		saveIcoInfo(infoItem, saveData);
+	});
+
+	$("#unlock-bonusVolumeNumOfEthA").click(function() {
+		$("#admin-bonusVolumeNumOfEthA").prop("readonly", false);
+		$("#save-bonusVolumeNumOfEthA").show(); 
+		$("#unlock-bonusVolumeNumOfEthA").hide();
+	});
+	$("#save-bonusVolumeNumOfEthA").click(function() {
+		var saveData = $("#admin-bonusVolumeNumOfEthA").val();
+		var infoItem = "bonusVolumeNumOfEthA";
+		saveIcoInfo(infoItem, saveData);
+	});
+
+	$("#unlock-bonusVolumeNumOfEthB").click(function() {
+		$("#admin-bonusVolumeNumOfEthB").prop("readonly", false);
+		$("#save-bonusVolumeNumOfEthB").show(); 
+		$("#unlock-bonusVolumeNumOfEthB").hide();
+	});
+	$("#save-bonusVolumeNumOfEthB").click(function() {
+		var saveData = $("#admin-bonusVolumeNumOfEthB").val();
+		var infoItem = "bonusVolumeNumOfEthB";
+		saveIcoInfo(infoItem, saveData);
+	});
+
+	$("#unlock-bonusVolumeNumOfEthC").click(function() {
+		$("#admin-bonusVolumeNumOfEthC").prop("readonly", false);
+		$("#save-bonusVolumeNumOfEthC").show(); 
+		$("#unlock-bonusVolumeNumOfEthC").hide();
+	});
+	$("#save-bonusVolumeNumOfEthC").click(function() {
+		var saveData = $("#admin-bonusVolumeNumOfEthC").val();
+		var infoItem = "bonusVolumeNumOfEthC";
 		saveIcoInfo(infoItem, saveData);
 	});
 

@@ -52,6 +52,18 @@ function getDetailUserInfo(user, callback) {
     });
 }
 
+function checkWalletAddress(addr, callback) {
+	var err = false;
+    $.post("/userInfo/checkWalletAddr", {walletAddr : addr}, function(data) {
+		if (data.success == 'false' || !data) {
+			err = true;
+			callback(err, data.errMsg)
+		} else {
+			callback(err, null)
+		}	
+    });
+}
+
 function controlUserInfo(controlType, email, item, value, callback) {	
 	$.post("/userInfo/controlUserInfo", {controlType: controlType, email : email, item : item, value : value }, function(data) {
 		var err = false;
@@ -236,15 +248,17 @@ function showInvestedInfo(icoInfo, investedInfo) {
 	$("#currentDistribution").text(numberWithCommas(parseFloat(investedInfo.totalDistributedToken).toFixed(0)) + " BLC / " + numberWithCommas(parseFloat(investedInfo.totalInvestedEth).toFixed(2)) + " ETH");	
 }
 
-function showIcoMainEthWalletAddr(showHide) {
-	if (showHide == true) {
+function showIcoMainEthWalletAddr(showHide) {	
+	if (showHide == true) {		
 		$("#address-eth").show();
+		$("#address-eth-qrCode").show();
 		$("#copy-eth-address").show();
 		$("#address-eth-description").hide();
 		$("#goToKyc").hide();
 	}
 	else {
 		$("#address-eth").hide();
+		$("#address-eth-qrCode").hide();
 		$("#copy-eth-address").hide();
 		$("#address-eth-description").show();	
 		$("#goToKyc").show();	
@@ -356,6 +370,8 @@ function showKycInfo(userInfo) {
 }
 
 function showTokenSaleInfo(userInfo) {
+	console.log(userInfo);
+	
 	if (userInfo.kycStatus == "completed") {				
 		showIcoMainEthWalletAddr(true);
 	}
@@ -417,9 +433,12 @@ function showAdminIcoInfo(userType, icoInfo) {
 		$("#unlock-bonusRoundA").show();
 		$("#unlock-bonusRoundB").show();
 		$("#unlock-bonusRoundC").show();
-		$("#unlock-bonusVolume10Eth").show();
-		$("#unlock-bonusVolume30Eth").show();
-		$("#unlock-bonusVolume50Eth").show();
+		$("#unlock-bonusVolumeA").show();
+		$("#unlock-bonusVolumeB").show();
+		$("#unlock-bonusVolumeC").show();
+		$("#unlock-bonusVolumeNumOfEthA").show();
+		$("#unlock-bonusVolumeNumOfEthB").show();
+		$("#unlock-bonusVolumeNumOfEthC").show();
 		$("#unlock-bonusReferral").show();
 	}
 	
@@ -448,9 +467,12 @@ function showAdminIcoInfo(userType, icoInfo) {
 	document.getElementById("admin-bonusRoundA").value = numberWithCommas(parseInt(icoInfo.bonusRoundA));
 	document.getElementById("admin-bonusRoundB").value = numberWithCommas(parseInt(icoInfo.bonusRoundB));
 	document.getElementById("admin-bonusRoundC").value = numberWithCommas(parseInt(icoInfo.bonusRoundC));
-	document.getElementById("admin-bonusVolume10Eth").value = numberWithCommas(parseInt(icoInfo.bonusVolume10Eth));
-	document.getElementById("admin-bonusVolume30Eth").value = numberWithCommas(parseInt(icoInfo.bonusVolume30Eth));
-	document.getElementById("admin-bonusVolume50Eth").value = numberWithCommas(parseInt(icoInfo.bonusVolume50Eth));
+	document.getElementById("admin-bonusVolumeA").value = numberWithCommas(parseInt(icoInfo.bonusVolumeA));
+	document.getElementById("admin-bonusVolumeB").value = numberWithCommas(parseInt(icoInfo.bonusVolumeB));
+	document.getElementById("admin-bonusVolumeC").value = numberWithCommas(parseInt(icoInfo.bonusVolumeC));
+	document.getElementById("admin-bonusVolumeNumOfEthA").value = numberWithCommas(parseInt(icoInfo.bonusVolumeNumOfEthA));
+	document.getElementById("admin-bonusVolumeNumOfEthB").value = numberWithCommas(parseInt(icoInfo.bonusVolumeNumOfEthB));
+	document.getElementById("admin-bonusVolumeNumOfEthC").value = numberWithCommas(parseInt(icoInfo.bonusVolumeNumOfEthC));
 	document.getElementById("admin-bonusReferral").value = numberWithCommas(parseInt(icoInfo.bonusReferral));
 	document.getElementById("admin-minimumInvesteEth").value = numberWithCommas(parseFloat(icoInfo.minimumInvesteEth));
 
@@ -626,19 +648,19 @@ function calculateWillReceiveToken(userInfo, icoInfo) {
 		roundBonusToken = 0;
 	}
 
-	if (eth.value >= 50) {               		
-		volumeBonusRate = parseInt(icoInfo.bonusVolume50Eth);
-		volumeBonusToken = token * icoInfo.bonusVolume50Eth / 100;		
+	if (eth.value >= parseInt(icoInfo.bonusVolumeNumOfEthC)) {               		
+		volumeBonusRate = parseInt(icoInfo.bonusVolumeC);
+		volumeBonusToken = token * icoInfo.bonusVolumeC / 100;		
 	}
-	else if (eth.value >= 30) {		
-		volumeBonusRate = parseInt(icoInfo.bonusVolume30Eth);
-		volumeBonusToken = token * icoInfo.bonusVolume30Eth / 100;
+	else if (eth.value >= parseInt(icoInfo.bonusVolumeNumOfEthB)) {		
+		volumeBonusRate = parseInt(icoInfo.bonusVolumeB);
+		volumeBonusToken = token * icoInfo.bonusVolumeB / 100;
 	}
-	else if (eth.value >= 10) {		
-		volumeBonusRate = parseInt(icoInfo.bonusVolume10Eth);
-		volumeBonusToken = token * icoInfo.bonusVolume10Eth / 100;
+	else if (eth.value >= parseInt(icoInfo.bonusVolumeNumOfEthA)) {		
+		volumeBonusRate = parseInt(icoInfo.bonusVolumeA);
+		volumeBonusToken = token * icoInfo.bonusVolumeA / 100;
 	}
-	else if (eth.value < 10) {
+	else if (eth.value < parseInt(icoInfo.bonusVolumeNumOfEthA)) {
 		volumeBonusToken = 0;
 		volumeBonusRate = 0;
 	}		
@@ -711,6 +733,14 @@ function updateUserList(userList)
 			{"data" : "lastName"},
 		]		
 	});
+}
+
+function genEtherWalletQrCode(qrText, elementId) {
+	var qrcode = new QRCode(document.getElementById(elementId), {
+		width : 400,
+		height : 400
+	});
+	qrcode.makeCode(qrText);
 }
 
 function numberWithCommas(x) {

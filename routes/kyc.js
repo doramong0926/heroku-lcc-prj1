@@ -7,6 +7,7 @@ var path = require('path');
 var cors = require('cors');
 
 var User = require('../models/mongoose/user');
+var web3Control = require('../models/web3/web3Control');
 
 var fileStorage1 =  multer.diskStorage( {
 	destination: function (req, file, callback) {
@@ -104,20 +105,20 @@ router.post('/saveKyc', function (req, res) {
 	// Validation
 	var firstName = req.body.firstName;
 	var lastName = req.body.lastName;
-	var wallet = req.body.wallet;
+	var wallet = req.body.wallet.toLowerCase();
 	req.checkBody('firstName', 'firstName is required').notEmpty();
 	req.checkBody('lastName', 'lastName is required').notEmpty();
 	req.checkBody('wallet', 'wallet is required').notEmpty();
 	var errors = req.validationErrors();
 
 	if (errors) {	
-		res.json({success: 'false', errors});
+		res.json({success: 'false', errMsg : errors});
 	} else {
 		var user = new User({
 			email : req.user.email,
-			firstName : req.body.firstName,
-			lastName : req.body.lastName,
-			walletAddr : req.body.wallet.toLowerCase(),
+			firstName : firstName,
+			lastName : lastName,
+			walletAddr : wallet,
 			kycPicturePath1 : tmpKycPicturePath1,
 			kycPicturePath2 : tmpKycPicturePath2,
 			kycStatus: "approving"

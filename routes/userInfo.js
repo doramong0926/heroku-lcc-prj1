@@ -21,6 +21,17 @@ router.post('/', ensureAuthenticated, function(req, res, next) {
 	});
 });
 
+router.post('/checkWalletAddr', function(req, res, next) {	
+	var walletAddr = req.body.walletAddr;
+	web3Control.isValidAddress(walletAddr, function(ret) {
+		if (ret) {
+			res.json({ success : 'ture', errMsg : null });
+		} else {
+			res.json({ success : 'false', errMsg : "check your wallet address." });
+		}
+	});
+});
+
 router.post('/investInfo', ensureAuthenticated, function(req, res, next) {	
 	User.getUserByEmail(req.user.email, function (err, user) {
 		if (err || !user) {

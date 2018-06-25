@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
+const md5 = require('md5');
 const fs = require('fs');
+
 
 var IcoInfo = require('../models/mongoose/icoInfo');
 var web3Control = require('../models/web3/web3Control');
@@ -15,10 +17,18 @@ router.get('/', function(req, res) {
 router.post('/', function(req, res) {	
 	IcoInfo.getIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {
 		if (err) {
-			res.json({success : 'false' , icoInfo : icoInfo});			
+			res.json({success : 'false' , icoInfo : null});			
 		}
 		else {
-			res.json({success : 'true' , icoInfo : icoInfo});	
+			checkIcoAddress(icoInfo.icoAddr, function(err) {
+				if (err) {
+					res.json({success : 'false' , icoInfo : null});
+				} else {
+					res.json({success : 'true' , icoInfo : icoInfo});
+				}
+
+			})
+				
 		}	
 		
 	});
@@ -118,5 +128,21 @@ router.post('/controlIcoInfo', function(req, res,) {
 	}
 });
 
+function checkIcoAddress(icoAddr, callback) {
+	if (!icoAddr) {
+		var err = true;
+		callback(err)
+	} else {
+		var icoAddrHash = md5(icoAddr);		
+		//console.log("icoAddrHash :" + icoAddrHash)		
+		if (icoAddrHash == config.data.icoInfo.icoAddrHash) {
+			var err = false;
+			callback(err)
+		} else {
+			var err = true;
+			callback(err)
+		}
+	}	
+}
 
 module.exports = router;

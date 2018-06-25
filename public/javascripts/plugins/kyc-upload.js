@@ -75,72 +75,78 @@ function uploadKyc() {
         } 
         if ($('#eth-address').val() == "")
         {
+            
             alertify.set({ delay: 3000 });
             alertify.error("Error : etherium-address is empty");
         } 
     } else {
-        var ret = false;
-        var upf1 = document.getElementById("kycPicture-1");
-        var upf2 = document.getElementById("kycPicture-2");
-        var file1 = upf1.files[0];
-        var file2 = upf2.files[0];
-        var formData1 = new FormData();
-        var formData2 = new FormData();
-        formData1.append("photo",file1);
-        formData2.append("photo",file2);  
-       
-        $.ajax({
-            url: '/kyc/kycPicture1',
-            processData: false,
-            contentType: false,
-            data: formData1,
-            type: 'POST',
-            success: function(result) {
-                if (result.success == "true") {
-                    $.ajax({
-                        url: '/kyc/kycPicture2',
-                        processData: false,
-                        contentType: false,
-                        data: formData2,
-                        type: 'POST',
-                        success: function(result){
-                            if (result.success == "true")
-                            {
-                                $.post("/kyc/saveKyc", {firstName: $('#first-name').val(), lastName: $('#last-name').val()
-                                    , wallet: $('#eth-address').val()}, function( data ) {
-                                    if(data.success == 'true') {
-                                        $.get("/kyc");
-                                        window.location.replace("/kyc"); 
-                                        alertify.set({ delay: 3000 });
-                                        alertify.success("Success : kyc info uploading is completed.");
-                                    }
-                                    else{
+        checkWalletAddress($('#eth-address').val(), function(err, errMsg){
+            if (err) {
+                alertify.set({ delay: 3000 });
+                alertify.error("Error : " + errMsg);
+            } else {
+                var upf1 = document.getElementById("kycPicture-1");
+                var upf2 = document.getElementById("kycPicture-2");
+                var file1 = upf1.files[0];
+                var file2 = upf2.files[0];
+                var formData1 = new FormData();
+                var formData2 = new FormData();
+                formData1.append("photo",file1);
+                formData2.append("photo",file2);  
+
+                $.ajax({
+                    url: '/kyc/kycPicture1',
+                    processData: false,
+                    contentType: false,
+                    data: formData1,
+                    type: 'POST',
+                    success: function(result) {
+                        if (result.success == "true") {
+                            $.ajax({
+                                url: '/kyc/kycPicture2',
+                                processData: false,
+                                contentType: false,
+                                data: formData2,
+                                type: 'POST',
+                                success: function(result){
+                                    if (result.success == "true")
+                                    {
+                                        $.post("/kyc/saveKyc", {firstName: $('#first-name').val(), lastName: $('#last-name').val()
+                                            , wallet: $('#eth-address').val()}, function( data ) {
+                                            if(data.success == 'true') {
+                                                $.get("/kyc");
+                                                window.location.replace("/kyc"); 
+                                                alertify.set({ delay: 3000 });
+                                                alertify.success("Success : kyc info uploading is completed.");
+                                            }
+                                            else{
+                                                alertify.set({ delay: 3000 });
+                                                alertify.error("Error : " + data.errMsg);
+                                            }
+                                        });
+                                    }else {
                                         alertify.set({ delay: 3000 });
                                         alertify.error("Error : fail to upload utility bill picture");
                                     }
-                                });
-                            }else {
-                                alertify.set({ delay: 3000 });
-                                alertify.error("Error : fail to upload utility bill picture");
-                            }
-                        },
-                        error: function(result) {
+                                },
+                                error: function(result) {
+                                    alertify.set({ delay: 3000 });
+                                    alertify.error("Error : fail to upload utility bill picture");
+                                }
+                            }); 
+                        } else {
                             alertify.set({ delay: 3000 });
-                            alertify.error("Error : fail to upload utility bill picture");
+                            alertify.error("Error : fail to upload passport picture");
                         }
-                    }); 
-                } else {
-                    alertify.set({ delay: 3000 });
-                    alertify.error("Error : fail to upload passport picture");
-                }
-            },
-            error: function(result) {
-                alertify.set({ delay: 3000 });
-                alertify.error("Error : fail to upload passport picture");
+                    },
+                    error: function(result) {
+                        alertify.set({ delay: 3000 });
+                        alertify.error("Error : fail to upload passport picture");
+                    }
+                });
+                delete formData1;
+                delete formData2;
             }
         });
-    
-        delete formData1;
-        delete formData2;
     }
 }

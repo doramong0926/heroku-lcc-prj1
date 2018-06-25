@@ -23,9 +23,9 @@ $(document).ready(function(){
 					;	
 				}
 				else {
-					$("#address-eth").text(icoInfo.icoAddr);
-					showIcoMainEthWalletAddr(true);
-					calculateWillReceiveToken(userInfo, icoInfo);					
+					$("#address-eth").text(icoInfo.icoAddr.toLowerCase());
+					genEtherWalletQrCode(icoInfo.icoAddr.toLowerCase(), "address-eth-qrCode");
+					calculateWillReceiveToken(userInfo, icoInfo);
 				}
 			});
 		}

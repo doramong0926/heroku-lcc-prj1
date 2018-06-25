@@ -44,6 +44,7 @@ var userSchema = mongoose.Schema({
 		/* 
 			ready
 			approving
+			waitingWhiteList
 			completed			
 			rejected
 		*/

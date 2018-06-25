@@ -4,9 +4,10 @@
   "data": {
     "icoInfo": {
       "tokenString": "bluecots",
-      "contractAddr": "0x6BE8d9c0606220A63565748d9D853a39945F135B",
-      "icoAddr": "0xBB61bFe39d37baEF627D1765c2F1121dB4582ca3",
+      "contractAddr": "0x6be8d9c0606220a63565748d9d853a39945f135b",
+      "icoAddr": "0xbb61bfe39d37baef627d1765c2f1121db4582ca3",
       "ownerAddr": "0x9b3d9f51eca501ee45058093aab95a57fd68ff9e",
+      "icoAddrHash" : "d7403bed4fad38b1da6daa783a8d04c6",
       "totalSalesVolume" : 50000000,
       "preSalesVolume" : 2500000,
       "roundAVolume" : 2500000,
@@ -23,9 +24,12 @@
       "bonusRoundA" : 5,
       "bonusRoundB" : 3,
       "bonusRoundC" : 0,
-      "bonusVolume10Eth" : 3,
-      "bonusVolume30Eth" : 5,
-      "bonusVolume50Eth" : 7,
+      "bonusVolumeA" : 3,
+      "bonusVolumeB" : 5,
+      "bonusVolumeC" : 7,
+      "bonusVolumeNumOfEthA" : 3,
+      "bonusVolumeNumOfEthB" : 10,
+      "bonusVolumeNumOfEthC" : 50,
       "bonusReferral" : 5,
       "minimumInvesteEth" : 0.5
     },
@@ -36,7 +40,8 @@
       "secret": "29kjf9f93lljs%@54j&8"
     },
     "web3": {
-      "networkType": "robsten"
+      "networkType": "robsten",
+      "provideVendor": "infura"
     },
     "etherScan": {
       "providerMainNet": "https://api-etherscan.io/api",

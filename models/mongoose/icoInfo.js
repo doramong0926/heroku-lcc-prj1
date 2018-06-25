@@ -77,13 +77,22 @@ var icoInfoSchema = mongoose.Schema({
 	bonusRoundC: {
 		type: Number
 	},
-	bonusVolume10Eth : {
+	bonusVolumeA : {
 		type: Number
 	},
-	bonusVolume30Eth : {
+	bonusVolumeB : {
 		type: Number
 	},
-	bonusVolume50Eth : {
+	bonusVolumeC : {
+		type: Number
+	},
+	bonusVolumeNumOfEthA : {
+		type: Number
+	},
+	bonusVolumeNumOfEthB : {
+		type: Number
+	},
+	bonusVolumeNumOfEthC : {
 		type: Number
 	},
 	bonusReferral : {
@@ -98,37 +107,41 @@ var IcoInfo = module.exports = mongoose.model('IcoInfo', icoInfoSchema);
 
 module.exports.getIcoInfo = function(Name, callback){
 	var query = {name: Name};
-	IcoInfo.findOne(query, function(err, res){		
-		var currentDate = new Date();
-		if (res.round == "completePreSale" && (currentDate < res.endPreSale)) {
-			res.round = "completePreSale";
-		} else if (res.round == "completeRoundA" && ((res.endPreSale < currentDate) && (currentDate < res.endRoundA))) {
-			res.round = "completeRoundA";
-		} else if (res.round == "completeRoundB" && ((res.endRoundA < currentDate) && (currentDate < res.endRoundB))) {
-			res.round = "completeRoundB";	
-		} else if (res.round == "completeRoundC" && ((res.endRoundB < currentDate) && (currentDate < res.endRoundC))) {
-			res.round = "completeRoundC";
-		} else {
-			if (currentDate < res.startPreSale) {
-				res.round = "commingSoon";
-			} else if (currentDate < res.endPreSale) {
-				res.round = "preSale";
-			} else if(currentDate < res.endRoundA) {
-				res.round = "roundA";
-			} else if(currentDate < res.endRoundB) {
-				res.round = "roundB";
-			} else if(currentDate < res.endRoundC) {
-				res.round = "roundC";
-			} else {
+	IcoInfo.findOne(query, function(err, res){
+		if (res) {			
+			var currentDate = new Date();
+			if (res.round == "completePreSale" && (currentDate < res.endPreSale)) {
+				res.round = "completePreSale";
+			} else if (res.round == "completeRoundA" && ((res.endPreSale < currentDate) && (currentDate < res.endRoundA))) {
+				res.round = "completeRoundA";
+			} else if (res.round == "completeRoundB" && ((res.endRoundA < currentDate) && (currentDate < res.endRoundB))) {
+				res.round = "completeRoundB";	
+			} else if (res.round == "completeRoundC" && ((res.endRoundB < currentDate) && (currentDate < res.endRoundC))) {
 				res.round = "completeRoundC";
+			} else {
+				if (currentDate < res.startPreSale) {
+					res.round = "commingSoon";
+				} else if (currentDate < res.endPreSale) {
+					res.round = "preSale";
+				} else if(currentDate < res.endRoundA) {
+					res.round = "roundA";
+				} else if(currentDate < res.endRoundB) {
+					res.round = "roundB";
+				} else if(currentDate < res.endRoundC) {
+					res.round = "roundC";
+				} else {
+					res.round = "completeRoundC";
+				}
 			}
-		}
-		IcoInfo.saveIcoInfo("round", res.round, function(err) {
-			if (err) {
-				;
-			}
+			IcoInfo.saveIcoInfo("round", res.round, function(err) {
+				if (err) {
+					;
+				}
+				callback(err, res);
+			});
+		} else {
 			callback(err, res);
-		});
+		}
 	});
 }
 
@@ -156,9 +169,12 @@ module.exports.createIcoInfo = function(tokenString, callback) {
 		bonusRoundA : 0,
 		bonusRoundB : 0,
 		bonusRoundC : 0,
-		bonusVolume10Eth : 0,
-		bonusVolume30Eth : 0,
-		bonusVolume50Eth : 0,
+		bonusVolumeA : 0,
+		bonusVolumeB : 0,
+		bonusVolumeC : 0,
+		bonusVolumeNumOfEthA : 0,
+		bonusVolumeNumOfEthB : 0,
+		bonusVolumeNumOfEthC : 0,
 		bonusReferral : 0,
 		minimumInvesteEth : 0,
 	});
@@ -167,9 +183,9 @@ module.exports.createIcoInfo = function(tokenString, callback) {
 
 module.exports.initIcoInfo = function(tokenString, callback) {	
 	IcoInfo.update({name: tokenString}, { $set:{
-													contractAddr : config.data.icoInfo.contractAddr,
-													icoAddr : config.data.icoInfo.icoAddr,
-													ownerAddr : config.data.icoInfo.ownerAddr,
+													contractAddr : config.data.icoInfo.contractAddr.toLowerCase(),
+													icoAddr : config.data.icoInfo.icoAddr.toLowerCase(),
+													ownerAddr : config.data.icoInfo.ownerAddr.toLowerCase(),
 
 													totalSalesVolume : config.data.icoInfo.totalSalesVolume,
 													preSalesVolume : config.data.icoInfo.preSalesVolume,
@@ -189,9 +205,12 @@ module.exports.initIcoInfo = function(tokenString, callback) {
 													bonusRoundA : config.data.icoInfo.bonusRoundA,
 													bonusRoundB : config.data.icoInfo.bonusRoundB,
 													bonusRoundC : config.data.icoInfo.bonusRoundC,
-													bonusVolume10Eth : config.data.icoInfo.bonusVolume10Eth,
-													bonusVolume30Eth : config.data.icoInfo.bonusVolume30Eth,
-													bonusVolume50Eth : config.data.icoInfo.bonusVolume50Eth,
+													bonusVolumeA : config.data.icoInfo.bonusVolumeA,
+													bonusVolumeB : config.data.icoInfo.bonusVolumeB,
+													bonusVolumeC : config.data.icoInfo.bonusVolumeC,
+													bonusVolumeNumOfEthA : config.data.icoInfo.bonusVolumeNumOfEthA,
+													bonusVolumeNumOfEthB : config.data.icoInfo.bonusVolumeNumOfEthB,
+													bonusVolumeNumOfEthC : config.data.icoInfo.bonusVolumeNumOfEthC,
 													bonusReferral : config.data.icoInfo.bonusReferral,
 													minimumInvesteEth : config.data.icoInfo.minimumInvesteEth }
 										}, callback);
@@ -200,9 +219,9 @@ module.exports.initIcoInfo = function(tokenString, callback) {
 
 module.exports.saveIcoInfoAll = function(icoInfo, callback) {	
 	IcoInfo.update({name:config.data.icoInfo.tokenString}, { $set:{
-																	contractAddr : icoInfo.contractAddr,
-																	icoAddr : icoInfo.icoAddr,
-																	ownerAddr : icoInfo.ownerAddr,
+																	contractAddr : icoInfo.contractAddr.toLowerCase(),
+																	icoAddr : icoInfo.icoAddr.toLowerCase(),
+																	ownerAddr : icoInfo.ownerAddr.toLowerCase(),
 
 																	totalSalesVolume: icoInfo.totalSalesVolume,
 																	preSalesVolume: icoInfo.preSalesVolume,
@@ -222,9 +241,12 @@ module.exports.saveIcoInfoAll = function(icoInfo, callback) {
 																	bonusRoundA: icoInfo.bonusRoundA,
 																	bonusRoundB: icoInfo.bonusRoundB,
 																	bonusRoundC: icoInfo.bonusRoundC,
-																	bonusVolume10Eth: icoInfo.bonusVolume10Eth,
-																	bonusVolume30Eth: icoInfo.bonusVolume30Eth,
-																	bonusVolume50Eth: icoInfo.bonusVolume50Eth,
+																	bonusVolumeA: icoInfo.bonusVolumeA,
+																	bonusVolumeB: icoInfo.bonusVolumeB,
+																	bonusVolumeC: icoInfo.bonusVolumeC,
+																	bonusVolumeNumOfEthA: icoInfo.bonusVolumeNumOfEthA,
+																	bonusVolumeNumOfEthB: icoInfo.bonusVolumeNumOfEthB,
+																	bonusVolumeNumOfEthC: icoInfo.bonusVolumeNumOfEthC,
 																	bonusReferral: icoInfo.bonusReferral,
 																	minimumInvesteEth: icoInfo.minimumInvesteEth }
 															}, callback);
@@ -232,11 +254,11 @@ module.exports.saveIcoInfoAll = function(icoInfo, callback) {
 
 module.exports.saveIcoInfo = function(icoItem, value, callback) {
 	if (icoItem == "contractAddr") {
-		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{contractAddr: value}}, callback);
+		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{contractAddr: value.toLowerCase()}}, callback);
 	} else if (icoItem == "icoAddr") {
-		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{icoAddr: value}}, callback);
+		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{icoAddr: value.toLowerCase()}}, callback);
 	} else if (icoItem == "ownerAddr") {
-		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{ownerAddr: value}}, callback);
+		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{ownerAddr: value.toLowerCase()}}, callback);
 	} else if (icoItem == "totalSalesVolume") {
 		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{totalSalesVolume: value}}, callback);
 	} else if(icoItem == "preSalesVolume") {
@@ -269,12 +291,18 @@ module.exports.saveIcoInfo = function(icoItem, value, callback) {
 		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusRoundB: value}}, callback);
 	} else if(icoItem == "bonusRoundC") {
 		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusRoundC: value}}, callback);
-	} else if(icoItem == "bonusVolume10Eth") {
-		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusVolume10Eth: value}}, callback);
-	} else if(icoItem == "bonusVolume30Eth") {
-		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusVolume30Eth: value}}, callback);
-	} else if(icoItem == "bonusVolume50Eth") {
-		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusVolume50Eth: value}}, callback);
+	} else if(icoItem == "bonusVolumeA") {
+		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusVolumeA: value}}, callback);
+	} else if(icoItem == "bonusVolumeB") {
+		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusVolumeB: value}}, callback);
+	} else if(icoItem == "bonusVolumeC") {
+		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusVolumeC: value}}, callback);
+	} else if(icoItem == "bonusVolumeNumOfEthA") {
+		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusVolumeNumOfEthA: value}}, callback);
+	} else if(icoItem == "bonusVolumeNumOfEthB") {
+		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusVolumeNumOfEthB: value}}, callback);
+	} else if(icoItem == "bonusVolumeNumOfEthC") {
+		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusVolumeNumOfEthC: value}}, callback);
 	} else if(icoItem == "bonusReferral") {
 		IcoInfo.update({name:config.data.icoInfo.tokenString}, {$set:{bonusReferral: value}}, callback);
 	} else if(icoItem == "minimumInvesteEth") {
