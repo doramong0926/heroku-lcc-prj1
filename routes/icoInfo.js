@@ -46,7 +46,7 @@ router.post('/icoTransactionInfo', function(req, res) {
 					res.json({ 'success' : 'false', 'icoTransactionInfo' : null });
 				}
 				else {
-					res.json({ 'success' : 'true', 'icoTransactionInfo' : icoTransactionInfo });
+					res.json({ 'success' : 'true', 'icoTransactionInfo' : icoTransactionInfo.result });
 				}
 			});
 		}

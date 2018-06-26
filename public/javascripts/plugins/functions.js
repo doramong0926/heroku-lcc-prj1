@@ -133,27 +133,8 @@ function getIcoTransactionInfo(callback) {
 			err = true;
 			callback(err, null);
 		} else {
-			if (data.icoTransactionInfo.numOfdata != 0) {
-				var history = "";
-				for (var i=0, len = data.icoTransactionInfo.numOfdata; i < len; i++) { 
-					var transactionSuccessFail = "";
-					if (data.icoTransactionInfo.result[i].txreceiptStatus == 1) {
-						transactionSuccessFail = "Success";
-					} else {
-						transactionSuccessFail = "Fail";
-					}
-
-					if (data.icoTransactionInfo.result[i].inOut == 'in') {
-						history = history + "<tr><td>[" + transactionSuccessFail + "] [RECEIVED] " + numberWithCommas(parseFloat(data.icoTransactionInfo.result[i].value).toFixed(0)) + " " + data.icoTransactionInfo.result[i].tokenSymbol + "(" + data.icoTransactionInfo.result[i].timeStamp + ")"
-									+  " : <a href='https://ropsten.etherscan.io/tx/" + data.icoTransactionInfo.result[i].txId + "' " + "target='_blank'>" + data.icoTransactionInfo.result[i].txId + "</a></td></tr>"; 
-					}
-					else {
-						history = history + "<tr><td>[" + transactionSuccessFail + "] [SEND] " + numberWithCommas(parseFloat(data.icoTransactionInfo.result[i].value).toFixed(2)) + " " + data.icoTransactionInfo.result[i].tokenSymbol + "(" + data.icoTransactionInfo.result[i].timeStamp + ")"
-									+  " : <a href='https://ropsten.etherscan.io/tx/" + data.icoTransactionInfo.result[i].txId + "' " + "target='_blank'>" + data.icoTransactionInfo.result[i].txId + "</a></td></tr>"; 
-					}
-				}			
-				callback(history);
-			}
+			err = false;
+			callback(err, data.icoTransactionInfo);
 		}
 	});
 }
@@ -201,9 +182,62 @@ function showAdminDashBoardInfo() {
 			$("#admin-dashBoard-numOfKycCompleted").text(numOfUser);
 		}
 	});
+	
+	getIcoTransactionInfo(function(err, icoTransactionInfo) {
+		if (!err) {			
+			updateIcoTransactionTable(icoTransactionInfo);
+		}
+	});
+}
 
-	getIcoTransactionInfo(function(history) {
-		$("#admin-dashBoard-icoTransactionInfo").html(history);
+function updateIcoTransactionTable(icoTransactionInfo)
+{
+	$('#tableIcoTransactionInfo').show();
+	var table = $('#tableIcoTransactionInfo').DataTable({
+		"dom" : "Blfrtip",
+		"buttons" : [	
+			/*	
+			{
+				"text" : "Detail",
+				"action" : function () {					
+					var user = table.row('.selected').data();	
+					showUserListModal(user);
+				}
+			},
+			*/
+			"excelHtml5",
+			//"csvHtml5",
+			"pdfHtml5",
+		],		
+		"fixedColumns" :   {
+			leftColumns: 2
+		},	
+		/*	
+		"columnDefs" : [ {
+			"orderable" : false,
+			"className" : "select-checkbox",
+			"targets" :   0,
+			"render" : function (data, type, full, meta){
+				return '<p name="id[]" value="' + $('<div/>').text(data).html() + '">';
+			}
+		} ],		
+		"select" : {
+			"style" :    "os",
+			"selector" : "td:first-child"
+		},
+		*/
+		"order": [[ 1, 'asc' ]],		
+		"lengthMenu" : [[ 5, 10, 30, -1 ], [ 5, 10, 30, "All" ]],
+		"scrollX": true,
+		"data" : icoTransactionInfo,
+		"columns": [
+			{"data" : "txreceiptStatus"},
+			{"data" : "timeStamp"},		
+			{"data" : "inOut"},	
+			{"data" : "value"},
+			{"data" : "tokenSymbol"},	
+			{"data" : "txId"},
+		]		
 	});
 }
 
@@ -790,6 +824,8 @@ function calculateWillReceiveToken(userInfo, icoInfo) {
 
 function updateUserList(userList)
 {
+	console.log(userList);
+	
 	$('#tableUserList').show();
 	var table = $('#tableUserList').DataTable({
 		"dom" : "Blfrtip",

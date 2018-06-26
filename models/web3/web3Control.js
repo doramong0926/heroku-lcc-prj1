@@ -111,15 +111,25 @@ module.exports.getIcoTransactionInfo = function(icoAddr, contractAddr, ownerAddr
 			callback(err, icoTransactionInfo);
 		} else {
 			for (var i=0, len = result.length; i < len; i++) {
-				var inOut;		
+				var inOut;	
+				var receiptStatus	
 				if (result[i].from.toLowerCase() == icoAddr) {
-					inOut = "out"
+					inOut = "OUT"
 				} else if (result[i].to.toLowerCase() == icoAddr) {
-					inOut = "in"
+					inOut = "IN"
+				} else {
+					inOut = "NONE"
+				}
+				if (result[i].txreceipt_status == '1') {
+					receiptStatus = "SUCCESS"
+				} else if (result[i].txreceipt_status == '0') {
+					receiptStatus = "FAIL"
+				} else {
+					receiptStatus = "NONE"
 				}
 				var date = new Date(result[i].timeStamp * 1000); 														
 				tempArray[numOfdata] = {timeStamp : date.toUTCString(),
-										txreceiptStatus : result[i].txreceipt_status,
+										txreceiptStatus : receiptStatus,
 										inOut : inOut, 
 										from : result[i].from.toLowerCase(), 
 										to : result[i].to.toLowerCase(), 
@@ -137,14 +147,27 @@ module.exports.getIcoTransactionInfo = function(icoAddr, contractAddr, ownerAddr
 				else {					
 					for (var i=0, len = result.length; i < len; i++) {					
 						var inOut;		
+						var receiptStatus
 						if (result[i].from.toLowerCase() == icoAddr) {
-							inOut = "out"
+							inOut = "OUT"
 						} else if (result[i].to.toLowerCase() == icoAddr) {
-							inOut = "in"
+							inOut = "IN"
+						} else {
+							inOut = "NONE"
 						}
+						/*
+						if (result[i].txreceipt_status == 1) {
+							receiptStatus = "SUCCESS"
+						} else if (result[i].txreceipt_status == 0) {
+							receiptStatus = "FAIL"
+						} else {
+							receiptStatus = "NONE"
+						}
+						*/
+						receiptStatus = "NONE"
 						var date = new Date(result[i].timeStamp * 1000); 														
 						tempArray[numOfdata] = {timeStamp : date.toUTCString(),
-												txreceiptStatus : 1, //temp
+												txreceiptStatus : receiptStatus,
 												inOut : inOut, 
 												from : result[i].from.toLowerCase(), 
 												to : result[i].to.toLowerCase(), 
