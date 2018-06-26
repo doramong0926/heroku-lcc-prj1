@@ -21,6 +21,27 @@ router.post('/', ensureAuthenticated, function(req, res, next) {
 	});
 });
 
+router.post('/getNumOfUserWithKyc', ensureAuthenticated, function(req, res, next) {	
+	var kycStatus = req.body.kycStatus;	
+	User.getUserByKyc(kycStatus, function (err, user) {
+		if (err) {
+			res.json({ 'success': 'false', 'numOfUser': null });
+		} else {
+			res.json({ 'success': 'true', 'numOfUser': user.length });
+		}
+	});
+});
+
+router.post('/getNumOfUser', ensureAuthenticated, function(req, res, next) {	
+	User.getNumOfUser(function (err, numOfUser) {
+		if (err) {
+			res.json({ 'success': 'false', 'numOfUser': null });
+		} else {
+			res.json({ 'success': 'true', 'numOfUser': numOfUser });
+		}
+	});
+});
+
 router.post('/checkWalletAddr', function(req, res, next) {	
 	var walletAddr = req.body.walletAddr;
 	web3Control.isValidAddress(walletAddr, function(ret) {
@@ -42,14 +63,18 @@ router.post('/investInfo', ensureAuthenticated, function(req, res, next) {
 				res.json({ success : 'false', investInfo : null });
 			}
 			else {
-				web3Control.getUserInvestInfo(config.data.icoInfo.icoAddr, config.data.icoInfo.contractAddr, config.data.icoInfo.ownerAddr, user.walletAddr, function(err, investInfo) {		
-					if (err) {
-						console.log("fail to get UserInvestInfo.");	
-						res.json({ success : 'false', investInfo : null });
-					}
-					else {
-						res.json({ success : 'true', investInfo : investInfo });
-					}
+				IcoInfo.getIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {
+					if (!err) {
+						web3Control.getUserInvestInfo(icoInfo.icoAddr, icoInfo.contractAddr, icoInfo.ownerAddr, user.walletAddr, function(err, investInfo) {		
+							if (err) {
+								console.log("fail to get UserInvestInfo.");	
+								res.json({ success : 'false', investInfo : null });
+							}
+							else {
+								res.json({ success : 'true', investInfo : investInfo });
+							}
+						});
+					}					
 				});
 			}
 		}
@@ -67,13 +92,17 @@ router.post('/getDetailUserInfo', ensureAuthenticated, function(req, res, next) 
 				res.json({ success : 'true', userInfo : user, investInfo : null });
 			}
 			else {
-				web3Control.getUserInvestInfo(config.data.icoInfo.icoAddr, config.data.icoInfo.contractAddr, config.data.icoInfo.ownerAddr, user.walletAddr, function(err, investInfo) {		
-					if (err) {
-						console.log("fail to get UserInvestInfo.");	
-						res.json({ success : 'true', userInfo : user, investInfo : null });
-					}
-					else {
-						res.json({ success : 'true', userInfo : user, investInfo : investInfo });
+				IcoInfo.getIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {
+					if (!err) {
+						web3Control.getUserInvestInfo(icoInfo.icoAddr, icoInfo.contractAddr, icoInfo.ownerAddr, user.walletAddr, function(err, investInfo) {		
+							if (err) {
+								console.log("fail to get UserInvestInfo.");	
+								res.json({ success : 'true', userInfo : user, investInfo : null });
+							}
+							else {
+								res.json({ success : 'true', userInfo : user, investInfo : investInfo });
+							}
+						});
 					}
 				});
 			}

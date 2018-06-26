@@ -33,13 +33,13 @@ router.get('/userList', ensureAuthenticated, function(req, res, next){
 	});
 });
 
-// Get /admin/kycInfo
-router.get('/kycInfo', ensureAuthenticated, function(req, res, next){	
+// Get /admin/dashBoard
+router.get('/dashBoard', ensureAuthenticated, function(req, res, next){	
 	User.getUserByEmail(req.user.email, function (err, user) {
 		if (err || !user || (user.userType != "superAdmin" && user.userType != "admin" && user.userType != "manager")) {
 			res.redirect('/');
 		} else {						
-			res.render('admin-kycInfo', {
+			res.render('admin-dashBoard', {
 				isLogin : "true", 
 				navbarType : "admin"
 			});

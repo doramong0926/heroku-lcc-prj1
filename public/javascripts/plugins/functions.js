@@ -102,6 +102,111 @@ function getInvestedInfo(callback) {
     });
 }
 
+function getNumOfUser(callback) {
+	var err = false;
+	$.post("/userInfo/getNumOfUser", function(data) {
+		if (data.success == 'false' || !data) {
+			err = true;
+			callback(err, null);
+		} else {
+			callback(err, data.numOfUser);
+		}
+	});
+}
+     
+function getNumOfUserCompletedKyc(callback) {
+	var err = false;
+	$.post("/userInfo/getNumOfUserWithKyc", {'kycStatus': "completed"}, function(data) {
+		if (data.success == 'false' || !data) {
+			err = true;
+			callback(err, null);
+		} else {
+			callback(err, data.numOfUser);
+		}
+	});
+}
+
+function getIcoTransactionInfo(callback) {
+	var err = false;
+	$.post("/icoInfo/icoTransactionInfo", function(data) {
+		if (data.success == 'false' || !data) {
+			err = true;
+			callback(err, null);
+		} else {
+			if (data.icoTransactionInfo.numOfdata != 0) {
+				var history = "";
+				for (var i=0, len = data.icoTransactionInfo.numOfdata; i < len; i++) { 
+					var transactionSuccessFail = "";
+					if (data.icoTransactionInfo.result[i].txreceiptStatus == 1) {
+						transactionSuccessFail = "Success";
+					} else {
+						transactionSuccessFail = "Fail";
+					}
+
+					if (data.icoTransactionInfo.result[i].inOut == 'in') {
+						history = history + "<tr><td>[" + transactionSuccessFail + "] [RECEIVED] " + numberWithCommas(parseFloat(data.icoTransactionInfo.result[i].value).toFixed(0)) + " " + data.icoTransactionInfo.result[i].tokenSymbol + "(" + data.icoTransactionInfo.result[i].timeStamp + ")"
+									+  " : <a href='https://ropsten.etherscan.io/tx/" + data.icoTransactionInfo.result[i].txId + "' " + "target='_blank'>" + data.icoTransactionInfo.result[i].txId + "</a></td></tr>"; 
+					}
+					else {
+						history = history + "<tr><td>[" + transactionSuccessFail + "] [SEND] " + numberWithCommas(parseFloat(data.icoTransactionInfo.result[i].value).toFixed(2)) + " " + data.icoTransactionInfo.result[i].tokenSymbol + "(" + data.icoTransactionInfo.result[i].timeStamp + ")"
+									+  " : <a href='https://ropsten.etherscan.io/tx/" + data.icoTransactionInfo.result[i].txId + "' " + "target='_blank'>" + data.icoTransactionInfo.result[i].txId + "</a></td></tr>"; 
+					}
+				}			
+				callback(history);
+			}
+		}
+	});
+}
+
+function showAdminDashBoardInfo() {
+	getIcoInfo(function (err, icoInfo) {
+		if (!err) {
+			if (icoInfo.round == "commingSoon") {
+				$("#admin-dashBoard-icoRound").text("COMMING SOON");
+			} else if (icoInfo.round == "preSale") {
+				$("#admin-dashBoard-icoRound").text("PRESALE STAGE");
+			} else if (icoInfo.round == "roundA") {
+				$("#admin-dashBoard-icoRound").text("ROUND-A STAGE");
+			} else if (icoInfo.round == "roundB") {
+				$("#admin-dashBoard-icoRound").text("ROUND-B STAGE");
+			} else if (icoInfo.round == "roundC") {
+				$("#admin-dashBoard-icoRound").text("ROUND-C STAGE");
+			} else if (icoInfo.round == "completePreSale") {
+				$("#admin-dashBoard-icoRound").text("PRESALE IS COMPLETED");
+			} else if (icoInfo.round == "completeRoundA") {
+				$("#admin-dashBoard-icoRound").text("ROUND-A IS COMPLETED");
+			} else if (icoInfo.round == "completeRoundB") {
+				$("#admin-dashBoard-icoRound").text("ROUND-B IS COMPLETED");
+			} else if (icoInfo.round == "completeRoundC") {
+				$("#admin-dashBoard-icoRound").text("ROUND-C IS COMPLETED");
+			}
+		}
+	});
+
+	getInvestedInfo(function (err, investedInfo) {
+		if (!err) {
+			$("#admin-dashBoard-totalBlc").text(numberWithCommas(parseFloat(investedInfo.totalDistributedToken).toFixed(0)) + " BLC");
+			$("#admin-dashBoard-totalEth").text(numberWithCommas(parseFloat(investedInfo.totalInvestedEth).toFixed(2)) + " ETH");	
+		}
+	});
+
+	getNumOfUser(function(err, numOfUser) {
+		if (!err) {
+			$("#admin-dashBoard-numOfUser").text(numOfUser);
+		}
+	});
+
+	getNumOfUserCompletedKyc(function(err, numOfUser) {
+		if (!err) {
+			$("#admin-dashBoard-numOfKycCompleted").text(numOfUser);
+		}
+	});
+
+	getIcoTransactionInfo(function(history) {
+		$("#admin-dashBoard-icoTransactionInfo").html(history);
+	});
+}
+
 function controlIcoInfo(controlType) {
 	getUserType(function(err, userType) {
 		if (err || userType !="superAdmin") {
@@ -596,9 +701,7 @@ function genTransactionHistory(data, callback) {
 				history = history + "<tr><td>You sent " + numberWithCommas(parseFloat(data.investInfo.result[i].value).toFixed(2)) + " " + data.investInfo.result[i].tokenSymbol + "(" + data.investInfo.result[i].timeStamp + ")"
 							+  " : <a href='https://ropsten.etherscan.io/tx/" + data.investInfo.result[i].txId + "' " + "target='_blank'>check TXID</a></td></tr>"; 
 			}
-		}
-		console.log(history);
-		
+		}		
 		callback(history);
 	}
 }

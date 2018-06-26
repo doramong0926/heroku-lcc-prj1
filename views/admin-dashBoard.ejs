@@ -1,0 +1,73 @@
+<%- layout('layout.admin-dashBoard') -%>
+
+<div class="main main-raised">
+    <div class="container fist-container">
+        <div class="section text-center">
+            <div class="features">
+                <div class="row">
+                    <div class="col-12 text-left">
+                        <h2 class="title"># DASH BOARD</h2> 
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 ml-auto mr-auto">
+                        <div class="features">                       
+                            <div class="card">
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-left">
+                                        <thead>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row"><h4>Number of user</h4></th>
+                                                <td><h4 id="admin-dashBoard-numOfUser"></h4></td>
+                                            </tr>                                                 
+                                            <tr>
+                                                <th scope="row"><h4>Number of KYC completed</h4></th>
+                                                <td><h4 id="admin-dashBoard-numOfKycCompleted"></h4></td>
+                                            </tr>  
+                                            <tr>
+                                                <th scope="row"><h4>Ico Round</h4></th>
+                                                <td><h4 id="admin-dashBoard-icoRound"></h4></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"><h4>Total distributed BLC</h4></th>
+                                                <td><h4 id="admin-dashBoard-totalBlc"></h4></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"><h4>Total invested ETH</h4></th>
+                                                <td><h4 id="admin-dashBoard-totalEth"></h4></td>
+                                            </tr>      
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 text-left">
+                        <h2 class="title"># History Of Transaction</h2> 
+                    </div>
+                </div>
+                <div class="features">
+                    <div class="row">
+                        <div class="col-12 ml-auto mr-auto">
+                            <div class="table-responsive">
+                                <table class="table table-hover text-left">
+                                    <thead>
+                                    </thead>
+                                    <tbody id="admin-dashBoard-icoTransactionInfo">                                    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

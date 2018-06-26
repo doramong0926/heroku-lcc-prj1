@@ -97,6 +97,71 @@ getTokenTxReceiptStatus = function(txid, callback) {
 	.catch(console.log);
 }
 
+module.exports.getIcoTransactionInfo = function(icoAddr, contractAddr, ownerAddr, callback) {
+	var tempArray = new Array();
+	var icoTransactionInfo = new Array();
+	var numOfdata = 0;
+	var icoAddr = icoAddr.toLowerCase();
+	var contractAddr = contractAddr.toLowerCase();
+	var ownerAddr = ownerAddr.toLowerCase();
+
+	getNomalTxlist(icoAddr, function (err, result) {
+		if (err == true) {
+			icoTransactionInfo = {numOfdata : numOfdata, result : tempArray.sort(tempArray.timeStamp)};
+			callback(err, icoTransactionInfo);
+		} else {
+			for (var i=0, len = result.length; i < len; i++) {
+				var inOut;		
+				if (result[i].from.toLowerCase() == icoAddr) {
+					inOut = "out"
+				} else if (result[i].to.toLowerCase() == icoAddr) {
+					inOut = "in"
+				}
+				var date = new Date(result[i].timeStamp * 1000); 														
+				tempArray[numOfdata] = {timeStamp : date.toUTCString(),
+										txreceiptStatus : result[i].txreceipt_status,
+										inOut : inOut, 
+										from : result[i].from.toLowerCase(), 
+										to : result[i].to.toLowerCase(), 
+										value : result[i].value / Math.pow(10, 18), 
+										txId : result[i].hash,
+										tokenName : 'Ethereum',
+										tokenSymbol : 'ETH'};			
+				numOfdata = parseInt(numOfdata) + 1;
+			}
+			getErc20TokenTxlistWithAddress(contractAddr, icoAddr, function (err, result) {		
+				if (err == true) {
+					icoTransactionInfo = {numOfdata : numOfdata, result : tempArray.sort(tempArray.timeStamp)};
+					callback(err, icoTransactionInfo);
+				}
+				else {					
+					for (var i=0, len = result.length; i < len; i++) {					
+						var inOut;		
+						if (result[i].from.toLowerCase() == icoAddr) {
+							inOut = "out"
+						} else if (result[i].to.toLowerCase() == icoAddr) {
+							inOut = "in"
+						}
+						var date = new Date(result[i].timeStamp * 1000); 														
+						tempArray[numOfdata] = {timeStamp : date.toUTCString(),
+												txreceiptStatus : 1, //temp
+												inOut : inOut, 
+												from : result[i].from.toLowerCase(), 
+												to : result[i].to.toLowerCase(), 
+												value : result[i].value / Math.pow(10, 18), 
+												txId : result[i].hash,
+												tokenName : result[i].tokenName,
+												tokenSymbol : result[i].tokenSymbol};		
+						numOfdata = parseInt(numOfdata) + 1;			
+					}		
+					icoTransactionInfo = {numOfdata : numOfdata, result : tempArray.sort(tempArray.timeStamp)};
+					callback(err, icoTransactionInfo);				
+				}	
+			});
+		}
+	});
+}
+
 module.exports.getUserInvestInfo = function(icoAddr, contractAddr, ownerAddr, walletAddr, callback) {
 	var tempArray = new Array();
 	var investInfo = new Array();

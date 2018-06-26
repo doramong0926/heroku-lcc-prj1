@@ -68,6 +68,17 @@ module.exports.getUserByEmail = function(email, callback){
 	User.findOne(query, callback);
 }
 
+module.exports.getNumOfUser = function(callback){
+	User.count(callback);
+}
+
+module.exports.getUserByKyc = function(kycStatus, callback){
+	console.log(kycStatus);
+	
+	var query = {kycStatus: kycStatus};
+	User.find(query, callback);
+}
+
 module.exports.getUserById = function(id, callback){
 	User.findById(id, callback);
 }

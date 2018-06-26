@@ -34,6 +34,25 @@ router.post('/', function(req, res) {
 	});
 });
 
+router.post('/icoTransactionInfo', function(req, res) {
+	IcoInfo.getIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {
+		if (err) {
+			res.json({'success' : 'false' , 'icoTransactionInfo' : null});			
+		}
+		else {
+			web3Control.getIcoTransactionInfo(icoInfo.icoAddr, icoInfo.contractAddr, icoInfo.ownerAddr, function(err, icoTransactionInfo) {		
+				if (err) {
+					console.log("fail to get icoTransactionInfo.");	
+					res.json({ 'success' : 'false', 'icoTransactionInfo' : null });
+				}
+				else {
+					res.json({ 'success' : 'true', 'icoTransactionInfo' : icoTransactionInfo });
+				}
+			});
+		}
+	});
+});
+
 router.post('/investedInfo', function(req, res) {
 	IcoInfo.getIcoInfo(config.data.icoInfo.tokenString, function (err, icoInfo) {
 		if (err) {
